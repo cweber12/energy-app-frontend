@@ -3,7 +3,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
-import "./AuthForm.css";
+import "../Components.css";
+import FormWrapper from "../common/FormWrapper";
 
 // Define the shape of the form data
 type FormData = {
@@ -61,12 +62,7 @@ function Register() {
     };
 
     return (
-        <div 
-            className="form-container"
-            style={{ backgroundColor: colors.background }}
-            >
-            <h2 style={{color: colors.title}}>Register</h2>
-
+        <FormWrapper>
             <form 
             className="form"
             onSubmit={handleSubmit(onSubmit)}>
@@ -106,7 +102,7 @@ function Register() {
                         color: colors.buttonText 
                     }} />
             </form>
-        </div>
+        </FormWrapper>
     );
 }
 

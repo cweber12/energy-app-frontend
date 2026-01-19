@@ -1,7 +1,7 @@
 import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
-import "./Headers.css";
+import "../Components.css";
 
 const HomeHeader: React.FC<{
     showLogin: boolean,
@@ -20,8 +20,8 @@ const HomeHeader: React.FC<{
             className="header" 
             style={{ backgroundColor: colors.navBackground }}
             >
-            <h1 style={{ color: colors.title, margin: 0 }}>
-                Home Energy Audit
+            <h1 style={{ color: colors.title}}>
+                WattWatch
             </h1>
             <div className="button-group">
                 <button 

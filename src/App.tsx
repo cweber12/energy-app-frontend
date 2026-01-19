@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import AccountDashboard from './pages/AccountDashboard';
 import { ThemeProvider } from './context/ThemeContext';
 
 const App: React.FC = () => (
@@ -8,6 +9,7 @@ const App: React.FC = () => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/account" element={<AccountDashboard />} />
       </Routes>
     </BrowserRouter>
   </ThemeProvider>

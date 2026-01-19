@@ -2,8 +2,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 import "../../App.css";
-import "./AuthForm.css";
+import "../Components.css";
+import FormWrapper from "../common/FormWrapper";
 
 // Define the shape of the form data
 type FormData = {
@@ -15,16 +17,9 @@ type FormData = {
 --------------------------------------------------------------------------------
     Description: A login form that authenticates users.
 ------------------------------------------------------------------------------*/
-function Login(
-    { user,
-    setUser,
-    }: {
-    user: any;
-    setUser: React.Dispatch<React.SetStateAction<any>>;
-    }
-) {
-    // Access the current theme colors and scheme
-    const { colors, scheme } = useTheme();
+function Login() {
+    const navigate = useNavigate(); // Hook for navigation
+    const { colors, scheme } = useTheme(); // Get theme colors
 
     // Initialize the form handling
     const {
@@ -46,17 +41,15 @@ function Login(
             .then(res => res.json())
             .then(data => {
                 console.log('Login | Login successful:', data);
-                setUser(data.username);
+                sessionStorage.setItem("username", data.username);
+                navigate("/account");
             })
             .catch(err => console.error(err));
+            
     };
 
     return (
-        <div 
-            className="form-container"
-            style={{ backgroundColor: colors.background }}
-            >
-            <h2 style={{color: colors.title}}>Login</h2>
+        <FormWrapper>
             <form 
             className="form" 
             onSubmit={handleSubmit(onSubmit)}
@@ -87,7 +80,7 @@ function Login(
                         color: colors.buttonText 
                     }} />
             </form>
-        </div>
+        </FormWrapper>
     );
 }
 
