@@ -1,14 +1,23 @@
+// src/components/Register.tsx
 import React from "react";
 import { useForm } from "react-hook-form";
-import "../App.css";
+import { useTheme } from "../../context/ThemeContext";
+import "../../App.css";
+import "./AuthForm.css";
 
+// Define the shape of the form data
 type FormData = {
     username: string;
     email: string;
     password: string;
 };
 
+/*  Register Component
+--------------------------------------------------------------------------------
+    Description: A registration form that allows new users to sign up.
+------------------------------------------------------------------------------*/
 function Register() {
+    const { colors, scheme } = useTheme();
     const {
         register,
         handleSubmit,
@@ -52,34 +61,52 @@ function Register() {
     };
 
     return (
-        <>
-            <h2>Registration Form</h2>
+        <div 
+            className="form-container"
+            style={{ backgroundColor: colors.background }}
+            >
+            <h2 style={{color: colors.title}}>Register</h2>
 
-            <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
+            <form 
+            className="form"
+            onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="text"
                     {...register("username", { required: true })}
                     placeholder="Username"
                 />
-                {errors.username && <span style={{ color: "red" }}>*Username* is mandatory</span>}
-
+                {errors.username && (
+                <span style={{ color: colors.warning }}>
+                    *Username* is mandatory</span>
+                )}
                 <input
                     type="email"
                     {...register("email", { required: true })}
                     placeholder="Email"
                 />
-                {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>}
+                {errors.email && (
+                <span style={{ color: colors.warning }}>
+                    *Email* is mandatory</span>
+                )}
 
                 <input
                     type="password"
                     {...register("password", { required: true })}
                     placeholder="Password"
                 />
-                {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>}
+                {errors.password && (
+                <span style={{ color: colors.warning }}>
+                    *Password* is mandatory</span>
+                )}
 
-                <input type="submit" style={{ backgroundColor: "#a1eafb" }} />
+                <input 
+                    type="submit" 
+                    style={{ 
+                        backgroundColor: colors.button, 
+                        color: colors.buttonText 
+                    }} />
             </form>
-        </>
+        </div>
     );
 }
 

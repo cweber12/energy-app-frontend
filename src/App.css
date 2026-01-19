@@ -1,13 +1,9 @@
-.App {
-  text-align: center;
+#root {
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 300px;
-  margin: 20px auto;
+.App {
+  text-align: center;
 }
  
 input {
