@@ -23,11 +23,11 @@ export const ColorScheme = {
 
     dark: {
         text: "#EEEEEE",
-        title: "#e2f2ff",
-        warning: "#FF6500",
+        title: "#ff9d00",
+        warning: "#f42323",
         background: "#222222",
         navBackground: "#121214",
-        dropdownBackground: "#1E3E62",
+        dropdownBackground: "#000000",
         button: "#008BFF",
         buttonHover: "#00559a",
         buttonDisabled: "#444444",
@@ -36,8 +36,8 @@ export const ColorScheme = {
     },
 
     light: {
-        text: "#EEEEEE",
-        title: "#e2f2ff",
+        text: "#000000",
+        title: "#FF6500",
         warning: "#FF6500",
         background: "#222222",
         navBackground: "#121214",

@@ -1,26 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import "../App.css";
-import Login from '../components/auth/Login';
-import Register from '../components/auth/Register';
+import Login from '../components/forms/Login';
+import Register from '../components/forms/Register';
 import HomeHeader from '../components/headers/HomeHeader';
 import PageWrapper from '../components/common/PageWrapper';
+import Card from '../components/common/Card';
 
 function Home() {
+    const navigate = useNavigate();
     const [showLogin, setShowLogin] = React.useState<boolean>(true);
     const [showRegister, setShowRegister] = React.useState<boolean>(false);
-    
+    const userId = sessionStorage.getItem("user_id");
+
+    useEffect(() => {
+        if (userId) {
+            navigate("/account");
+        }
+    }, [userId, navigate]);
+
     return (
         <>
-            <HomeHeader
-                showLogin={showLogin}
-                setShowLogin={setShowLogin}
-                showRegister={showRegister}
-                setShowRegister={setShowRegister}
-            />
+            <HomeHeader/>
             <PageWrapper>
-            {showLogin && <Login/>}
-            {showRegister && <Register />}
-        </PageWrapper>
+                <Card>
+                    {showLogin && <Login navigate={navigate} />}
+                    {showRegister && <Register />}
+                    <span 
+                        style={{ 
+                            cursor: "pointer",
+                            textDecoration: "underline"
+                        }}
+                        onClick={() => {
+                            setShowLogin(!showLogin);
+                            setShowRegister(!showRegister);
+                        }}
+                    >
+                        {showLogin ? "Don't have an account? Register here." : "Already have an account? Login here."}
+                    </span>
+                </Card>
+            </PageWrapper>
         </>
     );
 }

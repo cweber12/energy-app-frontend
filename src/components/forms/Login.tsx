@@ -2,7 +2,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
-import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import "../Components.css";
 import FormWrapper from "../common/FormWrapper";
@@ -17,9 +16,9 @@ type FormData = {
 --------------------------------------------------------------------------------
     Description: A login form that authenticates users.
 ------------------------------------------------------------------------------*/
-function Login() {
-    const navigate = useNavigate(); // Hook for navigation
-    const { colors, scheme } = useTheme(); // Get theme colors
+const Login: React.FC<{ navigate: any }> = ({ navigate }) =>  {
+    const { colors } = useTheme(); // Get theme colors
+    const [message, setMessage] = React.useState<string | null>(null);
 
     // Initialize the form handling
     const {
@@ -28,6 +27,12 @@ function Login() {
         formState: { errors },
     } = useForm<FormData>();
 
+    const buttonProps = {
+        style: {
+            backgroundColor: colors.button,
+            color: colors.buttonText,
+        }
+    };
     // Function to handle form submission
     const onSubmit = async (data: FormData) => {
         fetch('http://127.0.0.1:5000/login', {
@@ -41,17 +46,28 @@ function Login() {
             .then(res => res.json())
             .then(data => {
                 console.log('Login | Login successful:', data);
-                sessionStorage.setItem("username", data.username);
-                navigate("/account");
+                if (data.email) {
+                    sessionStorage.setItem("username", data.username);
+                    sessionStorage.setItem("user_id", data.user_id);
+                    navigate("/account");
+                } else {
+                    sessionStorage.removeItem("username");
+                    console.warn('Login | Username missing in response');
+                    setMessage("Login failed. Please check your credentials and try again.");
+                }
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error('Login | Error during login:', err);
+                setMessage("Login failed. Please check your credentials and try again.");
+            });
             
     };
 
     return (
         <FormWrapper>
             <form 
-            className="form" 
+            className="form auth-form" 
+            style={{width: "300px"}}
             onSubmit={handleSubmit(onSubmit)}
             >
                 <input
@@ -75,11 +91,18 @@ function Login() {
 
                 <input 
                     type="submit" 
-                    style={{ 
-                        backgroundColor: colors.button, 
-                        color: colors.buttonText 
-                    }} />
+                    {...buttonProps} />
             </form>
+            {message && (
+                <p 
+                style={{ 
+                    color: colors.warning, 
+                    marginTop: "10px", 
+                    width: "300px" 
+                }}>
+                    {message}
+                </p>
+            )}
         </FormWrapper>
     );
 }

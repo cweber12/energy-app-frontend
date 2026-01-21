@@ -18,14 +18,18 @@ type FormData = {
     Description: A registration form that allows new users to sign up.
 ------------------------------------------------------------------------------*/
 function Register() {
-    const { colors, scheme } = useTheme();
+    const { colors } = useTheme();
+    const [message, setMessage] = React.useState<string | null>(null);
+
+    // Initialize the form handling
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>();
     
-     const fetchUserByUsername = async (username: string) => {
+    //
+    const fetchUserByUsername = async (username: string) => {
         const response = await fetch(`http://127.0.0.1:5000/users/${username}`);
         if (!response.ok) return null;
         const user = await response.json();
@@ -37,7 +41,8 @@ function Register() {
     const onSubmit = async (data: FormData) => {
         const user = await fetchUserByUsername(data.username);
         if (user) {
-            console.log("Register | Username already exists. Please choose a different username.");
+            console.log("Register | Username already exists.");
+            setMessage("Username already exists. Please choose a different username.");
             return;
         }
         
@@ -55,16 +60,19 @@ function Register() {
         .then(response => response.json())
         .then(data => {
             console.log('Register | User created:', data);
+            setMessage(`Account created for ${data.username}! You can now log in.`);
         })
         .catch(error => {
             console.error('Register | Error :', error);
+            setMessage("Registration failed. Please try again.");
         });
     };
 
     return (
         <FormWrapper>
             <form 
-            className="form"
+            className="form auth-form"
+            style={{width: "300px"}}
             onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="text"
@@ -102,6 +110,9 @@ function Register() {
                         color: colors.buttonText 
                     }} />
             </form>
+            {message && (
+                <p style={{ color: colors.warning, marginTop: "1rem" }}>{message}</p>
+            )}
         </FormWrapper>
     );
 }

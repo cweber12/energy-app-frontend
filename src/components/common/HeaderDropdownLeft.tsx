@@ -3,16 +3,16 @@ import { useTheme } from '../../context/ThemeContext';
 import "../../App.css";
 import "../Components.css";
 
-/*  Card Component
+/*  Header Dropdown Left Component
 --------------------------------------------------------------------------------
-    Description: Reusable component that wraps content with consistent styling.
+    Description: Reusable component that wraps forms with consistent styling.
 ------------------------------------------------------------------------------*/
 
-const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const HeaderDropdownLeft: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { colors } = useTheme();
   return (
     <div 
-        className="card" 
+        className="header-dropdown-left" 
         style={{ backgroundColor: colors.navBackground }}
         >
         {children}
@@ -20,4 +20,4 @@ const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 }
 
-export default Card;
+export default HeaderDropdownLeft;

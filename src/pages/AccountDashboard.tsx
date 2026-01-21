@@ -1,11 +1,25 @@
 import React from 'react';
 import "../App.css";
+import AccountDashboardHeader from '../components/headers/AccountDashboardHeader';
+import PageWrapper from '../components/common/PageWrapper';
+import AddProperty from '../components/properties/PropertyInput';
 
 const AccountDashboard = () => {
+    const [showAddProperty, setShowAddProperty] = React.useState<boolean>(false);
+    const userId = sessionStorage.getItem("user_id") || "";
     return (
-        <div className="account-dashboard">
-            <h1>Account Dashboard</h1>
-        </div>
+        <>
+        <AccountDashboardHeader
+            setShowAddProperty={setShowAddProperty}
+            showAddProperty={showAddProperty}
+            userId={userId}
+         />
+        <PageWrapper>
+            {showAddProperty && (
+                <AddProperty userId={userId} />
+            )}
+        </PageWrapper>
+        </>
     );
 }
 
