@@ -13,8 +13,8 @@ import "../Components.css";
 ------------------------------------------------------------------------------*/
 
 const PropertyMenu: React.FC<{ 
-    setShowAddProperty: React.Dispatch<React.SetStateAction<boolean>> }> = (
-        { setShowAddProperty }) => {
+    setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>> }> = (
+        { setShowPropertyInput }) => {
     const userId = sessionStorage.getItem("user_id");
     
     const [options, setOptions] = useState([
@@ -54,7 +54,7 @@ const PropertyMenu: React.FC<{
     const handleChange = (selected: any) => {
         if (!selected) return;
         if (selected.value === 'add') {
-            setShowAddProperty(true);
+            setShowPropertyInput(true);
         } else {
             sessionStorage.setItem("currentProperty", selected.value);
         }

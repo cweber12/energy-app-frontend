@@ -101,3 +101,9 @@ label {
     top: 0;
     padding: 1.5rem;
 }
+
+.header-dropdown-left select, 
+.header-dropdown-left input {
+    box-sizing: border-box;
+    width: 50%;
+}

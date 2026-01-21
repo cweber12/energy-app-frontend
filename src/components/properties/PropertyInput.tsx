@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../Components.css";
 import { useTheme } from "../../context/ThemeContext";
-import HeaderDropdownLeft from "../common/HeaderDropdownLeft";
+import HeaderDropdown from "../common/HeaderDropdown";
 
 const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
   const [form, setForm] = useState({
@@ -46,7 +46,7 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
   };
 
   return (
-    <HeaderDropdownLeft>
+    <HeaderDropdown>
       <form className="form" onSubmit={handleSubmit}>
         <br />
         <label>
@@ -91,7 +91,7 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
         <button type="submit">Add</button>
         {message && <div>{message}</div>}
       </form>
-    </HeaderDropdownLeft>
+    </HeaderDropdown>
   );
 };
 

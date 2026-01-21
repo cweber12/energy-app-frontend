@@ -3,17 +3,22 @@ import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../Components.css";
 import PropertyMenu from "../properties/PropertyMenu";
+import ItemMenu from "../items/ItemMenu";
 
 
 type AccountDashboardHeaderProps = {
-  setShowAddProperty: React.Dispatch<React.SetStateAction<boolean>>;
-  showAddProperty: boolean;
+    setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
+    setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
+    showPropertyInput: boolean;
+    showItemInput: boolean;
   userId: string;
 };
 
 const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
-    setShowAddProperty,
-    showAddProperty,
+    setShowPropertyInput,
+    setShowItemInput,
+    showPropertyInput,
+    showItemInput,
     userId
 }) => {
    
@@ -42,16 +47,32 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                         gap: "10px"
                     }}>
                     <PropertyMenu 
-                        setShowAddProperty={setShowAddProperty} 
+                        setShowPropertyInput={setShowPropertyInput} 
                     />
-                    {showAddProperty && (
+                    {showPropertyInput && (
                     <button 
                         className="button"
                         style={{
                             backgroundColor: colors.button,
                             color: colors.buttonText
                         }}
-                        onClick={() => setShowAddProperty(false)}
+                        onClick={() => setShowPropertyInput(false)}
+                    >
+                        Cancel
+                    </button>
+                    )}
+                    <ItemMenu 
+                        propertyId={sessionStorage.getItem("currentProperty") || ""}
+                        setShowItemInput={setShowItemInput}
+                    />
+                    {showItemInput && (
+                    <button 
+                        className="button"
+                        style={{
+                            backgroundColor: colors.button,
+                            color: colors.buttonText
+                        }}
+                        onClick={() => setShowItemInput(false)}
                     >
                         Cancel
                     </button>

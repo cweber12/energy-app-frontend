@@ -2,21 +2,29 @@ import React from 'react';
 import "../App.css";
 import AccountDashboardHeader from '../components/headers/AccountDashboardHeader';
 import PageWrapper from '../components/common/PageWrapper';
-import AddProperty from '../components/properties/PropertyInput';
+import PropertyInput from '../components/properties/PropertyInput';
+import ItemInput from '../components/items/ItemInput';
 
 const AccountDashboard = () => {
-    const [showAddProperty, setShowAddProperty] = React.useState<boolean>(false);
+    const [showPropertyInput, setShowPropertyInput] = React.useState<boolean>(false);
+    const [showItemInput, setShowItemInput] = React.useState<boolean>(false);
     const userId = sessionStorage.getItem("user_id") || "";
     return (
         <>
         <AccountDashboardHeader
-            setShowAddProperty={setShowAddProperty}
-            showAddProperty={showAddProperty}
+            setShowPropertyInput={setShowPropertyInput}
+            setShowItemInput={setShowItemInput}
+            showPropertyInput={showPropertyInput}
+            showItemInput={showItemInput}
             userId={userId}
          />
         <PageWrapper>
-            {showAddProperty && (
-                <AddProperty userId={userId} />
+            {showPropertyInput && (
+                <PropertyInput userId={userId} />
+                
+            )}
+            {showItemInput && (
+                <ItemInput propertyId={sessionStorage.getItem("currentProperty") || ""} />
             )}
         </PageWrapper>
         </>

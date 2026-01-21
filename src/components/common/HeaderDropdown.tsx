@@ -8,7 +8,7 @@ import "../Components.css";
     Description: Reusable component that wraps forms with consistent styling.
 ------------------------------------------------------------------------------*/
 
-const HeaderDropdownLeft: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const HeaderDropdown: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { colors } = useTheme();
   return (
     <div 
@@ -20,4 +20,4 @@ const HeaderDropdownLeft: React.FC<{ children: React.ReactNode }> = ({ children 
   );
 }
 
-export default HeaderDropdownLeft;
+export default HeaderDropdown;

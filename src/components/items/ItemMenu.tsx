@@ -5,34 +5,39 @@ import "../Components.css";
 
 const ItemMenu: React.FC<{
   propertyId: string;
-  setShowAddItem: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ propertyId, setShowAddItem }) => {
+  setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ propertyId, setShowItemInput }) => {
   const [options, setOptions] = useState([
     { value: "add", label: "Add Item" },
   ]);
 
   useEffect(() => {
     if (!propertyId) return;
-    fetch(`http://127.0.0.1:5000/electrical_items/${propertyId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setOptions([
-          { value: "add", label: "Add Item" },
-          ...data.map((item: any) => ({
-            value: item.item_id,
-            label: item.nickname,
-          })),
-        ]);
-      })
-      .catch((error) => {
+    fetch(`http://127.0.0.1:5000/electrical_items/property/${propertyId}`)
+        .then((response) => response.json())
+        .then((data) => {
+        if (Array.isArray(data)) {
+            setOptions([
+            { value: "add", label: "Add Item" },
+            ...data.map((item: any) => ({
+                value: item.item_id,
+                label: item.nickname,
+            })),
+            ]);
+        } else {
+            setOptions([{ value: "add", label: "Add Item" }]);
+            console.error("Unexpected response:", data);
+        }
+        })
+        .catch((error) => {
         console.error("Error fetching items:", error);
-      });
-  }, [propertyId]);
+        });
+    }, [propertyId]);
 
   const handleChange = (selected: any) => {
     if (!selected) return;
     if (selected.value === "add") {
-      setShowAddItem(true);
+      setShowItemInput(true);
     } else {
       sessionStorage.setItem("currentItem", selected.value);
     }
