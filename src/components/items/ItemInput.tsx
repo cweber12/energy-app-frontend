@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import HeaderDropdown from "../common/HeaderDropdown";
 import "../Components.css";
 
-const ItemInput: React.FC<{ propertyId: string }> = ({ propertyId }) => {
+type ItemInputProps = {
+    propertyId: string;
+    setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ItemInput: React.FC<ItemInputProps> = ({ 
+    propertyId, setShowItemInput }) => {
     const [form, setForm] = useState({
         category_id: "",
         usage_type_id: "",
@@ -10,6 +16,7 @@ const ItemInput: React.FC<{ propertyId: string }> = ({ propertyId }) => {
         rated_watts: "",
 });
     const [categories, setCategories] = useState<{ category_id: string; category_name: string }[]>([]);
+    const [usageTypes, setUsageTypes] = useState<{ usage_type_id: string; usage_type_name: string }[]>([]);
     const [message, setMessage] = useState("");
 
     useEffect(() => {
@@ -17,6 +24,11 @@ const ItemInput: React.FC<{ propertyId: string }> = ({ propertyId }) => {
         .then((res) => res.json())
         .then((data) => setCategories(data))
         .catch((err) => console.error("Error fetching categories:", err));
+        
+         fetch("http://127.0.0.1:5000/usage_types")
+        .then((res) => res.json())
+        .then((data) => setUsageTypes(data))
+        .catch((err) => console.error("Error fetching usage types:", err));
     }, []);
 
     const handleChange = (
@@ -56,7 +68,7 @@ const ItemInput: React.FC<{ propertyId: string }> = ({ propertyId }) => {
     return (
         <HeaderDropdown>
             <form className="form" onSubmit={handleSubmit}>
-             <label>
+             <label className="form-label">
                 Category:
                 <select
                     name="category_id"
@@ -73,17 +85,24 @@ const ItemInput: React.FC<{ propertyId: string }> = ({ propertyId }) => {
                 </select>
             </label>
             <br />
-            <label>
-                Usage Type ID:
-                <input
-                name="usage_type_id"
-                value={form.usage_type_id}
-                onChange={handleChange}
-                required
-                />
+            <label className="form-label">
+                Usage Type:
+                <select
+                    name="usage_type_id"
+                    value={form.usage_type_id}
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="">Select a usage type</option>
+                    {usageTypes.map((usage) => (
+                        <option key={usage.usage_type_id} value={usage.usage_type_id}>
+                            {usage.usage_type_name}
+                        </option>
+                    ))}
+                </select>
             </label>
             <br />
-            <label>
+            <label className="form-label">
                 Nickname:
                 <input
                 name="nickname"
@@ -93,7 +112,7 @@ const ItemInput: React.FC<{ propertyId: string }> = ({ propertyId }) => {
                 />
             </label>
             <br />
-            <label>
+            <label className="form-label">
                 Rated Watts:
                 <input
                 name="rated_watts"
@@ -102,7 +121,17 @@ const ItemInput: React.FC<{ propertyId: string }> = ({ propertyId }) => {
                 />
             </label>
             <br />
-            <button type="submit">Add Item</button>
+            <div className="button-group">
+                <button type="submit" className="auth-button">Add</button>
+                <button
+                    type="button"
+                    className="auth-button"
+                    style={{ marginLeft: "10px" }}
+                    onClick ={() => setShowItemInput(false)}
+                >
+                    Cancel
+                </button>
+            </div>
             {message && <div>{message}</div>}
             </form>
         </HeaderDropdown>

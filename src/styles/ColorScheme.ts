@@ -13,10 +13,15 @@ export type ColorSchemeType = {
     background: string;
     navBackground: string;
     dropdownBackground: string;
+    cardBackground: string;
+    cardText: string;
     button: string;
     buttonHover: string;
     buttonText: string;
     buttonDisabled: string;
+    icon: string;
+    popupBackground: string;
+    popupText: string;
 };
 
 export const ColorScheme = {
@@ -25,13 +30,18 @@ export const ColorScheme = {
         text: "#EEEEEE",
         title: "#ff9d00",
         warning: "#f42323",
-        background: "#222222",
+        background: "#000000",
         navBackground: "#121214",
         dropdownBackground: "#000000",
+        cardBackground: "#ff9d00",
+        cardText: "#121214",
+        popupBackground: "#ffffff",
+        popupText: "#000000",
         button: "#008BFF",
         buttonHover: "#00559a",
         buttonDisabled: "#444444",
         buttonText: "#000000", 
+        icon: "#FFFFFF",
 
     },
 
@@ -42,10 +52,15 @@ export const ColorScheme = {
         background: "#222222",
         navBackground: "#121214",
         dropdownBackground: "#1E3E62",
+        cardBackground: "#FFFFFF",
+        cardText: "#000000",
+        popupBackground: "#000000",
+        popupText: "#FFFFFF",
         button: "#008BFF",
         buttonHover: "#00559a",
         buttonText: "#000000",
         buttonDisabled: "#444444",
+        icon: "#000000",
     },
 
 }

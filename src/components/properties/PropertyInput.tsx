@@ -49,7 +49,7 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
     <HeaderDropdown>
       <form className="form" onSubmit={handleSubmit}>
         <br />
-        <label>
+        <label className="form-label">
             Street:
             <input
             name="street_address"
@@ -59,7 +59,7 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
             />
         </label>
         <br />
-        <label>
+        <label className="form-label">
             City:
             <input
             name="city"
@@ -69,7 +69,7 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
             />
         </label>
         <br />
-        <label>
+        <label className="form-label">
             State:
             <input
             name="state_abbreviation"
@@ -79,7 +79,7 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
             />
         </label>
         <br />
-        <label>
+        <label className="form-label">
             Zip:
             <input
             name="zip"

@@ -64,7 +64,7 @@ const PropertyMenu: React.FC<{
         <Select
             options={options}
             onChange={handleChange}
-            placeholder="Select or add a property..."
+            placeholder="Select or add property..."
             styles={customStyles}
         />
     );

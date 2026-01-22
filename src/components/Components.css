@@ -1,12 +1,16 @@
+/* Components.css */
+
+/* Page Styles */
 .page-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
     justify-content: flex-start;
     min-height: 100vh;
     position: relative;
 }
 
+/* Header Styles */
 .header {
     display: flex; 
     flex-direction: row;
@@ -20,6 +24,72 @@
     margin: 0; 
 }
 
+.header select, 
+.header input {
+    box-sizing: border-box;
+    width: 200px;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.header-dropdown-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0 2.5rem;
+    z-index: 2; 
+}
+
+.header-dropdown-left select, 
+.header-dropdown-left input {
+    box-sizing: border-box;
+    width: 50%;
+}
+
+/* Content Styles */
+.card {
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    border-radius: 8px;
+    padding: 2.5rem;
+    margin: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.item-info-popup {
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    box-sizing: border-box;
+    position: absolute;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    gap: 8px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    right: 0;
+    bottom: 0;
+}
+
+.list-item {
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 1rem; 
+    font-size: 1.5rem; 
+    font-weight: bold; 
+
+}
+
+/* Button Styles */
 .button-group {
     display: flex; 
     flex-direction: row;
@@ -37,12 +107,52 @@
     cursor: pointer;
 }
 
+.auth-button {
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 48px; 
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* Form Styles */
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 20px;
+    width: fit-content;
+}
+
 .form {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; 
-  gap: 10px;
+  align-items: flex-start; 
+  gap: 4px;
   margin: 20px auto;
+}
+
+.form-label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    justify-content: flex-start;
+    gap: 4px; 
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 20px;
+}
+
+.form-label input, 
+.form-label select {
+    padding: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .auth-form {
@@ -56,54 +166,4 @@
     width: 100%;
 }
 
-.form-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0px 20px;
-    width: fit-content;
-}
 
-.card {
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    padding: 1.5rem;
-    margin: 1.5rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-label {
-    display: flex; 
-    flex-direction: row;
-    align-items: center; 
-    justify-content: flex-end; 
-    gap: 10px;
-}
-
-.auth-button {
-  display: flex; 
-  align-items: center;
-  justify-content: center;
-  width: 180px;
-  height: 48px; 
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
-}
-
-.header-dropdown-left {
-    position: absolute;
-    left: 1.2rem;
-    top: 0;
-    padding: 1.5rem;
-}
-
-.header-dropdown-left select, 
-.header-dropdown-left input {
-    box-sizing: border-box;
-    width: 50%;
-}

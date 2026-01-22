@@ -61,22 +61,6 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                         Cancel
                     </button>
                     )}
-                    <ItemMenu 
-                        propertyId={sessionStorage.getItem("currentProperty") || ""}
-                        setShowItemInput={setShowItemInput}
-                    />
-                    {showItemInput && (
-                    <button 
-                        className="button"
-                        style={{
-                            backgroundColor: colors.button,
-                            color: colors.buttonText
-                        }}
-                        onClick={() => setShowItemInput(false)}
-                    >
-                        Cancel
-                    </button>
-                    )}
                 </div>
             </div>
                 

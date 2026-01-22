@@ -3,6 +3,7 @@ import "../App.css";
 import AccountDashboardHeader from '../components/headers/AccountDashboardHeader';
 import PageWrapper from '../components/common/PageWrapper';
 import PropertyInput from '../components/properties/PropertyInput';
+import ItemMenu from '../components/items/ItemMenu';
 import ItemInput from '../components/items/ItemInput';
 
 const AccountDashboard = () => {
@@ -24,8 +25,15 @@ const AccountDashboard = () => {
                 
             )}
             {showItemInput && (
-                <ItemInput propertyId={sessionStorage.getItem("currentProperty") || ""} />
+                <ItemInput 
+                propertyId={sessionStorage.getItem("currentProperty") || ""}
+                setShowItemInput={setShowItemInput}
+                />
             )}
+            <ItemMenu 
+                propertyId={sessionStorage.getItem("currentProperty") || ""}
+                setShowItemInput={setShowItemInput}
+            />
         </PageWrapper>
         </>
     );
