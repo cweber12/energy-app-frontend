@@ -17,13 +17,18 @@ export type ColorSchemeType = {
     dropdownBackground: string;
     cardBackground: string;
     cardText: string;
+    popupBackground: string;
+    popupText: string;
     button: string;
     buttonHover: string;
     buttonText: string;
     buttonDisabled: string;
+    buttonStart: string;
+    buttonStartHover: string;
+    buttonStop: string;
+    buttonStopHover: string;
     icon: string;
-    popupBackground: string;
-    popupText: string;
+    
     
 };
 
@@ -31,8 +36,8 @@ export const ColorScheme = {
 
     dark: {
         text: "#EEEEEE",
-        title: "#ff9d00",
-        warning: "#f42323",
+        title: "#fcffe5",
+        warning: "#FF0B55",
         listItemBackground: "#ffffff",
         listItemText: "#000000",      
         background: "#000000",
@@ -42,11 +47,15 @@ export const ColorScheme = {
         cardText: "#FFFFFF",
         popupBackground: "#ffffff",
         popupText: "#000000",
-        button: "#008BFF",
+        button: "#259dff",
         buttonHover: "#00559a",
         buttonDisabled: "#444444",
-        buttonText: "#000000", 
-        icon: "#008BFF",
+        buttonText: "#000000",
+        buttonStart: "#E4FF30",
+        buttonStartHover: "#1e7e34",
+        buttonStop: "#ff4759",
+        buttonStopHover: "#bd2130", 
+        icon: "#0e0e0e",
 
     },
 
@@ -67,6 +76,10 @@ export const ColorScheme = {
         buttonHover: "#00559a",
         buttonText: "#000000",
         buttonDisabled: "#444444",
+        buttonStart: "#28a745",
+        buttonStartHover: "#1e7e34",
+        buttonStop: "#dc3545",
+        buttonStopHover: "#bd2130", 
         icon: "#000000",
     },
 

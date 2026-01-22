@@ -75,18 +75,36 @@
 
 }
 
+.list {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
 .list-item {
     display: flex; 
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
-    font-size: 1.5rem; 
-    font-weight: bold;
+    justify-content: space-between;
+    font-size: 1.4rem; 
     border: 1px solid #ccc; 
     padding: 16px;
+    gap: 24px;
     width: 100%;
     box-sizing: border-box;
 
+}
+
+.item-usage-event {
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: 1.2rem;
 }
 
 /* Button Styles */
@@ -164,6 +182,32 @@
 .auth-form input {
     box-sizing: border-box;
     width: 100%;
+}
+
+/* Generic Styles */
+
+.row {
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.usage-events-table,
+.usage-events-table th,
+.usage-events-table td {
+    border: 1px solid #525252;
+    border-collapse: collapse;
+    background-color: white;
+    color: black;
+}
+
+.usage-events-table th,
+.usage-events-table td {
+    padding: 16px;
+    text-align: left;
+    font-size: 20px;
 }
 
 

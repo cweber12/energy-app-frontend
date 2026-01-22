@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTheme } from '../../context/ThemeContext';
 import "../../App.css";
 import "../Components.css";
+import { useTheme } from "../../context/ThemeContext";
 
 /*  Card Component
 --------------------------------------------------------------------------------
@@ -13,7 +13,7 @@ const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div 
         className="card" 
-        style={{ backgroundColor: colors.navBackground }}
+        style={{ backgroundColor: colors.cardBackground, color: colors.text }}
         >
         {children}
     </div>

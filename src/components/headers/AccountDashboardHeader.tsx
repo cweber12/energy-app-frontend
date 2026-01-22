@@ -4,6 +4,7 @@ import "../../App.css";
 import "../Components.css";
 import PropertyMenu from "../properties/PropertyMenu";
 import ItemMenu from "../items/ItemMenu";
+import UploadUsageReport from "../report/UploadUsageReport";
 
 
 type AccountDashboardHeaderProps = {
@@ -14,6 +15,10 @@ type AccountDashboardHeaderProps = {
     userId: string;
     propertyId: string;
     setPropertyId: React.Dispatch<React.SetStateAction<string>>;
+    xmlText: string;
+    setXmlText: React.Dispatch<React.SetStateAction<string>>;
+    readings: any[];
+    setReadings: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
@@ -23,7 +28,11 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     showItemInput,
     userId, 
     propertyId, 
-    setPropertyId
+    setPropertyId,
+    xmlText,
+    setXmlText,
+    readings,
+    setReadings
 
 }) => {
    
@@ -56,18 +65,12 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                         setPropertyId={setPropertyId}
                         propertyId={propertyId}
                     />
-                    {showPropertyInput && (
-                    <button 
-                        className="button"
-                        style={{
-                            backgroundColor: colors.button,
-                            color: colors.buttonText
-                        }}
-                        onClick={() => setShowPropertyInput(false)}
-                    >
-                        Cancel
-                    </button>
-                    )}
+                    <UploadUsageReport
+                        xmlText={xmlText}
+                        setXmlText={setXmlText}
+                        readings={readings}
+                        setReadings={setReadings}
+                    />
                 </div>
             </div>
                 
