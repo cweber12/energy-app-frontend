@@ -11,10 +11,17 @@ import "../Components.css";
     - Select property to view
     - Sets selected property to session storage
 ------------------------------------------------------------------------------*/
+type PropertyMenuProps = {
+    setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
+    setPropertyId: React.Dispatch<React.SetStateAction<string>>;
+    propertyId: string;
+};
 
-const PropertyMenu: React.FC<{ 
-    setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>> }> = (
-        { setShowPropertyInput }) => {
+const PropertyMenu: React.FC<PropertyMenuProps> = ({ 
+    setShowPropertyInput, 
+    setPropertyId, 
+    propertyId 
+}) => {
     const userId = sessionStorage.getItem("user_id");
     
     const [options, setOptions] = useState([
@@ -57,6 +64,7 @@ const PropertyMenu: React.FC<{
             setShowPropertyInput(true);
         } else {
             sessionStorage.setItem("currentProperty", selected.value);
+            setPropertyId(selected.value);
         }
     };
 

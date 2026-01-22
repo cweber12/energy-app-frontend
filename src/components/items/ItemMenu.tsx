@@ -4,6 +4,7 @@ import { MdInfoOutline } from "react-icons/md";
 import { MdClose } from "react-icons/md";
 import "../../App.css";
 import "../Components.css";
+import Card from "../common/Card";
 
 const ItemMenu: React.FC<{
   propertyId: string;
@@ -32,45 +33,71 @@ const ItemMenu: React.FC<{
     }, [propertyId]);
 
     return (
-        <div className="card" 
-            style={{ 
-                backgroundColor: colors.cardBackground, 
-                color: colors.cardText,
-                fontSize: "1.5rem"
-            }}>
+        <Card>
             
-            <button onClick={() => setShowItemInput(true)}>+ Add Item</button>
+            <button 
+                onClick={() => setShowItemInput(true)}
+                style={{ 
+                    backgroundColor: colors.button,
+                    color: colors.buttonText,
+                    alignSelf: "flex-end",
+                    marginBottom: "10px",
+                    border: "none",
+                    padding: "10px 15px",
+                    cursor: "pointer", 
+                    width: "100%",
+                }}
+                >
+                + Add Item
+            </button>
             
-            <ul style={{ listStyle: "none", padding: 0 }}>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 {items.map((item, idx) => (
-                
-                <li key={item.item_id} className="list-item">
-                    <span style={{ marginRight: "8px" }}>{item.nickname}</span>
-                    <MdInfoOutline
-                    style={{ cursor: "pointer", color: colors.icon}}
-                    onClick={() => setInfoOpenIndex(idx)}
-                    />
-                    {infoOpenIndex === idx && (
-                        <div
-                            className="item-info-popup"
+                    <React.Fragment key={item.item_id}>
+                        <li 
+                            className="list-item"
                             style={{
-                                background: colors.popupBackground,
-                                color: colors.popupText,
-                            }}>       
-                            <MdClose 
-                            style={{alignSelf: "flex-end", cursor: "pointer"}}
-                            onClick={() => setInfoOpenIndex(null)}
+                                backgroundColor: colors.listItemBackground,
+                                color: colors.listItemText,
+                                position: "relative",
+                            }}
+                        >
+                            <span style={{ marginRight: "8px" }}>{item.nickname}</span>
+                            <MdInfoOutline
+                                style={{ cursor: "pointer", color: colors.icon }}
+                                onClick={() => setInfoOpenIndex(idx)}
                             />
-                            <strong>{item.nickname}</strong>
-                            <div>Category: {item.category_id}</div>
-                            <div>Usage Type: {item.usage_type_id}</div>
-                            <div>Rated Watts: {item.rated_watts}</div>
-                        </div>
-                    )}
-                </li>
+                        </li>
+                        {infoOpenIndex === idx && (
+                            <div
+                                className="item-info-popup"
+                                style={{
+                                    background: colors.popupBackground,
+                                    color: colors.popupText,
+                                    position: "relative",
+                                }}
+                            >
+                                <div style={{ display: "flex", width: "100%", justifyContent: "flex-end" }}>
+                                    <MdClose
+                                        style={{ 
+                                            cursor: "pointer", 
+                                            position: "absolute", 
+                                            top: "10px", 
+                                            right: "10px",
+                                            color: colors.icon 
+                                        }}
+                                        onClick={() => setInfoOpenIndex(null)}
+                                    />
+                                </div>
+                                <div>Category: {item.category_id}</div>
+                                <div>Usage Type: {item.usage_type_id}</div>
+                                <div>Rated Watts: {item.rated_watts}</div>
+                            </div>
+                        )}
+                    </React.Fragment>
                 ))}
             </ul>
-        </div>
+        </Card>
     );
 };
 

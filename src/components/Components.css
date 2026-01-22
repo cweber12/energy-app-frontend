@@ -54,9 +54,10 @@
     justify-content: center;
     position: relative;
     border-radius: 8px;
-    padding: 2.5rem;
     margin: 1.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
 .item-info-popup {
@@ -65,17 +66,13 @@
     align-items: flex-start;
     justify-content: center;
     box-sizing: border-box;
-    position: absolute;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
     width: 100%;
     padding: 1rem;
     font-size: 1.2rem;
     gap: 8px;
     z-index: 1000;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    right: 0;
-    bottom: 0;
+
 }
 
 .list-item {
@@ -83,9 +80,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 1rem; 
     font-size: 1.5rem; 
-    font-weight: bold; 
+    font-weight: bold;
+    border: 1px solid #ccc; 
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
 
 }
 

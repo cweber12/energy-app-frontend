@@ -11,7 +11,9 @@ type AccountDashboardHeaderProps = {
     setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
     showPropertyInput: boolean;
     showItemInput: boolean;
-  userId: string;
+    userId: string;
+    propertyId: string;
+    setPropertyId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
@@ -19,7 +21,10 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     setShowItemInput,
     showPropertyInput,
     showItemInput,
-    userId
+    userId, 
+    propertyId, 
+    setPropertyId
+
 }) => {
    
     const { colors } = useTheme();
@@ -48,6 +53,8 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     }}>
                     <PropertyMenu 
                         setShowPropertyInput={setShowPropertyInput} 
+                        setPropertyId={setPropertyId}
+                        propertyId={propertyId}
                     />
                     {showPropertyInput && (
                     <button 

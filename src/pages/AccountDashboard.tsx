@@ -9,7 +9,10 @@ import ItemInput from '../components/items/ItemInput';
 const AccountDashboard = () => {
     const [showPropertyInput, setShowPropertyInput] = React.useState<boolean>(false);
     const [showItemInput, setShowItemInput] = React.useState<boolean>(false);
+    const [propertyId, setPropertyId] = React.useState<string>("");
     const userId = sessionStorage.getItem("user_id") || "";
+    
+    
     return (
         <>
         <AccountDashboardHeader
@@ -18,6 +21,8 @@ const AccountDashboard = () => {
             showPropertyInput={showPropertyInput}
             showItemInput={showItemInput}
             userId={userId}
+            propertyId={propertyId}
+            setPropertyId={setPropertyId}
          />
         <PageWrapper>
             {showPropertyInput && (
@@ -26,12 +31,12 @@ const AccountDashboard = () => {
             )}
             {showItemInput && (
                 <ItemInput 
-                propertyId={sessionStorage.getItem("currentProperty") || ""}
-                setShowItemInput={setShowItemInput}
+                    propertyId={propertyId}
+                    setShowItemInput={setShowItemInput}
                 />
             )}
             <ItemMenu 
-                propertyId={sessionStorage.getItem("currentProperty") || ""}
+                propertyId={propertyId}
                 setShowItemInput={setShowItemInput}
             />
         </PageWrapper>
