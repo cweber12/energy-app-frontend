@@ -8,10 +8,11 @@ type IntervalReading = {
     kWh: number;
 };
 
-const ViewUsageReport: React.FC<{ readings: IntervalReading[] }> = ({ readings }) => {
+const UsageReport: React.FC<{ readings: IntervalReading[] }> = ({ readings }) => {
    
     return (
         <Card> 
+            <h2>Usage Report</h2>
             {readings.length > 0 && (
                 <table className="usage-events-table" style={{ marginTop: "1rem" }}>
                     <thead>
@@ -34,4 +35,4 @@ const ViewUsageReport: React.FC<{ readings: IntervalReading[] }> = ({ readings }
     );
 }
 
-export default ViewUsageReport;
+export default UsageReport;

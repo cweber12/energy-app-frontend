@@ -1,3 +1,4 @@
+// src/components/items/ItemMenu.tsx
 import React, { useState, useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
@@ -6,7 +7,6 @@ import Card from "../common/Card";
 import SetUsageEvent from "./SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import GetDailyUse from "./GetDailyUse";
-import { data } from "react-router-dom";
 
 /*  ItemMenu Component
 --------------------------------------------------------------------------------
@@ -39,6 +39,11 @@ const ItemMenu: React.FC<{
     const [infoOpenIndex, setInfoOpenIndex] = useState<number | null>(null);
 
     /* Fetch items when propertyId changes
+    ----------------------------------------------------------------------------
+    - Triggered when propertyId is set in PropertyMenu
+    - Fetches electrical items for the selected property
+    - Sets items state with fetched data (used to populate the item list)
+    - Also fetches category and usage type mappings for info dropdowns
     --------------------------------------------------------------------------*/
     useEffect(() => {
         if (!propertyId) return;
@@ -61,7 +66,7 @@ const ItemMenu: React.FC<{
         fetchUsageType();
     }, [propertyId]);
 
-    /* Fetch category and usage type mappings
+    /* Fetch category mappings (id -> name)
     --------------------------------------------------------------------------*/
     const fetchCategory = async () => {
         console.log("Fetching categories");
@@ -87,7 +92,7 @@ const ItemMenu: React.FC<{
         });
     };
 
-    /* Fetch usage type mappings
+    /* Fetch usage type mappings (id -> name)
     --------------------------------------------------------------------------*/
     const fetchUsageType = async () => {
         console.log("Fetching usage types");
@@ -113,6 +118,8 @@ const ItemMenu: React.FC<{
         });
     };
 
+    /* Render ItemMenu component
+    --------------------------------------------------------------------------*/
     return (
         <Card>
             <div 
@@ -123,7 +130,7 @@ const ItemMenu: React.FC<{
                 boxSizing: "border-box",
                 width: "100%", 
                 backgroundColor: colors.cardBackground,
-                padding: "1rem",
+                marginBottom: "1rem",
                 }}>
             <h2>Electrical Items</h2> 
             <button 
@@ -180,23 +187,25 @@ const ItemMenu: React.FC<{
                                     position: "relative",
                                 }}
                             >
+                                
                                 <GetDailyUse itemId={item.item_id} />
+                                    <button
+                                        style={{
+                                            backgroundColor: colors.button,
+                                            color: colors.buttonText,
+                                        }}
+                                        onClick={() => {
+                                            setItemId(item.item_id.toString());
+                                            setShowDailyEvents(true);
+                                        }}
+                                    >
+                                        View All
+                                    </button>
+                             
                                 <div>Category | {categories[item.category_id]}</div>
                                 <div>Usage Type | {usageTypes[item.usage_type_id]}</div>
                                 <div>Rated Watts | {item.rated_watts}</div>
-                                <button
-                                    style={{
-                                        marginTop: "1rem",
-                                        backgroundColor: colors.button,
-                                        color: colors.buttonText,
-                                    }}
-                                    onClick={() => {
-                                        setItemId(item.item_id.toString());
-                                        setShowDailyEvents(true);
-                                    }}
-                                >
-                                    Usage Log
-                                </button>
+                                
                             </div>
                         )}
                     </React.Fragment>

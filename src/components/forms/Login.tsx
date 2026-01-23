@@ -65,6 +65,7 @@ const Login: React.FC<{ navigate: any }> = ({ navigate }) =>  {
 
     return (
         <FormWrapper>
+            <h2>Login</h2>
             <form 
             className="form auth-form" 
             style={{width: "300px"}}

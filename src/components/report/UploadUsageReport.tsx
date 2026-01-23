@@ -1,18 +1,30 @@
-import React, { useState } from "react";
+// src/components/report/UploadUsageReport.tsx
+import React from "react";
 
+// kWh reading for a specific hour
 type IntervalReading = {
-    hour: string;
-    kWh: number;
+    hour: string; // e.g. "14:00"
+    kWh: number; // e.g. 1.234
 };
 
+// Props for UploadUsageReport component
 type UploadUsageReportProps = {
-    xmlText: string;
     setXmlText: React.Dispatch<React.SetStateAction<string>>;
-    readings: IntervalReading[];
     setReadings: React.Dispatch<React.SetStateAction<IntervalReading[]>>;
+    setDate: React.Dispatch<React.SetStateAction<string>>;
 };
 
-function parseXml(xmlString: string,): IntervalReading[] {
+/* Parse XML usage report
+    - Extracts IntervalReading nodes
+    - Converts epoch start time to hour string
+    - Converts Wh value to kWh
+    - Populates readings array
+    - Extracts date from first reading and sets via setDate
+------------------------------------------------------------------------------*/
+function parseXml(
+    xmlString: string, 
+    setDate: React.Dispatch<React.SetStateAction<string>>
+): IntervalReading[] {
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlString, "application/xml");
     const readings: IntervalReading[] = [];
@@ -27,11 +39,22 @@ function parseXml(xmlString: string,): IntervalReading[] {
         const startNode = reading.getElementsByTagNameNS("*", "start")[0];
         const valueNode = reading.getElementsByTagNameNS("*", "value")[0];
 
+        // If both nodes exist, parse values
         if (startNode && valueNode) {
             const startEpoch = parseInt(startNode.textContent || "0", 10);
-            const date = new Date(startEpoch * 1000);
-            const hour = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            // Value is in Wh, convert to kWh
+            const currentDate = new Date(startEpoch * 1000);
+            console.log("Parsed date:", currentDate.toISOString());
+            if (!isNaN(currentDate.getTime())) {
+                const isoString = currentDate.toISOString();
+                const datePart = isoString.split('T')[0];
+                if (datePart) setDate(datePart);
+            }           
+            const hour = 
+                currentDate.toLocaleTimeString(
+                    [], 
+                    { hour: '2-digit', minute: '2-digit' }
+                );
+            // Value is in Wh, convert to kWh (kWh displayed on SDGE portal)
             const kWh = parseFloat(valueNode.textContent || "0") / 1000;
             readings.push({ hour, kWh });
         }
@@ -41,10 +64,9 @@ function parseXml(xmlString: string,): IntervalReading[] {
 }
 
 const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
-    xmlText,
     setXmlText,
-    readings,
     setReadings,
+    setDate
 }) => {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +76,7 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
         reader.onload = (event) => {
             const text = event.target?.result as string;
             setXmlText(text);
-            setReadings(parseXml(text));
+            setReadings(parseXml(text, setDate));
         };
         reader.readAsText(file);
     };

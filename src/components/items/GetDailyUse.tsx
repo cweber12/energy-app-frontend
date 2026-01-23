@@ -13,7 +13,9 @@ const GetDailyUse: React.FC<{ itemId: number }> = ({ itemId }) => {
   const [dailyUsage, setDailyUsage] = useState<DailyUsage[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-    useEffect(() => {
+    
+
+  useEffect(() => {
     const fetchDailyUsage = async () => {
       setLoading(true);
       setError(null);

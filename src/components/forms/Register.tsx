@@ -70,6 +70,7 @@ function Register() {
 
     return (
         <FormWrapper>
+            <h2>Register</h2>
             <form 
             className="form auth-form"
             style={{width: "300px"}}

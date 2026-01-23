@@ -6,7 +6,9 @@ import PropertyInput from '../components/properties/PropertyInput';
 import ItemMenu from '../components/items/ItemMenu';
 import ItemInput from '../components/items/ItemInput';
 import GetDailyEvents from '../components/items/GetDailyEvents';
-import ViewUsageReport from '../components/report/ViewUsageReport';
+import UsageGraph from '../components/report/UsageGraph';
+//import EventGraph from '../components/report/EventGraph';
+import EventGraph from '../components/report/EventGraph';
 
 const AccountDashboard = () => {
     const [showPropertyInput, setShowPropertyInput] = React.useState<boolean>(false);
@@ -17,6 +19,7 @@ const AccountDashboard = () => {
     const userId = sessionStorage.getItem("user_id") || "";
     const [xmlText, setXmlText] = useState<string>("");
     const [readings, setReadings] = useState<any[]>([]);
+    const [date, setDate] = useState<string>("");
     
     
     
@@ -24,16 +27,11 @@ const AccountDashboard = () => {
         <>
         <AccountDashboardHeader
             setShowPropertyInput={setShowPropertyInput}
-            setShowItemInput={setShowItemInput}
-            showPropertyInput={showPropertyInput}
-            showItemInput={showItemInput}
-            userId={userId}
             propertyId={propertyId}
             setPropertyId={setPropertyId}
-            xmlText={xmlText}
             setXmlText={setXmlText}
-            readings={readings}
             setReadings={setReadings}
+            setDate={setDate}
          />
         <PageWrapper>
             {showPropertyInput && (
@@ -54,13 +52,20 @@ const AccountDashboard = () => {
                     setItemId={setItemId}
                 />
             )}
-            {showDailyEvents && itemId && (
-                <GetDailyEvents itemId={parseInt(itemId)} />
-            )}
-            {readings.length > 0 && (
-
-                <ViewUsageReport readings={readings} />
-            )}
+            <div className="column">
+                {showDailyEvents && itemId && (
+                    <GetDailyEvents itemId={parseInt(itemId)} />
+                )}
+                {readings.length > 0 && (
+                    <>
+                        <UsageGraph 
+                            readings={readings}
+                            date={date}
+                         />
+                        <EventGraph startDate={date} />
+                    </>
+                )}
+            </div>
         </PageWrapper>
         </>
     );

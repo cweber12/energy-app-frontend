@@ -3,36 +3,29 @@ import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../Components.css";
 import PropertyMenu from "../properties/PropertyMenu";
-import ItemMenu from "../items/ItemMenu";
 import UploadUsageReport from "../report/UploadUsageReport";
 
-
+/* Account Dashboard Header Component
+--------------------------------------------------------------------------------
+Values passed between components and AccountDashboard: 
+- setShowPropertyInput: 
+------------------------------------------------------------------------------*/
 type AccountDashboardHeaderProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
-    setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
-    showPropertyInput: boolean;
-    showItemInput: boolean;
-    userId: string;
     propertyId: string;
     setPropertyId: React.Dispatch<React.SetStateAction<string>>;
-    xmlText: string;
     setXmlText: React.Dispatch<React.SetStateAction<string>>;
-    readings: any[];
     setReadings: React.Dispatch<React.SetStateAction<any[]>>;
+    setDate: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
-    setShowPropertyInput,
-    setShowItemInput,
-    showPropertyInput,
-    showItemInput,
-    userId, 
+    setShowPropertyInput, 
     propertyId, 
     setPropertyId,
-    xmlText,
     setXmlText,
-    readings,
-    setReadings
+    setReadings, 
+    setDate
 
 }) => {
    
@@ -66,10 +59,9 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                         propertyId={propertyId}
                     />
                     <UploadUsageReport
-                        xmlText={xmlText}
                         setXmlText={setXmlText}
-                        readings={readings}
                         setReadings={setReadings}
+                        setDate={setDate}
                     />
                 </div>
             </div>
