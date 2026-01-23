@@ -85,7 +85,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
             setMessage("Failed to add item.");
         }
         } catch (err) {
-        setMessage("Error adding item.");
+        setMessage("Error adding item: " + (err as Error).message);
         }
     };
 
