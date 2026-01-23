@@ -1,3 +1,4 @@
+// src/components/items/GetDailyEvents.tsx
 import React, { useEffect, useState } from "react";
 import "../Components.css";
 import { useTheme } from "../../context/ThemeContext";
@@ -9,16 +10,26 @@ type UsageEvent = {
   end_ts: string | null;
 };
 
+/* Helper function to group usage events by date
+--------------------------------------------------------------------------------
+- Groups an array of UsageEvent objects by their usage date (YYYY-MM-DD).
+- Returns an object where keys are dates and values are arrays of UsageEvent.
+------------------------------------------------------------------------------*/
 const groupEventsByDate = (events: UsageEvent[]) => {
     const grouped: { [date: string]: UsageEvent[] } = {};
     events.forEach(event => {
-        const dateKey = new Date(event.start_ts).toISOString().slice(0, 10); // "YYYY-MM-DD"
+        const dateKey = new Date(event.start_ts).toISOString().slice(0, 10); 
         if (!grouped[dateKey]) grouped[dateKey] = [];
         grouped[dateKey].push(event);
     });
     return grouped;
 };
 
+/* Helper function to format elapsed time between start and end timestamps
+--------------------------------------------------------------------------------
+- Takes start and end ISO-8601 timestamp strings.
+- Returns a formatted string showing elapsed time in h, m, s.
+------------------------------------------------------------------------------*/
 const formatElapsed = (start: string, end: string | null) => {
     if (!end) return "Ongoing";
     const startDate = new Date(start);
@@ -37,12 +48,25 @@ const formatElapsed = (start: string, end: string | null) => {
     }
 };
 
+/* GetDailyEvents Component
+--------------------------------------------------------------------------------
+Description: Fetches and displays usage events for an item, grouped by date in a 
+table format. Rendered when the user presses View All button in ItemMenu info
+dropdown.   
+Props:
+    - itemId: ID of the electrical item to fetch usage events for.
+------------------------------------------------------------------------------*/
 const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
     const { colors } = useTheme();
     const [usageEvents, setUsageEvents] = useState<UsageEvent[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
+    /* Fetch usage events when itemId changes
+    ----------------------------------------------------------------------------
+    - Sends GET request to backend API to fetch usage events for the item
+    - Populates usageEvents state variable with the result
+    --------------------------------------------------------------------------*/
     useEffect(() => {
         const fetchUsageEvents = async () => {
             setLoading(true);
@@ -52,7 +76,7 @@ const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
                     `http://127.0.0.1:5000/item_usage_events/item/${itemId}`
             );
             if (!response.ok) {
-                throw new Error(`Error fetching usage events: ${response.statusText}`);
+                throw new Error(`${response.statusText}`);
             }
             const data: UsageEvent[] = await response.json();
             setUsageEvents(data);
@@ -68,8 +92,13 @@ const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
         }
         }, [itemId]);
 
+    // Group usage events by date for rendering
     const groupedEvents = groupEventsByDate(usageEvents);
 
+    /* Render usage events grouped by date
+    ----------------------------------------------------------------------------
+    - Displays a table of usage events with Date, Start Time, End Time, Elapsed
+    --------------------------------------------------------------------------*/
     return (
         <div>
             {loading && <p>Loading usage events...</p>}

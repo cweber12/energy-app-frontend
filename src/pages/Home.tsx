@@ -1,12 +1,17 @@
+// src/pages/Home.tsx
 import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import "../App.css";
-import Login from '../components/forms/Login';
-import Register from '../components/forms/Register';
-import HomeHeader from '../components/headers/HomeHeader';
+import Login from '../components/form/Login';
+import Register from '../components/form/Register';
+import HomeHeader from '../components/header/HomeHeader';
 import PageWrapper from '../components/common/PageWrapper';
 import Card from '../components/common/Card';
 
+/*  Home Page
+--------------------------------------------------------------------------------
+Description: Landing page for user authentication (login/register).
+------------------------------------------------------------------------------*/
 function Home() {
     const navigate = useNavigate();
     const [showLogin, setShowLogin] = React.useState<boolean>(true);
@@ -19,6 +24,12 @@ function Home() {
         }
     }, [userId, navigate]);
 
+    /* Render Home Page
+    ----------------------------------------------------------------------------
+    Contents:   
+        - HomeHeader: Contains title 
+        - Card: Contains Login or Register form based on state
+    --------------------------------------------------------------------------*/
     return (
         <>
             <HomeHeader/>

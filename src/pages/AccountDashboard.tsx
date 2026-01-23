@@ -1,33 +1,49 @@
+// src/pages/AccountDashboard.tsx
 import React, { useState } from 'react';
 import "../App.css";
-import AccountDashboardHeader from '../components/headers/AccountDashboardHeader';
+import AccountDashboardHeader from '../components/header/AccountDashboardHeader';
 import PageWrapper from '../components/common/PageWrapper';
-import PropertyInput from '../components/properties/PropertyInput';
-import ItemMenu from '../components/items/ItemMenu';
-import ItemInput from '../components/items/ItemInput';
-import GetDailyEvents from '../components/items/GetDailyEvents';
-import UsageGraph from '../components/report/UsageGraph';
-//import EventGraph from '../components/report/EventGraph';
-import EventGraph from '../components/report/EventGraph';
+import PropertyInput from '../components/form/PropertyInput';
+import ItemMenu from '../components/menu/ItemMenu';
+import ItemInput from '../components/form/ItemInput';
+import GetDailyEvents from '../components/action/GetDailyEvents';
+import UsageGraph from '../components/graph/UsageGraph';
+import EventGraph from '../components/graph/EventGraph';
 
+/*  Account Dashboard Page
+--------------------------------------------------------------------------------
+Description: Main dashboard page for user account management and data 
+visualization.
+------------------------------------------------------------------------------*/
 const AccountDashboard = () => {
-    const [showPropertyInput, setShowPropertyInput] = React.useState<boolean>(false);
+    const [showPropertyInput, setShowPropertyInput] = 
+        React.useState<boolean>(false);
     const [showItemInput, setShowItemInput] = React.useState<boolean>(false);
     const [propertyId, setPropertyId] = React.useState<string>("");
     const [itemId, setItemId] = React.useState<string>("");
-    const [showDailyEvents, setShowDailyEvents] = React.useState<boolean>(false);
+    const [showDailyEvents, setShowDailyEvents] = 
+        React.useState<boolean>(false);
     const userId = sessionStorage.getItem("user_id") || "";
     const [xmlText, setXmlText] = useState<string>("");
     const [readings, setReadings] = useState<any[]>([]);
     const [date, setDate] = useState<string>("");
     
     
-    
+    /* Render Account Dashboard Page
+    ----------------------------------------------------------------------------
+    Contents: 
+    - AccountDashboardHeader
+    - PropertyInput: Form to add new property
+    - ItemInput: Form to add new item
+    - ItemMenu: Menu to select items and show item actions/reports
+    - GetDailyEvents: Display daily events for selected item (start/end times)
+    - UsageGraph: Graph of usage readings from energy provider (kWh per hour)
+    - EventGraph: Graph on usage events corresponding to UsageGraph
+    --------------------------------------------------------------------------*/
     return (
         <>
         <AccountDashboardHeader
             setShowPropertyInput={setShowPropertyInput}
-            propertyId={propertyId}
             setPropertyId={setPropertyId}
             setXmlText={setXmlText}
             setReadings={setReadings}
@@ -35,7 +51,10 @@ const AccountDashboard = () => {
          />
         <PageWrapper>
             {showPropertyInput && (
-                <PropertyInput userId={userId} />
+                <PropertyInput 
+                    userId={userId} 
+                    setShowPropertyInput={setShowPropertyInput} 
+                />
                 
             )}
             {showItemInput && (

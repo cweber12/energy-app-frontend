@@ -6,8 +6,8 @@ import type { ColorSchemeType } from "../styles/ColorScheme";
 
 /* Context: ThemeContext
 --------------------------------------------------------------------------------
-    Description: This context provides the current color scheme (light or dark)
-    and the corresponding color values to the entire application.
+Description: Provides the current color scheme (light or dark) and the 
+corresponding color values to the entire application.
 ------------------------------------------------------------------------------*/
 
 type ThemeContextType = {

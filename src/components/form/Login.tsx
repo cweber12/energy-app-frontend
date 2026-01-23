@@ -14,7 +14,9 @@ type FormData = {
 
 /*  Login Component
 --------------------------------------------------------------------------------
-    Description: A login form that authenticates users.
+Description: A login form that authenticates users.
+Props: 
+    - navigate: Function to navigate to AccountDashboard on successful login.
 ------------------------------------------------------------------------------*/
 const Login: React.FC<{ navigate: any }> = ({ navigate }) =>  {
     const { colors } = useTheme(); // Get theme colors
@@ -27,13 +29,18 @@ const Login: React.FC<{ navigate: any }> = ({ navigate }) =>  {
         formState: { errors },
     } = useForm<FormData>();
 
+    // Consolidate button styling
     const buttonProps = {
         style: {
             backgroundColor: colors.button,
             color: colors.buttonText,
         }
     };
-    // Function to handle form submission
+    
+    /* Handle form submission to authenticate user
+    ----------------------------------------------------------------------------
+    - Sends POST request with email and password
+    --------------------------------------------------------------------------*/
     const onSubmit = async (data: FormData) => {
         fetch('http://127.0.0.1:5000/login', {
             method: 'POST',
@@ -63,6 +70,12 @@ const Login: React.FC<{ navigate: any }> = ({ navigate }) =>  {
             
     };
 
+    /* Render login form
+    ----------------------------------------------------------------------------
+    Fields: Email, Password
+    Buttons: Submit
+    Displays error message if login fails
+    --------------------------------------------------------------------------*/
     return (
         <FormWrapper>
             <h2>Login</h2>

@@ -1,11 +1,11 @@
 // src/hooks/useColorScheme.ts
 import { useEffect, useState } from "react";
 
-/*  Hook: useColorScheme
+/*  Hook for Color Scheme Detection
 --------------------------------------------------------------------------------
-    Description: Custom React hook that detects the current color scheme (light
-    or dark) based on the user's system preferences. It listens for changes
-    in the color scheme and updates the state.
+- Detects the user's preferred color scheme (light or dark) using the 
+  'prefers-color-scheme' media query. 
+- Listens for changes in the preference and updates the scheme accordingly.
 ------------------------------------------------------------------------------*/
 export function useColorScheme(): "light" | "dark" {
   const getScheme = () =>

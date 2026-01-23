@@ -6,9 +6,10 @@ import "../Components.css";
 
 /*  PageWrapper Component
 --------------------------------------------------------------------------------
-    Description: Wrapper component that applies consistent styling to pages.
+Description: Wrapper component that applies consistent styling to pages.
+Props: 
+    - children: React nodes to be wrapped.
 ------------------------------------------------------------------------------*/
-
 const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { colors } = useTheme();
 

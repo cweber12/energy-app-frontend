@@ -1,9 +1,19 @@
+// src/components/properties/PropertyInput.tsx
 import React, { useState } from "react";
 import "../Components.css";
-import { useTheme } from "../../context/ThemeContext";
 import HeaderDropdown from "../common/HeaderDropdown";
 
-const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
+/*  Property Input Component
+--------------------------------------------------------------------------------
+Description: Form to add a new property for the user.
+Props:
+    - userId: ID of the user adding the property.
+    - setShowPropertyInput: Show or hide the PropertyInput component.
+------------------------------------------------------------------------------*/
+const PropertyInput: React.FC<{ 
+  userId: string,
+  setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>
+}> = ({ userId, setShowPropertyInput }) => {
   const [form, setForm] = useState({
     street_address: "",
     city: "",
@@ -12,10 +22,16 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
   });
   const [message, setMessage] = useState("");
 
+  /* Handle form input changes
+  ----------------------------------------------------------------------------*/
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  /* Handle form submission to add new property
+  ------------------------------------------------------------------------------
+  - Sends POST request to backend API with form data
+  ----------------------------------------------------------------------------*/
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
@@ -45,6 +61,12 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
     }
   };
 
+  /* Render property input form
+  ------------------------------------------------------------------------------
+  Fields: Street, City, State, Zip
+  Buttons: Add, Cancel
+  Displays success/error message
+  ----------------------------------------------------------------------------*/
   return (
     <HeaderDropdown>
       <form className="form" onSubmit={handleSubmit}>
@@ -88,7 +110,16 @@ const PropertyInput: React.FC<{ userId: string }> = ({ userId }) => {
             />
         </label>
         <br />
+        <div className="row">
         <button type="submit">Add</button>
+          <button
+            type="button"
+            onClick={() => setShowPropertyInput(false)}
+            style={{ marginLeft: "10px" }}
+          >
+            Cancel
+          </button>
+        </div>
         {message && <div>{message}</div>}
       </form>
     </HeaderDropdown>

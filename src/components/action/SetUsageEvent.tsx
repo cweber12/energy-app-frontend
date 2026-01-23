@@ -1,24 +1,39 @@
+// src/components/items/SetUsageEvent.tsx
 import React, { useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../Components.css";
-import { set } from "react-hook-form";
 
 type SetUsageEventProps = {
-  itemId: number;
+  itemId: number; // ID of the electrical item
 };
-//store ISO-8601 string
 
+/*  SetUsageEvent Component
+--------------------------------------------------------------------------------
+Description: Component to start and end usage events for an electrical item.
+Props:
+    - itemId: ID of the electrical item.
+------------------------------------------------------------------------------*/
 const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   const { colors } = useTheme();
   const [startTime, setStartTime] = React.useState<any | null>(null);
   const [endTime, setEndTime] = React.useState<any | null>(null);
   const [eventId, setEventId] = React.useState<number | null>(null);
 
+  /* Fetch latest start and end timestamps when itemId changes
+  ----------------------------------------------------------------------------
+  - Fetches latest start and end timestamps for the given itemId
+  - Sets startTime, endTime, and eventId state variables based on response
+  --------------------------------------------------------------------------*/
   useEffect(() => {
     if (!itemId) return;
     console.log("Fetching usage event data for item ID:", itemId);
 
+    /* Fetch latest start timestamp
+    ----------------------------------------------------------------------------
+    - GET request to fetch latest start timestamp for the item
+    - Sets startTime and eventId state variables based on response
+    --------------------------------------------------------------------------*/
     fetch(`http://127.0.0.1:5000/item_usage_event_start/item/${itemId}/latest_start`)
       .then(async response => {
         const text = await response.text();
@@ -46,6 +61,11 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
         console.error('Error fetching latest start timestamp:', error);
       });
 
+    /* Fetch latest end timestamp
+    ----------------------------------------------------------------------------
+    - GET request to fetch latest end timestamp for the item
+    - Sets endTime state variable based on response
+    --------------------------------------------------------------------------*/
     fetch(`http://127.0.0.1:5000/item_usage_event_end/item/${itemId}/latest_end`, {
         method: "GET",
         headers: {
@@ -66,6 +86,14 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
         });
   }, [itemId]);
 
+  /* Start a new usage event
+  ------------------------------------------------------------------------------
+  - Sends POST request to create a new usage event for the item
+  - Sets startTime, eventId, and resets endTime on success
+  - Button to trigger is only shown if there is no ongoing event 
+    - No startTime or endTime is set for that item (no starts recorded)
+    - Most recent startTime has endTIme with same eventId (last use ended)
+  ----------------------------------------------------------------------------*/
   const startUsageEvent = () => {
       fetch(`http://127.0.0.1:5000/item_usage_event_start`, {
           method: "POST",
@@ -91,6 +119,11 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
           });
   };
 
+  /* End the current usage event
+  ------------------------------------------------------------------------------
+  - Sends POST request to end the current usage event for the item
+  - Sets endTime on success
+  ----------------------------------------------------------------------------*/
   const endUsageEvent = () => {
     if (!eventId) return;
     fetch(`http://127.0.0.1:5000/item_usage_event_end`, {
@@ -115,6 +148,12 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
         });
   };
 
+  /* Render SetUsageEvent component
+  ------------------------------------------------------------------------------
+  - Shows Start button if no ongoing event
+  - Shows End button if there is an ongoing event
+  - Displays start and end times if available
+  ----------------------------------------------------------------------------*/
   return (
     <>
       {endTime || !startTime ? (

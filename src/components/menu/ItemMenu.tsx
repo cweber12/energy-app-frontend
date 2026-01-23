@@ -4,23 +4,28 @@ import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../Components.css";
 import Card from "../common/Card";
-import SetUsageEvent from "./SetUsageEvent";
+import SetUsageEvent from "../action/SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import GetDailyUse from "./GetDailyUse";
+import GetDailyUse from "../action/GetDailyUse";
 
-/*  ItemMenu Component
---------------------------------------------------------------------------------
-Description: Component that displays a list of electrical items for a property.
-------------------------------------------------------------------------------*/
 type ItemType = {
-    item_id: number;
-    nickname: string;
-    category_id: number;
-    usage_type_id: number;
-    rated_watts: number;
-
+    item_id: number; // Unique ID of the electrical item
+    nickname: string; // User-defined nickname for the item
+    category_id: number; // Used to access category name from index table 
+    usage_type_id: number; // Used to access usage type name from index table
+    rated_watts: number; // Rated power consumption in watts (optional)
+    // NOTE: Future implementation will factor in rated watts for usage calc
 };
 
+/* ItemMenu Component
+--------------------------------------------------------------------------------
+Description: Displays a list of electrical items for a selected property.
+- Props:
+    - propertyId: ID of the selected property
+    - setShowItemInput: Function to show/hide the ItemInput component
+    - setShowDailyEvents: Function to show/hide daily events view
+    - setItemId: Function to set the selected item ID for daily events
+------------------------------------------------------------------------------*/
 const ItemMenu: React.FC<{
     propertyId: string;
     setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,6 +37,15 @@ const ItemMenu: React.FC<{
     setShowDailyEvents,
     setItemId
 }) => {
+
+    /* State variables
+    ----------------------------------------------------------------------------
+    - colors: Theme colors from context
+    - items: List of electrical items for the property
+    - categories: Mapping of category IDs to names
+    - usageTypes: Mapping of usage type IDs to names
+    - infoOpenIndex: Index of the currently open item info popup
+    --------------------------------------------------------------------------*/
     const { colors } = useTheme();
     const [items, setItems] = useState<ItemType[]>([]);
     const [categories, setCategories] = useState<{ [key: number]: string }>({});
@@ -119,6 +133,12 @@ const ItemMenu: React.FC<{
     };
 
     /* Render ItemMenu component
+    ----------------------------------------------------------------------------
+    - Displays list of electrical items for the selected property
+    - Left: Item nickname with dropdown to show more info
+    - Right: SetUsageEvent component for starting/ending usage events
+    - Info popup shows daily usage, category, usage type, rated watts
+    - "+ Add Item" button to show ItemInput component 
     --------------------------------------------------------------------------*/
     return (
         <Card>

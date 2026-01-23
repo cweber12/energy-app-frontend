@@ -4,30 +4,31 @@ import Select from 'react-select';
 import "../../App.css";
 import "../Components.css";
 
-/*  Property Menu Component
---------------------------------------------------------------------------------
-    Description: A menu component for property-related actions.
-    - Update properties
-    - Select property to view
-    - Sets selected property to session storage
-------------------------------------------------------------------------------*/
 type PropertyMenuProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
     setPropertyId: React.Dispatch<React.SetStateAction<string>>;
-    propertyId: string;
 };
 
+/*  Property Menu Component
+--------------------------------------------------------------------------------
+Description: A menu component to select existing properties or add a new one.
+Props:
+    - setShowPropertyInput: Function to show the PropertyInput component.
+    - setPropertyId: Function to set the selected property ID.
+    - propertyId: Currently selected property ID.
+------------------------------------------------------------------------------*/
 const PropertyMenu: React.FC<PropertyMenuProps> = ({ 
     setShowPropertyInput, 
     setPropertyId, 
-    propertyId 
 }) => {
     const userId = sessionStorage.getItem("user_id");
     
+    // State to hold property options for the dropdown and Add Property option
     const [options, setOptions] = useState([
         { value: 'add', label: 'Add Property' }
     ]);
 
+    // Custom styles for react-select
     const customStyles = {
         option: (provided: any) => ({
             ...provided,
@@ -39,6 +40,8 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
         }),
     };
 
+    /* Fetch properties for the user on component mount
+    --------------------------------------------------------------------------*/
     useEffect(() => {
         if (!userId) return;
         fetch(`http://127.0.0.1:5000/properties/${userId}`)
@@ -58,6 +61,8 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
             });
     }, [userId]);
 
+    /* Handle property selection changes
+    --------------------------------------------------------------------------*/
     const handleChange = (selected: any) => {
         if (!selected) return;
         if (selected.value === 'add') {
@@ -68,6 +73,10 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
         }
     };
 
+    /* Render property selection menu
+    ----------------------------------------------------------------------------
+    - Dropdown menu to select existing properties or add a new one
+    --------------------------------------------------------------------------*/
     return (
         <Select
             options={options}

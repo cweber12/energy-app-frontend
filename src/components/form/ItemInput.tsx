@@ -1,3 +1,4 @@
+// src/components/items/ItemInput.tsx
 import React, { useState, useEffect } from "react";
 import HeaderDropdown from "../common/HeaderDropdown";
 import "../Components.css";
@@ -7,18 +8,32 @@ type ItemInputProps = {
     setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+/*  Item Input Component
+--------------------------------------------------------------------------------
+Description: Form to add a new electrical item to a property.
+Props:
+    - propertyId: ID of the property to add the item to.
+    - setShowItemInput: Function to hide the ItemInput component on cancel or 
+      successful submission.
+------------------------------------------------------------------------------*/
 const ItemInput: React.FC<ItemInputProps> = ({ 
-    propertyId, setShowItemInput }) => {
+    propertyId, 
+    setShowItemInput 
+}) => {
     const [form, setForm] = useState({
-        category_id: "",
-        usage_type_id: "",
-        nickname: "",
-        rated_watts: "",
-});
-    const [categories, setCategories] = useState<{ category_id: string; category_name: string }[]>([]);
-    const [usageTypes, setUsageTypes] = useState<{ usage_type_id: string; usage_type_name: string }[]>([]);
+        category_id: "", // Category of the electrical item
+        usage_type_id: "", // Usage type of the electrical item
+        nickname: "", // Nickname for the electrical item
+        rated_watts: "", // Rated watts of the electrical item
+    });
+    const [categories, setCategories] = 
+        useState<{ category_id: string; category_name: string }[]>([]);
+    const [usageTypes, setUsageTypes] = 
+        useState<{ usage_type_id: string; usage_type_name: string }[]>([]);
     const [message, setMessage] = useState("");
 
+    /* Fetch categories and usage types on component mount
+    --------------------------------------------------------------------------*/
     useEffect(() => {
         fetch("http://127.0.0.1:5000/item_categories")
         .then((res) => res.json())
@@ -31,12 +46,20 @@ const ItemInput: React.FC<ItemInputProps> = ({
         .catch((err) => console.error("Error fetching usage types:", err));
     }, []);
 
+    /* Handle form input changes
+    --------------------------------------------------------------------------*/
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    /* Handle form submission to add new electrical item
+    ----------------------------------------------------------------------------
+    - Sends POST request to backend API with form data
+    - On success, resets form and hides component
+    - On failure, shows error message
+    --------------------------------------------------------------------------*/
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setMessage("");
@@ -57,6 +80,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
             nickname: "",
             rated_watts: "",
             });
+            setShowItemInput(false);
         } else {
             setMessage("Failed to add item.");
         }
@@ -65,6 +89,12 @@ const ItemInput: React.FC<ItemInputProps> = ({
         }
     };
 
+    /* Render ItemInput component
+    ----------------------------------------------------------------------------
+    - Form fields: Category, Usage Type, Nickname, Rated Watts
+    - Buttons: Add (submit), Cancel (hide component)
+    - Displays success/error message
+    --------------------------------------------------------------------------*/
     return (
         <HeaderDropdown>
             <form className="form" onSubmit={handleSubmit}>

@@ -1,27 +1,31 @@
+// src/components/headers/AccountDashboardHeader.tsx
 import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../Components.css";
-import PropertyMenu from "../properties/PropertyMenu";
-import UploadUsageReport from "../report/UploadUsageReport";
+import PropertyMenu from "../menu/PropertyMenu";
+import UploadUsageReport from "../action/UploadUsageReport";
 
-/* Account Dashboard Header Component
---------------------------------------------------------------------------------
-Values passed between components and AccountDashboard: 
-- setShowPropertyInput: 
-------------------------------------------------------------------------------*/
 type AccountDashboardHeaderProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
-    propertyId: string;
     setPropertyId: React.Dispatch<React.SetStateAction<string>>;
     setXmlText: React.Dispatch<React.SetStateAction<string>>;
     setReadings: React.Dispatch<React.SetStateAction<any[]>>;
     setDate: React.Dispatch<React.SetStateAction<string>>;
 };
 
+/*  AccountDashboardHeader Component
+--------------------------------------------------------------------------------
+Description: Header component for the Account Dashboard page.   
+Props: State setter functions for AccountDashboard states
+    - setShowPropertyInput: Show/hide PropertyInput component
+    - setPropertyId: Update current selected property ID
+    - setXmlText: Update XML usage report from energy provider
+    - setReadings: Update parsed readings from usage report
+    - setDate: Update current date from xml (for UsageGraph & EventGraph)
+------------------------------------------------------------------------------*/
 const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     setShowPropertyInput, 
-    propertyId, 
     setPropertyId,
     setXmlText,
     setReadings, 
@@ -31,6 +35,13 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
    
     const { colors } = useTheme();
     const username = sessionStorage.getItem("username") || "Guest";
+
+    /* Render Account Dashboard Header
+    ----------------------------------------------------------------------------
+    - Contains:  title, PropertyMenu, UploadUsageReport, username display, and 
+      Logout button
+    - Uses props to pass state setters to PropertyMenu and UploadUsageReport 
+    --------------------------------------------------------------------------*/
     return (
         <header 
             className="header"
@@ -56,7 +67,6 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     <PropertyMenu 
                         setShowPropertyInput={setShowPropertyInput} 
                         setPropertyId={setPropertyId}
-                        propertyId={propertyId}
                     />
                     <UploadUsageReport
                         setXmlText={setXmlText}

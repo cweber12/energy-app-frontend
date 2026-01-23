@@ -6,7 +6,7 @@ import "../../App.css";
 import "../Components.css";
 import FormWrapper from "../common/FormWrapper";
 
-// Define the shape of the form data
+// Form data type
 type FormData = {
     username: string;
     email: string;
@@ -15,7 +15,7 @@ type FormData = {
 
 /*  Register Component
 --------------------------------------------------------------------------------
-    Description: A registration form that allows new users to sign up.
+Description: A registration form that allows new users to sign up.
 ------------------------------------------------------------------------------*/
 function Register() {
     const { colors } = useTheme();
@@ -28,7 +28,10 @@ function Register() {
         formState: { errors },
     } = useForm<FormData>();
     
-    //
+    /* Fetch user by username from backend
+    ----------------------------------------------------------------------------
+    - Returns user data if username exists, otherwise null
+    --------------------------------------------------------------------------*/
     const fetchUserByUsername = async (username: string) => {
         const response = await fetch(`http://127.0.0.1:5000/users/${username}`);
         if (!response.ok) return null;
@@ -38,6 +41,11 @@ function Register() {
     };
 
 
+    /* Handle form submission to register new user
+    ----------------------------------------------------------------------------
+    - Checks if username already exists
+    - If not, sends POST request to create new user
+    --------------------------------------------------------------------------*/
     const onSubmit = async (data: FormData) => {
         const user = await fetchUserByUsername(data.username);
         if (user) {
@@ -68,6 +76,12 @@ function Register() {
         });
     };
 
+    /* Render registration form
+    ----------------------------------------------------------------------------
+    Fields: Username, Email, Password
+    Buttons: Submit
+    Displays success/error message
+    --------------------------------------------------------------------------*/
     return (
         <FormWrapper>
             <h2>Register</h2>
