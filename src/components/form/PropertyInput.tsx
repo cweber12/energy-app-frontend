@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import "../Components.css";
 import HeaderDropdown from "../common/HeaderDropdown";
+import { addProperty, PropertyForm } from "../../services/propertyService";
+
 
 /*  Property Input Component
 --------------------------------------------------------------------------------
@@ -30,34 +32,28 @@ const PropertyInput: React.FC<{
 
   /* Handle form submission to add new property
   ------------------------------------------------------------------------------
-  - Sends POST request to backend API with form data
+  - addProperty service sends POST request to backend API.
+  - On success, resets form and shows success message.
+  - On failure, shows error message.
   ----------------------------------------------------------------------------*/
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
     try {
-      const response = await fetch("http://127.0.0.1:5000/properties", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            user_id: userId,
-            ...form,
-          
-        }),
-      });
-      if (response.ok) {
-        setMessage("Property added successfully!");
-        setForm({
-          street_address: "",
-          city: "",
-          state_abbreviation: "",
-          zip: "",
-        });
-      } else {
-        setMessage("Failed to add property: " + response.statusText);
-      }
+        const response = await addProperty(userId, form as PropertyForm);
+        if (response.ok) {
+            setMessage("Property added successfully!");
+            setForm({
+                street_address: "",
+                city: "",
+                state_abbreviation: "",
+                zip: "",
+            });
+        } else {
+            setMessage("Failed to add property: " + response.statusText);
+        }
     } catch (err) {
-      setMessage("Error adding property: " + (err as Error).message);
+        setMessage("Error adding property: " + (err as Error).message);
     }
   };
 

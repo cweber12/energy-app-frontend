@@ -17,19 +17,17 @@ import { useEventsByDate } from "../../hooks/useEventsByDate";
 /* Event Graph Component
 --------------------------------------------------------------------------------
 Generates a stacked bar chart of total elapsed time per item by hour for a given 
-date. Used to compare item usage to kWh usage per hour chart downloaded from 
-the utility provider.
+date. 
+Props:
+    - startDate: Date string (YYYY-MM-DD) to filter events.
 ------------------------------------------------------------------------------*/
 const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
     const { colors } = useTheme();
-
     // Data structure for chart
     const { chartData, nicknames } = useEventsByDate(startDate);
+    
     /* Render stacked bar chart
-        - Each bar represents an hour of the day (00:00 to 23:00).
-        - Each segment in the bar represents total elapsed time (in minutes) for 
-          a specific item (nickname) during that hour.
-        - Colors are assigned from the theme's graphStacked color array.
+    ----------------------------------------------------------------------------
         - XAxis: Hour of day
         - YAxis: Total time in minutes
         - Tooltip shows breakdown of total time per item on hover.

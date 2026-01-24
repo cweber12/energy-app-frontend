@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { groupEventsByHour } from "../services/groupEvents";
+import { groupEventsByHour } from "../services/eventService";
+import { fetchEventsByDate } from "../services/eventService";
+
 
 // Type definition for event object
-type Event = {
+export type Event = {
     event_id: number; // identifies start/end event pair
     start_ts: string; // ISO-8601 string ("2024-06-15T14:30:00Z")
     end_ts: string | null; // ISO-8601 string or null
@@ -10,7 +12,7 @@ type Event = {
 };
 
 // Type definition for grouped event by date and item nickname
-type GroupedEvent = {
+export type GroupedEvent = {
     usage_date: string; // "2024-06-15"
     nickname: string; // (Fridge, Washer, etc.)
     events: Event[]; // array of events for that item on that date
@@ -18,28 +20,24 @@ type GroupedEvent = {
 
 /* Fetch Events By Date Hook
 --------------------------------------------------------------------------------
-Description: Fetches and groups events by date for a given property ID.
+Description: Fetches items for a given propertyId grouped by date and item 
+nickname. Then groups events by hour for chart display. 
 Params:
     - propertyId: ID of the property to fetch events for.
 Returns:    
-    - groupedEvents: List of events grouped by date and item nickname (GroupedEvent).
+    - chartData: Array of HourlyTotals objects for charting.
+    - nicknames: Array of unique item nicknames found in the data.
 ------------------------------------------------------------------------------*/
 export function useEventsByDate(startDate: string) {
     const [data, setData] = useState<GroupedEvent[]>([]);
     
     useEffect(() => {
-            fetch(
-                `http://127.0.0.1:5000/item_usage_events/by_date/${startDate}`
-            )
-                .then((res) => res.json())
-                .then((result) => {
-                    setData(result);
-      
-                })
-                .catch((err) => {
-                    console.error("Error fetching events by date:", err);
-                });
-        }, [startDate]);
+        fetchEventsByDate(startDate)
+            .then(setData)
+            .catch((err) => {
+                console.error("Error fetching events by date:", err);
+            });
+    }, [startDate]);
 
         const chartData = groupEventsByHour(data);
         const nicknames = Array.from(new Set(data.flatMap(

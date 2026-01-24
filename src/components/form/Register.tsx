@@ -2,6 +2,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
+import { fetchUserByUsername, registerUser } from "../../services/userService";
 import "../../App.css";
 import "../Components.css";
 import FormWrapper from "../common/FormWrapper";
@@ -9,15 +10,15 @@ import FormWrapper from "../common/FormWrapper";
 // Form data type
 type FormData = {
     username: string;
-    email: string;
     password: string;
+    email: string;   
 };
 
 /*  Register Component
 --------------------------------------------------------------------------------
 Description: A registration form that allows new users to sign up.
 ------------------------------------------------------------------------------*/
-function Register() {
+const Register: React.FC = () => {
     const { colors } = useTheme();
     const [message, setMessage] = React.useState<string | null>(null);
 
@@ -27,24 +28,11 @@ function Register() {
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>();
-    
-    /* Fetch user by username from backend
-    ----------------------------------------------------------------------------
-    - Returns user data if username exists, otherwise null
-    --------------------------------------------------------------------------*/
-    const fetchUserByUsername = async (username: string) => {
-        const response = await fetch(`http://127.0.0.1:5000/users/${username}`);
-        if (!response.ok) return null;
-        const user = await response.json();
-        console.log('Register | Fetched user by username:', user);
-        return user;
-    };
-
 
     /* Handle form submission to register new user
     ----------------------------------------------------------------------------
-    - Checks if username already exists
-    - If not, sends POST request to create new user
+    - fetchUserByUsername checks if username already exists
+    - If not, registerUser sends POST request to create new user
     --------------------------------------------------------------------------*/
     const onSubmit = async (data: FormData) => {
         const user = await fetchUserByUsername(data.username);
@@ -52,28 +40,25 @@ function Register() {
             console.log("Register | Username already exists.");
             setMessage("Username already exists. Please choose a different username.");
             return;
-        }
+        } else {
         
-        await fetch('http://127.0.0.1:5000/users', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: data.username,
-            password: data.password,
-            email: data.email
-        })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Register | User created:', data);
-            setMessage(`Account created for ${data.username}! You can now log in.`);
-        })
-        .catch(error => {
-            console.error('Register | Error :', error);
-            setMessage("Registration failed. Please try again.");
-        });
+            try {
+                const newUser = await registerUser({
+                    username: data.username,
+                    password: data.password,
+                    email: data.email,
+                });
+                console.log('Register | User created:', newUser);
+                setMessage(`Account created for ${data.username}! You can now log in.`);
+            } catch (error) {
+                console.error('Register | Error :', error);
+                setMessage(
+                    error instanceof Error
+                        ? error.message
+                        : "Registration failed. Please try again."
+                );
+            }
+        }
     };
 
     /* Render registration form

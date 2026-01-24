@@ -2,6 +2,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
+import { login } from "../../services/authService";
 import "../../App.css";
 import "../Components.css";
 import FormWrapper from "../common/FormWrapper";
@@ -43,32 +44,21 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
     - Sends POST request with email and password
     --------------------------------------------------------------------------*/
     const onSubmit = async (data: FormData) => {
-        fetch('http://127.0.0.1:5000/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: data.email,
-                password: data.password
-            })
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log('Login | Login successful:', data);
-                if (data.email) {
-                    sessionStorage.setItem("username", data.username);
-                    sessionStorage.setItem("user_id", data.user_id);
-                    navigate("/account");
-                } else {
-                    sessionStorage.removeItem("username");
-                    console.warn('Login | Username missing in response');
-                    setMessage("Login failed. Please check your credentials and try again.");
-                }
-            })
-            .catch(err => {
-                console.error('Login | Error during login:', err);
+        try {
+            const result = await login(data.email, data.password);
+            console.log('Login | Login successful:', result);
+            if (result.email) {
+                sessionStorage.setItem("username", result.username);
+                sessionStorage.setItem("user_id", result.user_id);
+                navigate("/account");
+            } else {
+                sessionStorage.removeItem("username");
                 setMessage("Login failed. Please check your credentials and try again.");
-            });
-            
+            }
+        } catch (err) {
+            console.error('Login | Error during login:', err);
+            setMessage("Login failed. Please check your credentials and try again.");
+        }
     };
 
     /* Render login form

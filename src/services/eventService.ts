@@ -1,4 +1,7 @@
 // src/services/groupEvents.ts
+
+import { GroupedEvent } from "../hooks/useEventsByDate";
+
 type Event = {
     event_id: number; // identifies start/end event pair
     start_ts: string; // ISO-8601 string ("2024-06-15T14:30:00Z")
@@ -20,9 +23,9 @@ type HourlyTotals = {
 /* Helper function to group events by hour and sum elapsed minutes per item 
 --------------------------------------------------------------------------------
 Parameters:
-    - data: Array of Event objects grouped by date and nickname
+- data: Array of Event objects grouped by date and nickname
 Returns:    
-    - hourlyTotals: Array of HourlyTotals objects for each item used that hour
+- hourlyTotals: Array of HourlyTotals objects for each item used that hour
 ------------------------------------------------------------------------------*/
 
 
@@ -59,4 +62,10 @@ export function groupEventsByHour(data: GroupedEvents[]): HourlyTotals[] {
     });
 
     return hourlyTotals;
+}
+
+export async function fetchEventsByDate(startDate: string): Promise<GroupedEvent[]> {
+    const response = await fetch(`http://127.0.0.1:5000/item_usage_events/by_date/${startDate}`);
+    if (!response.ok) throw new Error("Failed to fetch events by date");
+    return response.json();
 }

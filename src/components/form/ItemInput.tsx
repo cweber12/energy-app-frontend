@@ -1,11 +1,23 @@
 // src/components/items/ItemInput.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useElectricalItems } from "../../hooks/useElectricalItems";
+import { addElectricalItem } from "../../services/itemService";
+
 import HeaderDropdown from "../common/HeaderDropdown";
 import "../Components.css";
 
+// Type definitions for props
 type ItemInputProps = {
     propertyId: string;
     setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+// Type definition for form state
+type FormType = {
+    category_id: number | ""; 
+    usage_type_id: number | "";
+    nickname: string;
+    rated_watts: number | "";
 };
 
 /*  Item Input Component
@@ -20,43 +32,35 @@ const ItemInput: React.FC<ItemInputProps> = ({
     propertyId, 
     setShowItemInput 
 }) => {
-    const [form, setForm] = useState({
-        category_id: "", // Category of the electrical item
-        usage_type_id: "", // Usage type of the electrical item
-        nickname: "", // Nickname for the electrical item
-        rated_watts: "", // Rated watts of the electrical item
+    const [form, setForm] = useState<FormType>({
+        category_id: "", 
+        usage_type_id: "", 
+        nickname: "", 
+        rated_watts: "", 
     });
-    const [categories, setCategories] = 
-        useState<{ category_id: string; category_name: string }[]>([]);
-    const [usageTypes, setUsageTypes] = 
-        useState<{ usage_type_id: string; usage_type_name: string }[]>([]);
     const [message, setMessage] = useState("");
-
-    /* Fetch categories and usage types on component mount
-    --------------------------------------------------------------------------*/
-    useEffect(() => {
-        fetch("http://127.0.0.1:5000/item_categories")
-        .then((res) => res.json())
-        .then((data) => setCategories(data))
-        .catch((err) => console.error("Error fetching categories:", err));
-        
-         fetch("http://127.0.0.1:5000/usage_types")
-        .then((res) => res.json())
-        .then((data) => setUsageTypes(data))
-        .catch((err) => console.error("Error fetching usage types:", err));
-    }, []);
-
+    const { categories , usageTypes } = useElectricalItems(propertyId);
+    
     /* Handle form input changes
+    ----------------------------------------------------------------------------
+    - Updates form state on input change.
+    - Converts numeric fields from string -> number.
     --------------------------------------------------------------------------*/
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        // Convert to number if the field should be a number
+        if (name === "category_id" || name === "usage_type_id" || name === "rated_watts") {
+            setForm({ ...form, [name]: value === "" ? "" : Number(value) });
+        } else {
+            setForm({ ...form, [name]: value });
+        }
     };
 
-    /* Handle form submission to add new electrical item
+    /* Add new electrical item on form submission
     ----------------------------------------------------------------------------
-    - Sends POST request to backend API with form data
+    - addElectricalItem service sends POST request to backend.
     - On success, resets form and hides component
     - On failure, shows error message
     --------------------------------------------------------------------------*/
@@ -64,28 +68,26 @@ const ItemInput: React.FC<ItemInputProps> = ({
         e.preventDefault();
         setMessage("");
         try {
-        const response = await fetch("http://127.0.0.1:5000/electrical_items", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-            property_id: propertyId,
-            ...form,
-            }),
-        });
-        if (response.ok) {
-            setMessage("Item added successfully!");
-            setForm({
-            category_id: "",
-            usage_type_id: "",
-            nickname: "",
-            rated_watts: "",
+            const response = await addElectricalItem(propertyId, {
+                category_id: Number(form.category_id),
+                usage_type_id: Number(form.usage_type_id),
+                nickname: form.nickname,
+                rated_watts: Number(form.rated_watts),
             });
-            setShowItemInput(false);
-        } else {
-            setMessage("Failed to add item.");
-        }
+            if (response.ok) {
+                setMessage("Item added successfully!");
+                setForm({
+                    category_id: "",
+                    usage_type_id: "",
+                    nickname: "",
+                    rated_watts: "",
+                });
+                setShowItemInput(false);
+            } else {
+                setMessage("Failed to add item.");
+            }
         } catch (err) {
-        setMessage("Error adding item: " + (err as Error).message);
+            setMessage("Error adding item: " + (err as Error).message);
         }
     };
 
@@ -107,10 +109,10 @@ const ItemInput: React.FC<ItemInputProps> = ({
                     required
                 >
                     <option value="">Select a category</option>
-                    {categories.map((cat) => (
-                    <option key={cat.category_id} value={cat.category_id}>
-                        {cat.category_name}
-                    </option>
+                    {Object.entries(categories).map(([category_id, category_name]) => (
+                        <option key={category_id} value={category_id}>
+                            {category_name}
+                        </option>
                     ))}
                 </select>
             </label>
@@ -124,9 +126,9 @@ const ItemInput: React.FC<ItemInputProps> = ({
                     required
                 >
                     <option value="">Select a usage type</option>
-                    {usageTypes.map((usage) => (
-                        <option key={usage.usage_type_id} value={usage.usage_type_id}>
-                            {usage.usage_type_name}
+                    {Object.entries(usageTypes).map(([usage_type_id, usage_type_name]) => (
+                        <option key={usage_type_id} value={usage_type_id}>
+                            {usage_type_name}
                         </option>
                     ))}
                 </select>
