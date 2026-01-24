@@ -14,7 +14,9 @@ Props:
     - itemId: ID of the electrical item to fetch usage for.
 ------------------------------------------------------------------------------*/
 const GetDailyUse: React.FC<{ itemId: number }> = ({ itemId }) => {
-  const [dailyUsage, setDailyUsage] = useState<DailyUsage[]>([]);
+    const [dailyUsage, setDailyUsage] = useState<DailyUsage[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
     
     /* Fetch daily usage data when itemId changes
     ----------------------------------------------------------------------------
@@ -24,6 +26,7 @@ const GetDailyUse: React.FC<{ itemId: number }> = ({ itemId }) => {
     useEffect(() => {
         const fetchDailyUsage = async () => {
         try {
+            setLoading(true);
             const response = await fetch(
             `http://127.0.0.1:5000/item_usage_event_end/item/${itemId}/daily_usage`
             );
@@ -32,9 +35,12 @@ const GetDailyUse: React.FC<{ itemId: number }> = ({ itemId }) => {
             }
             const data: DailyUsage[] = await response.json();
             setDailyUsage(data);
-        } catch (error: any) {
-            console.error("Error fetching daily usage:", error.message || error);
-        } 
+        } catch (err) {
+            console.error("Error fetching daily usage:", err instanceof Error ? err.message : err);
+            setError(err instanceof Error ? err.message : "Unknown error");
+        } finally {
+            setLoading(false);
+        }
         };
 
         if (itemId) {
@@ -48,6 +54,8 @@ const GetDailyUse: React.FC<{ itemId: number }> = ({ itemId }) => {
     --------------------------------------------------------------------------*/
     return (
         <div>
+        {loading && <div>Loading...</div>}
+        {error && <div style={{ color: 'red' }}>Error: {error}</div>}
         <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
             {dailyUsage.map((usage) => (
             <li key={usage.usage_date}>

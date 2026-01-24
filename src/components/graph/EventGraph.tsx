@@ -97,7 +97,10 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
                 setLoading(false);
             })
             .catch((err) => {
-                setError("Failed to fetch event data");
+                setError(
+                    "Failed to fetch event data: " + 
+                    (err instanceof Error ? err.message : "Unknown error")
+                );
                 setLoading(false);
             });
     }, [startDate]);

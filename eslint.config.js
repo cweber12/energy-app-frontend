@@ -1,13 +1,13 @@
-const js = require("@eslint/js");
-const globals = require("globals");
-const tsParser = require("@typescript-eslint/parser");
-const { FlatCompat } = require("@eslint/eslintrc");
-const { defineConfig } = require("eslint/config");
+import js from "@eslint/js";
+import globals from "globals";
+import tsParser from "@typescript-eslint/parser";
+import { FlatCompat } from "@eslint/eslintrc";
+import { defineConfig } from "eslint/config";
 
 // Use FlatCompat to support plugins that don't yet support flat config
 const compat = new FlatCompat();
 
-module.exports = defineConfig([
+export default defineConfig([
   // JavaScript rules
   ...compat.extends("plugin:react/recommended"),
   ...compat.extends("plugin:@typescript-eslint/recommended"),
@@ -22,9 +22,8 @@ module.exports = defineConfig([
       },
       globals: globals.browser,
     },
-    // Remove plugins property here
     rules: {
-      // Add your custom rules here
+      "react/react-in-jsx-scope": "off",
     },
   },
 ]);

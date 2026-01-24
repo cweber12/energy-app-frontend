@@ -1,7 +1,7 @@
 // src/components/report/UploadUsageReport.tsx
 import React from "react";
 
-// kWh reading for a specific hour
+// Type for individual interval reading (tuple)
 type IntervalReading = {
     hour: string; // e.g. "14:00"
     kWh: number; // e.g. 1.234
@@ -9,7 +9,6 @@ type IntervalReading = {
 
 // Props for UploadUsageReport component
 type UploadUsageReportProps = {
-    setXmlText: React.Dispatch<React.SetStateAction<string>>;
     setReadings: React.Dispatch<React.SetStateAction<IntervalReading[]>>;
     setDate: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -64,7 +63,6 @@ function parseXml(
 }
 
 const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
-    setXmlText,
     setReadings,
     setDate
 }) => {
@@ -75,7 +73,6 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
         const reader = new FileReader();
         reader.onload = (event) => {
             const text = event.target?.result as string;
-            setXmlText(text);
             setReadings(parseXml(text, setDate));
         };
         reader.readAsText(file);

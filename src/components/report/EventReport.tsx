@@ -4,11 +4,12 @@ import "../Components.css";
 import Card from "../common/Card";
 import "../../App.css";
 
+// Type definitions for event data
 type Event = {
     event_id: number; // identifies start/end event pair
     start_ts: string; // ISO-8601 string ("2024-06-15T14:30:00Z")
     end_ts: string | null; // ISO-8601 string or null if ongoing
-    elapsed_minutes: number; // total time in minutes
+    elapsed_minutes: number; 
 };
 
 type GroupedEvent = {

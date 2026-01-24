@@ -10,6 +10,12 @@ import GetDailyEvents from '../components/action/GetDailyEvents';
 import UsageGraph from '../components/graph/UsageGraph';
 import EventGraph from '../components/graph/EventGraph';
 
+// Type for individual interval reading (from energy provider)
+type IntervalReading = {
+    hour: string; // e.g. "14:00"
+    kWh: number; // e.g. 1.234
+};
+
 /*  Account Dashboard Page
 --------------------------------------------------------------------------------
 Description: Main dashboard page for user account management and data 
@@ -24,8 +30,7 @@ const AccountDashboard = () => {
     const [showDailyEvents, setShowDailyEvents] = 
         React.useState<boolean>(false);
     const userId = sessionStorage.getItem("user_id") || "";
-    const [xmlText, setXmlText] = useState<string>("");
-    const [readings, setReadings] = useState<any[]>([]);
+    const [readings, setReadings] = useState<IntervalReading[]>([]);
     const [date, setDate] = useState<string>("");
     
     
@@ -45,7 +50,6 @@ const AccountDashboard = () => {
         <AccountDashboardHeader
             setShowPropertyInput={setShowPropertyInput}
             setPropertyId={setPropertyId}
-            setXmlText={setXmlText}
             setReadings={setReadings}
             setDate={setDate}
          />

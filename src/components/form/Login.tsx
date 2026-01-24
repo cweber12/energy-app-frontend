@@ -5,6 +5,7 @@ import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../Components.css";
 import FormWrapper from "../common/FormWrapper";
+import { NavigateFunction } from "react-router-dom";
 
 // Define the shape of the form data
 type FormData = {
@@ -18,7 +19,7 @@ Description: A login form that authenticates users.
 Props: 
     - navigate: Function to navigate to AccountDashboard on successful login.
 ------------------------------------------------------------------------------*/
-const Login: React.FC<{ navigate: any }> = ({ navigate }) =>  {
+const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
     const { colors } = useTheme(); // Get theme colors
     const [message, setMessage] = React.useState<string | null>(null);
 

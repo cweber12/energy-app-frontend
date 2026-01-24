@@ -1,8 +1,22 @@
 // src/components/menu/PropertyMenu.tsx
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
+import type { CSSObjectWithLabel } from "react-select";
 import "../../App.css";
 import "../Components.css";
+
+type Property = {
+    property_id: string;
+    street_address: string;
+    city: string;
+    state_abbreviation: string;
+    zip: string;
+};
+
+type PropertyOption = {
+    value: string;
+    label: string;
+};
 
 type PropertyMenuProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,11 +44,11 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
 
     // Custom styles for react-select
     const customStyles = {
-        option: (provided: any) => ({
+        option: (provided: CSSObjectWithLabel) => ({
             ...provided,
             color: 'black',
         }),
-        singleValue: (provided: any) => ({
+        singleValue: (provided: CSSObjectWithLabel) => ({
             ...provided,
             color: 'black',
         }),
@@ -50,7 +64,7 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
                 
                 setOptions([
                     { value: 'add', label: 'Add Property' },
-                    ...data.map((prop: any) => ({
+                    ...data.map((prop: Property) => ({
                         value: prop.property_id,
                         label: prop.street_address
                     }))
@@ -63,7 +77,7 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
 
     /* Handle property selection changes
     --------------------------------------------------------------------------*/
-    const handleChange = (selected: any) => {
+    const handleChange = (selected: PropertyOption | null) => {
         if (!selected) return;
         if (selected.value === 'add') {
             setShowPropertyInput(true);

@@ -6,11 +6,16 @@ import "../Components.css";
 import PropertyMenu from "../menu/PropertyMenu";
 import UploadUsageReport from "../action/UploadUsageReport";
 
+// Type for individual interval reading (from energy provider)
+type IntervalReading = {
+    hour: string; // e.g. "14:00"
+    kWh: number; // e.g. 1.234
+};
+
 type AccountDashboardHeaderProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
     setPropertyId: React.Dispatch<React.SetStateAction<string>>;
-    setXmlText: React.Dispatch<React.SetStateAction<string>>;
-    setReadings: React.Dispatch<React.SetStateAction<any[]>>;
+    setReadings: React.Dispatch<React.SetStateAction<IntervalReading[]>>;
     setDate: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -20,14 +25,12 @@ Description: Header component for the Account Dashboard page.
 Props: State setter functions for AccountDashboard states
     - setShowPropertyInput: Show/hide PropertyInput component
     - setPropertyId: Update current selected property ID
-    - setXmlText: Update XML usage report from energy provider
     - setReadings: Update parsed readings from usage report
     - setDate: Update current date from xml (for UsageGraph & EventGraph)
 ------------------------------------------------------------------------------*/
 const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     setShowPropertyInput, 
     setPropertyId,
-    setXmlText,
     setReadings, 
     setDate
 
@@ -69,7 +72,6 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                         setPropertyId={setPropertyId}
                     />
                     <UploadUsageReport
-                        setXmlText={setXmlText}
                         setReadings={setReadings}
                         setDate={setDate}
                     />

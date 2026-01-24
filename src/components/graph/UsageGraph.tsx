@@ -1,5 +1,13 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
+import { 
+    BarChart, 
+    Bar, 
+    XAxis, 
+    YAxis, 
+    Tooltip, 
+    ResponsiveContainer, 
+    CartesianGrid, 
+} from 'recharts';
 import Card from '../common/Card';
 import "../../App.css";
 import "../Components.css";

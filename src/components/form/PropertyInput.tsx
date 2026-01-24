@@ -54,10 +54,10 @@ const PropertyInput: React.FC<{
           zip: "",
         });
       } else {
-        setMessage("Failed to add property.");
+        setMessage("Failed to add property: " + response.statusText);
       }
     } catch (err) {
-      setMessage("Error adding property.");
+      setMessage("Error adding property: " + (err as Error).message);
     }
   };
 

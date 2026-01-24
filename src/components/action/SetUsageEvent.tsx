@@ -16,8 +16,10 @@ Props:
 ------------------------------------------------------------------------------*/
 const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   const { colors } = useTheme();
-  const [startTime, setStartTime] = React.useState<any | null>(null);
-  const [endTime, setEndTime] = React.useState<any | null>(null);
+  const [startTime, setStartTime] = React.useState<Date | null>(null);
+  const [startTimeString, setStartTimeString] = React.useState<string>("");
+  const [endTime, setEndTime] = React.useState<Date | null>(null);
+  const [endTimeString, setEndTimeString] = React.useState<string>("");
   const [eventId, setEventId] = React.useState<number | null>(null);
 
   /* Fetch latest start and end timestamps when itemId changes
@@ -45,7 +47,11 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
             return;
           }
           if (data.latest_start_ts) {
-            setStartTime(new Date(data.latest_start_ts));
+            console.log("item id: ", itemId);
+            console.log("Latest start timestamp data:", data);
+            const start = new Date(data.latest_start_ts);
+            setStartTime(start);
+            console.log("initial start time string:", start);
             setEventId(data.event_id);
           } else {
             setStartTime(null);
@@ -76,7 +82,9 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
         .then(data => {
             if (data && !data.error && data.latest_end_ts) {
                 console.log("Latest end timestamp data:", data);
-                setEndTime(new Date(data.latest_end_ts));
+                const end = new Date(data.latest_end_ts);
+                console.log("initial end time string:", end);
+                setEndTime(end);
             } else {
                 setEndTime(null);
             }
@@ -110,7 +118,9 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
               return response.json();
           })
           .then(data => {
-              setStartTime(new Date(data.start_ts));
+              const start = new Date(data.start_ts);
+              setStartTime(start);
+              setStartTimeString(start.toLocaleString());
               setEventId(data.event_id);
               setEndTime(null);
           })
@@ -141,7 +151,9 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
             return response.json();
         })
         .then(data => {
-            setEndTime(new Date(data.end_ts)); 
+            const end = new Date(data.end_ts);
+            setEndTime(end);
+            setEndTimeString(end.toLocaleString());
         })
         .catch(error => {
             console.error('Error ending usage event:', error);
@@ -184,14 +196,14 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
           >
             End
           </button>
-          {startTime instanceof Date ? (
+          {startTimeString ? (
             <div> 
-              Started at: {startTime.toLocaleTimeString()}
+              Started at: {startTimeString}
             </div>
           ) : null}
-          {endTime instanceof Date ? (
+          {endTimeString ? (
             <div>
-              Ended at: {endTime.toLocaleTimeString()}
+              Ended at: {endTimeString}
             </div>
           ) : null}
         </div>

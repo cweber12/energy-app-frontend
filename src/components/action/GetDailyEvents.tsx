@@ -70,7 +70,6 @@ const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
     useEffect(() => {
         const fetchUsageEvents = async () => {
             setLoading(true);
-            setError(null);
             try {
                 const response = await fetch(
                     `http://127.0.0.1:5000/item_usage_events/item/${itemId}`
@@ -80,8 +79,8 @@ const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
             }
             const data: UsageEvent[] = await response.json();
             setUsageEvents(data);
-            } catch (error: any) {
-            setError(error.message || "Unknown error");
+            } catch (err) {
+            setError(err instanceof Error ? err.message : "Unknown error");
             } finally {
             setLoading(false);
             }

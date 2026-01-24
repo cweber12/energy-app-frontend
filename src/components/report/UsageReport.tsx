@@ -1,15 +1,25 @@
+// src/components/report/UsageReport.tsx
 import React from 'react';
 import "../../App.css";
 import "../Components.css";
 import Card from '../common/Card';
 
+// Type for individual interval reading (tuple)
 type IntervalReading = {
     hour: string;
     kWh: number;
 };
 
+/*  Usage Report Component
+--------------------------------------------------------------------------------
+Description: Component to display usage report in a tabular format.
+Props: 
+    - readings: Array of interval readings with hour and kWh values.
+------------------------------------------------------------------------------*/
 const UsageReport: React.FC<{ readings: IntervalReading[] }> = ({ readings }) => {
    
+    /* Render Usage Report Table
+    --------------------------------------------------------------------------*/
     return (
         <Card> 
             <h2>Usage Report</h2>

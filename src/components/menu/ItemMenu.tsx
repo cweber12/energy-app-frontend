@@ -8,12 +8,25 @@ import SetUsageEvent from "../action/SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import GetDailyUse from "../action/GetDailyUse";
 
+// Type definition for category map returned from backend
+type CategoryType = {
+    category_id: number;
+    category_name: string;
+};
+
+// Type definition for usage type map returned from backend
+type UsageType = {
+    usage_type_id: number;
+    usage_type_name: string;
+};
+
+// Type definition for electrical item returned from backend
 type ItemType = {
-    item_id: number; // Unique ID of the electrical item
-    nickname: string; // User-defined nickname for the item
-    category_id: number; // Used to access category name from index table 
-    usage_type_id: number; // Used to access usage type name from index table
-    rated_watts: number; // Rated power consumption in watts (optional)
+    item_id: number; 
+    nickname: string; 
+    category_id: number; 
+    usage_type_id: number; 
+    rated_watts: number; 
     // NOTE: Future implementation will factor in rated watts for usage calc
 };
 
@@ -90,7 +103,7 @@ const ItemMenu: React.FC<{
             if (Array.isArray(data)) {
                 // Transform array to map: { [id]: name }
                 const categoryMap: { [key: number]: string } = {};
-                data.forEach((cat: any) => {
+                data.forEach((cat: CategoryType) => {
                     categoryMap[cat.category_id] = cat.category_name;
                 });
                 setCategories(categoryMap);
@@ -116,7 +129,7 @@ const ItemMenu: React.FC<{
             if (Array.isArray(data)) {
                 // Transform array to map: { [id]: name }
                 const usageTypeMap: { [key: number]: string } = {};
-                data.forEach((ut: any) => {
+                data.forEach((ut: UsageType) => {
                     usageTypeMap[ut.usage_type_id] = ut.usage_type_name;
                 });
                 setUsageTypes(usageTypeMap);

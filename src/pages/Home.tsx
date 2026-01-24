@@ -1,6 +1,6 @@
 // src/pages/Home.tsx
 import React, { useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavigateFunction } from "react-router-dom";
 import "../App.css";
 import Login from '../components/form/Login';
 import Register from '../components/form/Register';
@@ -13,7 +13,7 @@ import Card from '../components/common/Card';
 Description: Landing page for user authentication (login/register).
 ------------------------------------------------------------------------------*/
 function Home() {
-    const navigate = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
     const [showLogin, setShowLogin] = React.useState<boolean>(true);
     const [showRegister, setShowRegister] = React.useState<boolean>(false);
     const userId = sessionStorage.getItem("user_id");
