@@ -1,5 +1,5 @@
 // src/components/report/EventGraph.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { 
     BarChart, 
     Bar, 
@@ -12,61 +12,7 @@ import {
 } from 'recharts';
 import Card from "../common/Card";
 import { useTheme } from "../../context/ThemeContext";
-
-type Event = {
-    event_id: number; // identifies start/end event pair
-    start_ts: string; // ISO-8601 string ("2024-06-15T14:30:00Z")
-    end_ts: string | null; // ISO-8601 string or null
-    elapsed_minutes: number; // total time in minutes
-};
-
-type GroupedEvent = {
-    usage_date: string; // "2024-06-15"
-    nickname: string; // (Fridge, Washer, etc.)
-    events: Event[]; // array of events for that item on that date
-};
-
-type HourlyTotals = {
-    hour: string;
-    [nickname: string]: number | string; // total time per item
-};
-
-/* Helper function to group events by hour and sum elapsed minutes per item 
-------------------------------------------------------------------------------*/
-function groupEventsByHour(data: GroupedEvent[]): HourlyTotals[] {
-    // Create hours array: "00:00", "01:00", ..., "23:00"
-    const hours = Array.from({ length: 24 }, (_, i) =>
-        `${i.toString().padStart(2, "0")}:00`
-    );
-    // Get all unique nicknames
-    const nicknames = Array.from(new Set(data.flatMap(
-        g => g.nickname ? [g.nickname] : [])));
-
-    // Initialize totals
-    const hourlyTotals: HourlyTotals[] = hours.map(hour => {
-        const obj: HourlyTotals = { hour };
-        nicknames.forEach(nick => { obj[nick] = 0; });
-        return obj;
-    });
-
-    // Fill totals
-    data.forEach(group => {
-        group.events.forEach(event => {
-            const date = new Date(event.start_ts);
-            const hour = date.getHours();
-            const hourLabel = `${hour.toString().padStart(2, "0")}:00`;
-            // Find the correct hour object
-            const hourObj = hourlyTotals.find(h => h.hour === hourLabel);
-            if (hourObj) {
-                hourObj[group.nickname] =
-                    (hourObj[group.nickname] as number) + 
-                    Math.round(event.elapsed_minutes);
-            }
-        });
-    });
-
-    return hourlyTotals;
-}
+import { useEventsByDate } from "../../hooks/useEventsByDate";
 
 /* Event Graph Component
 --------------------------------------------------------------------------------
@@ -76,43 +22,9 @@ the utility provider.
 ------------------------------------------------------------------------------*/
 const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
     const { colors } = useTheme();
-    const [data, setData] = useState<GroupedEvent[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
-    /* Fetch event data when startDate changes
-        - When client uploads .xml usage report from utiility provider, date is 
-        extracted and passed as startDate prop to this component.
-        - Fetches all usage events for that date from backend API.
-        - Populates data state variable with the result.
-    --------------------------------------------------------------------------*/
-    useEffect(() => {
-        setLoading(true);
-        fetch(
-            `http://127.0.0.1:5000/item_usage_events/by_date/${startDate}`
-        )
-            .then((res) => res.json())
-            .then((result) => {
-                setData(result);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(
-                    "Failed to fetch event data: " + 
-                    (err instanceof Error ? err.message : "Unknown error")
-                );
-                setLoading(false);
-            });
-    }, [startDate]);
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
-
-    // Prepare data for stacked bar chart
-    const chartData = groupEventsByHour(data);
-    const nicknames = Array.from(new Set(data.flatMap(
-        g => g.nickname ? [g.nickname] : [])));
-
+    // Data structure for chart
+    const { chartData, nicknames } = useEventsByDate(startDate);
     /* Render stacked bar chart
         - Each bar represents an hour of the day (00:00 to 23:00).
         - Each segment in the bar represents total elapsed time (in minutes) for 

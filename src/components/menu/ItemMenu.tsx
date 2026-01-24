@@ -1,5 +1,5 @@
 // src/components/items/ItemMenu.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../Components.css";
@@ -7,28 +7,9 @@ import Card from "../common/Card";
 import SetUsageEvent from "../action/SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import GetDailyUse from "../action/GetDailyUse";
+import { useElectricalItems } from "../../hooks/useElectricalItems";
 
-// Type definition for category map returned from backend
-type CategoryType = {
-    category_id: number;
-    category_name: string;
-};
 
-// Type definition for usage type map returned from backend
-type UsageType = {
-    usage_type_id: number;
-    usage_type_name: string;
-};
-
-// Type definition for electrical item returned from backend
-type ItemType = {
-    item_id: number; 
-    nickname: string; 
-    category_id: number; 
-    usage_type_id: number; 
-    rated_watts: number; 
-    // NOTE: Future implementation will factor in rated watts for usage calc
-};
 
 /* ItemMenu Component
 --------------------------------------------------------------------------------
@@ -53,98 +34,14 @@ const ItemMenu: React.FC<{
 
     /* State variables
     ----------------------------------------------------------------------------
+    - infoOpenIndex: Index of the item whose info popup is open
     - colors: Theme colors from context
-    - items: List of electrical items for the property
-    - categories: Mapping of category IDs to names
-    - usageTypes: Mapping of usage type IDs to names
-    - infoOpenIndex: Index of the currently open item info popup
+    - items, categories, usageTypes: Data from useElectricalItems hook
     --------------------------------------------------------------------------*/
     const { colors } = useTheme();
-    const [items, setItems] = useState<ItemType[]>([]);
-    const [categories, setCategories] = useState<{ [key: number]: string }>({});
-    const [usageTypes, setUsageTypes] = useState<{ [key: number]: string }>({});
     const [infoOpenIndex, setInfoOpenIndex] = useState<number | null>(null);
-
-    /* Fetch items when propertyId changes
-    ----------------------------------------------------------------------------
-    - Triggered when propertyId is set in PropertyMenu
-    - Fetches electrical items for the selected property
-    - Sets items state with fetched data (used to populate the item list)
-    - Also fetches category and usage type mappings for info dropdowns
-    --------------------------------------------------------------------------*/
-    useEffect(() => {
-        if (!propertyId) return;
-        fetch(`http://127.0.0.1:5000/electrical_items/property/${propertyId}`)
-        .then((response) => response.json())
-        .then((data) => {
-            if (Array.isArray(data)) {
-            setItems(data);
-            } else {
-            setItems([]);
-            console.error("Unexpected response:", data);
-            }
-        })
-        .catch((error) => {
-            setItems([]);
-            console.error("Error fetching items:", error);
-        });
-
-        fetchCategory();
-        fetchUsageType();
-    }, [propertyId]);
-
-    /* Fetch category mappings (id -> name)
-    --------------------------------------------------------------------------*/
-    const fetchCategory = async () => {
-        console.log("Fetching categories");
-        fetch(`http://127.0.0.1:5000/item_categories`)
-        .then((response) => response.json())
-        .then((data) => {
-            if (Array.isArray(data)) {
-                // Transform array to map: { [id]: name }
-                const categoryMap: { [key: number]: string } = {};
-                data.forEach((cat: CategoryType) => {
-                    categoryMap[cat.category_id] = cat.category_name;
-                });
-                setCategories(categoryMap);
-                console.log("Fetched categories:", categoryMap);
-            } else {
-                setCategories({});
-                console.error("Unexpected response:", data);
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching category:", error);
-            setCategories({});
-        });
-    };
-
-    /* Fetch usage type mappings (id -> name)
-    --------------------------------------------------------------------------*/
-    const fetchUsageType = async () => {
-        console.log("Fetching usage types");
-        fetch(`http://127.0.0.1:5000/usage_types`)
-        .then((response) => response.json())
-        .then((data) => {
-            if (Array.isArray(data)) {
-                // Transform array to map: { [id]: name }
-                const usageTypeMap: { [key: number]: string } = {};
-                data.forEach((ut: UsageType) => {
-                    usageTypeMap[ut.usage_type_id] = ut.usage_type_name;
-                });
-                setUsageTypes(usageTypeMap);
-                console.log("Fetched usage types:", usageTypeMap);
-            } else {
-                setUsageTypes({});
-                console.error("Unexpected response:", data);
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching usage types:", error);
-            setUsageTypes({});
-        });
-    };
-
+    const { items, categories, usageTypes } = useElectricalItems(propertyId);
+    
     /* Render ItemMenu component
     ----------------------------------------------------------------------------
     - Displays list of electrical items for the selected property

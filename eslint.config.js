@@ -13,17 +13,37 @@ export default defineConfig([
   ...compat.extends("plugin:@typescript-eslint/recommended"),
   js.configs.recommended,
   {
-    files: ["**/*.{js,jsx,ts,tsx}"],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: "module",
-      },
-      globals: globals.browser,
-    },
-    rules: {
-      "react/react-in-jsx-scope": "off",
-    },
+        files: ["**/*.{js,jsx,ts,tsx}"],
+        languageOptions: {
+            parser: tsParser,
+            parserOptions: {
+                ecmaVersion: 2020,
+                sourceType: "module",
+            },
+            globals: globals.browser,
+        },
+        rules: {
+            "react/react-in-jsx-scope": "off",
+        },
   },
+  // Jest globals for test files
+  {
+        files: ["**/*.test.{js,jsx,ts,tsx}"],
+        languageOptions: {
+        globals: {
+            test: "readonly",
+            expect: "readonly",
+            describe: "readonly",
+            beforeEach: "readonly",
+            afterEach: "readonly",
+            jest: "readonly",
+        },
+        },
+  },
+  {
+    files: ["**/README.md"],
+        rules: {
+            "spellcheck/spell-checker": "off",
+        },
+    },
 ]);
