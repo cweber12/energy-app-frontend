@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
-import "../Components.css";
+import "../../styles/Components.css";
 import Card from "../common/Card";
 import SetUsageEvent from "../action/SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
@@ -24,12 +24,14 @@ const ItemMenu: React.FC<{
     setShowDailyEvents: React.Dispatch<React.SetStateAction<boolean>>;
     showDailyEvents: boolean;
     setItemId: React.Dispatch<React.SetStateAction<string>>;
+    setItemNickname: React.Dispatch<React.SetStateAction<string>>;
 }> = ({
     propertyId, 
     setShowItemInput,
     setShowDailyEvents,
     showDailyEvents,
-    setItemId
+    setItemId, 
+    setItemNickname,
 }) => {
 
     /* State variables
@@ -54,7 +56,7 @@ const ItemMenu: React.FC<{
         <Card>
             <div 
                 className="card-header">
-            <h2>ITEMS</h2> 
+            <h2>Items</h2> 
             <button 
                 onClick={() => setShowItemInput(true)}
                 style={{ 
@@ -120,6 +122,7 @@ const ItemMenu: React.FC<{
                                         }}
                                         onClick={() => {
                                             setItemId(item.item_id.toString());
+                                            setItemNickname(item.nickname);
                                             setShowDailyEvents(prev => !prev);
                                         }}
                                     >

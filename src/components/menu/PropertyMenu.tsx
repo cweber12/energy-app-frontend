@@ -4,7 +4,7 @@ import { Property, PropertyOption } from '../../../types/propertyTypes';
 import Select from 'react-select';
 import type { CSSObjectWithLabel } from "react-select";
 import "../../App.css";
-import "../Components.css";
+import "../../styles/Components.css";
 
 type PropertyMenuProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;

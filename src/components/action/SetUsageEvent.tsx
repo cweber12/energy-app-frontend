@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
-import "../Components.css";
+import "../../styles/Components.css";
 
 type SetUsageEventProps = {
   itemId: number; // ID of the electrical item

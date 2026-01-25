@@ -27,6 +27,7 @@ const AccountDashboard = () => {
     const userId = sessionStorage.getItem("user_id") || "";
     const [readings, setReadings] = useState<IntervalReading[]>([]);
     const [date, setDate] = useState<string>("");
+    const [itemNickname, setItemNickname] = useState<string>("");
     
     
     /* Render Account Dashboard Page
@@ -70,11 +71,13 @@ const AccountDashboard = () => {
                         setShowDailyEvents={setShowDailyEvents}
                         showDailyEvents={showDailyEvents}
                         setItemId={setItemId}
+                        setItemNickname={setItemNickname}
                     />
                     {showDailyEvents && itemId && (
                         <DailyEvents
-                        itemId={parseInt(itemId)} 
-                        setShowDailyEvents={setShowDailyEvents}
+                            itemId={parseInt(itemId)} 
+                            itemNickname={itemNickname}
+                            setShowDailyEvents={setShowDailyEvents}
                         />
                     )}
                 </div>

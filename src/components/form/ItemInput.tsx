@@ -4,7 +4,7 @@ import { useElectricalItems } from "../../hooks/useItem";
 import { addElectricalItem } from "../../services/itemService";
 import { ItemInputForm } from "../../../types/itemTypes";
 import HeaderDropdown from "../common/HeaderDropdown";
-import "../Components.css";
+import "../../styles/Components.css";
 
 // Type definitions for props
 type ItemInputProps = {

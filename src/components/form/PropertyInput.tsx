@@ -1,6 +1,6 @@
 // src/components/properties/PropertyInput.tsx
 import React, { useState } from "react";
-import "../Components.css";
+import "../../styles/Components.css";
 import HeaderDropdown from "../common/HeaderDropdown";
 import { addProperty } from "../../services/propertyService";
 import { PropertyForm } from "../../../types/propertyTypes";

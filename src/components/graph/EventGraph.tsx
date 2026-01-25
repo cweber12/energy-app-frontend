@@ -10,9 +10,11 @@ import {
     CartesianGrid, 
     Legend 
 } from 'recharts';
-import Card from "../common/Card";
 import { useTheme } from "../../context/ThemeContext";
 import { useEventsByDate } from "../../hooks/useEvent";
+import GraphWrapper from "../common/GraphWrapper";
+import "../../App.css";
+import "../../styles/Components.css";
 
 /* Event Graph Component
 --------------------------------------------------------------------------------
@@ -33,10 +35,8 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
         - Tooltip shows breakdown of total time per item on hover.
     --------------------------------------------------------------------------*/
     return (
-        <Card>
-            <div className="card-header">
-                <h2>Item Event Duration | {startDate}</h2>
-            </div>
+        <GraphWrapper>
+            <h2 style={{ marginBottom: "1rem" }}>Item Usage Report | {startDate}</h2>
             <ResponsiveContainer width={800} height={400}>
                 <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -61,7 +61,7 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
                     ))}
                 </BarChart>
             </ResponsiveContainer>
-        </Card>
+        </GraphWrapper>
     );
 };
 

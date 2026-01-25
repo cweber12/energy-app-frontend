@@ -1,6 +1,6 @@
 // src/components/items/GetDailyEvents.tsx
 import React, { useEffect, useState } from "react";
-import "../Components.css";
+import "../../styles/Components.css";
 import { useTheme } from "../../context/ThemeContext";
 import { groupEventsByDate, formatElapsed } from "../../services/eventService";
 import { EventSummary } from "../../../types/eventTypes";
@@ -15,10 +15,11 @@ Props:
     - itemId: ID of the electrical item to fetch usage events for.
 ------------------------------------------------------------------------------*/
 const DailyEvents: React.FC<{ 
-    itemId: number, 
+    itemId: number,
+    itemNickname: string,
     setShowDailyEvents: React.Dispatch<React.SetStateAction<boolean>>
 
-}> = ({ itemId, setShowDailyEvents }) => {
+}> = ({ itemId, itemNickname, setShowDailyEvents }) => {
     const { colors } = useTheme();
     const [usageEvents, setUsageEvents] = useState<EventSummary[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -77,17 +78,19 @@ const DailyEvents: React.FC<{
                             width: "100%",
                             marginBottom: "1rem"
                         }}>
-                        <h2>Events For Item {itemId}</h2>
-                        <button 
-                            onClick={() => setShowDailyEvents(false)}
-                            style={{ 
-                                backgroundColor: colors.button,
-                                color: colors.buttonText,
-                                marginLeft: "auto"
-                            }}
-                        >
-                            Close
-                        </button>
+                        <div className="card-header">
+                            <h2>All {itemNickname} Use</h2>
+                            <button 
+                                onClick={() => setShowDailyEvents(false)}
+                                style={{ 
+                                    backgroundColor: colors.button,
+                                    color: colors.buttonText,
+                                    marginLeft: "auto"
+                                }}
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
                     <table className="usage-events-table">
                         <thead>

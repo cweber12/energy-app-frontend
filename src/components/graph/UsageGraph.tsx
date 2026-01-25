@@ -9,9 +9,9 @@ import {
     ResponsiveContainer, 
     CartesianGrid, 
 } from 'recharts';
-import Card from '../common/Card';
+import GraphWrapper from '../common/GraphWrapper';
 import "../../App.css";
-import "../Components.css";
+import "../../styles/Components.css";
 import { useTheme } from '../../context/ThemeContext';
 
 // Type for individual interval reading (from energy provider)
@@ -40,10 +40,8 @@ const UsageGraph: React.FC<{
         - Tooltip shows kWh value on hover.
     --------------------------------------------------------------------------*/
     return (
-        <Card>
-            <div className="card-header">
-                <h2>Hourly Usage | {date}</h2>
-            </div>
+        <GraphWrapper>
+            <h2 style={{ marginBottom: "1rem" }}>Hourly Usage Report | {date}</h2>
             {readings.length > 0 && (
                 <ResponsiveContainer width={800} height={400}>
                     <BarChart data={readings}>
@@ -58,7 +56,7 @@ const UsageGraph: React.FC<{
                     </BarChart>
                 </ResponsiveContainer>
             )}
-        </Card>
+        </GraphWrapper>
     );
 };
 

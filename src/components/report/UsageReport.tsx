@@ -2,7 +2,7 @@
 import React from 'react';
 import { IntervalReading } from '../../../types/reportTypes';
 import "../../App.css";
-import "../Components.css";
+import "../../styles/Components.css";
 import Card from '../common/Card';
 
 /*  Usage Report Component

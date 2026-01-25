@@ -1,6 +1,6 @@
 // src/components/report/EventReport.tsx
 import React, { useEffect, useState } from "react";
-import "../Components.css";
+import "../../styles/Components.css";
 import Card from "../common/Card";
 import "../../App.css";
 import { GroupedEvents } from "../../../types/eventTypes"; 

@@ -1,19 +1,14 @@
 // src/context/ThemeContext.tsx
 import React, { createContext, useContext } from "react";
 import { useColorScheme } from "../hooks/useColorScheme";
-import { ColorScheme } from "../styles/ColorScheme";
-import type { ColorSchemeType } from "../styles/ColorScheme";
+import { ColorScheme } from "../constants/ColorScheme";
+import type { ThemeContextType } from "../../types/themeTypes";
 
-/* Context: ThemeContext
+/* Theme Context
 --------------------------------------------------------------------------------
-Description: Provides the current color scheme (light or dark) and the 
-corresponding color values to the entire application.
+Provides the current color scheme (light or dark) and the corresponding color 
+values to the entire application.
 ------------------------------------------------------------------------------*/
-
-type ThemeContextType = {
-  colors: ColorSchemeType;
-  scheme: "light" | "dark";
-};
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 

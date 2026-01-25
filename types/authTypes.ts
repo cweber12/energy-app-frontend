@@ -10,3 +10,10 @@ export type LoginResponse = {
     username: string;
     email: string;
 };
+
+export type RegisterResult = {
+  userId: string | null;
+  email: string | null;
+  sessionExists: boolean;
+  errorMessage: string | null;
+};

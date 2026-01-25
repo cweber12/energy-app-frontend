@@ -2,7 +2,7 @@
 import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
-import "../Components.css";
+import "../../styles/Components.css";
 
 /* Home Header Component
 --------------------------------------------------------------------------------

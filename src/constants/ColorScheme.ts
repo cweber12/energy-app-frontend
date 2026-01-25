@@ -1,36 +1,12 @@
 // src/styles/Colors.ts
+import type { ColorSchemeType } from "../../types/themeTypes";
 
-/*  Colors Module
+/*  Color Scheme Definitions
 --------------------------------------------------------------------------------
-    Description: This module defines color schemes for light and dark modes.
-    It exports a Colors object containing color values for various UI elements.
+Defines color schemes for dark and light themes.
 ------------------------------------------------------------------------------*/
 
-export type ColorSchemeType = {
-    title: string;
-    warning: string;
-    primaryText: string;
-    secondaryText: string;
-    tertiaryText: string;
-    primaryBackground: string;
-    secondaryBackground: string;
-    tertiaryBackground: string;
-    button: string;
-    buttonHover: string;
-    buttonText: string;
-    buttonDisabled: string;
-    buttonStart: string;
-    buttonStartHover: string;
-    buttonStop: string;
-    buttonStopHover: string;
-    icon: string;
-    graph: string;
-    graphStacked: string[];
-    
-    
-};
-
-export const ColorScheme = {
+export const ColorScheme : { dark: ColorSchemeType; light: ColorSchemeType } = {
 
     dark: {
         title: "#E4FF30",

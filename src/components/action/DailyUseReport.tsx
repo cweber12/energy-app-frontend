@@ -1,6 +1,6 @@
 // src/components/items/DailyUseReport.tsx
 import React, { useEffect, useState } from "react";
-import "../Components.css";
+import "../../styles/Components.css";
 
 type DailyUsage = {
   usage_date: string; // Date of usage

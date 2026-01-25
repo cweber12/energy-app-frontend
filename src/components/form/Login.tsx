@@ -2,10 +2,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
-import { login } from "../../services/authService";
+import { loginWithSupabase } from "../../services/authService";
 import { LoginForm } from "../../../types/authTypes";
 import "../../App.css";
-import "../Components.css";
+import "../../styles/Components.css";
 import FormWrapper from "../common/FormWrapper";
 import { NavigateFunction } from "react-router-dom";
 
@@ -40,11 +40,10 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
     --------------------------------------------------------------------------*/
     const onSubmit = async (data: LoginForm) => {
         try {
-            const result = await login(data.email, data.password);
-            console.log('Login | Login successful:', result);
+            const result = await loginWithSupabase(data.email, data.password);
             if (result.email) {
                 sessionStorage.setItem("username", result.username);
-                sessionStorage.setItem("user_id", result.user_id);
+                sessionStorage.setItem("user_id", result.user_id ?? "");
                 navigate("/account");
             } else {
                 sessionStorage.removeItem("username");
