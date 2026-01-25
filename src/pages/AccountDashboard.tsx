@@ -6,15 +6,10 @@ import PageWrapper from '../components/common/PageWrapper';
 import PropertyInput from '../components/form/PropertyInput';
 import ItemMenu from '../components/menu/ItemMenu';
 import ItemInput from '../components/form/ItemInput';
-import GetDailyEvents from '../components/action/GetDailyEvents';
+import DailyEvents from '../components/action/DailyEvents';
 import UsageGraph from '../components/graph/UsageGraph';
 import EventGraph from '../components/graph/EventGraph';
-
-// Type for individual interval reading (from energy provider)
-type IntervalReading = {
-    hour: string; // e.g. "14:00"
-    kWh: number; // e.g. 1.234
-};
+import { IntervalReading } from '../../types/reportTypes';
 
 /*  Account Dashboard Page
 --------------------------------------------------------------------------------
@@ -68,27 +63,31 @@ const AccountDashboard = () => {
                 />
             )}
             {propertyId && (
-                <ItemMenu 
-                    propertyId={propertyId}
-                    setShowItemInput={setShowItemInput}
-                    setShowDailyEvents={setShowDailyEvents}
-                    setItemId={setItemId}
-                />
+                <div className="row" style={{gap: 0, alignItems: "flex-start"}}>
+                    <ItemMenu 
+                        propertyId={propertyId}
+                        setShowItemInput={setShowItemInput}
+                        setShowDailyEvents={setShowDailyEvents}
+                        showDailyEvents={showDailyEvents}
+                        setItemId={setItemId}
+                    />
+                    {showDailyEvents && itemId && (
+                        <DailyEvents
+                        itemId={parseInt(itemId)} 
+                        setShowDailyEvents={setShowDailyEvents}
+                        />
+                    )}
+                </div>
             )}
-            <div className="column">
-                {showDailyEvents && itemId && (
-                    <GetDailyEvents itemId={parseInt(itemId)} />
-                )}
-                {readings.length > 0 && (
-                    <>
-                        <UsageGraph 
-                            readings={readings}
-                            date={date}
-                         />
-                        <EventGraph startDate={date} />
-                    </>
-                )}
-            </div>
+            {readings.length > 0 && (
+                <div className="column" style={{ gap: 0 }}>
+                    <UsageGraph 
+                        readings={readings}
+                        date={date}
+                        />
+                    <EventGraph startDate={date} />
+                </div>
+            )}
         </PageWrapper>
         </>
     );

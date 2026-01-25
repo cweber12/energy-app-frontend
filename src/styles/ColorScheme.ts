@@ -7,18 +7,14 @@
 ------------------------------------------------------------------------------*/
 
 export type ColorSchemeType = {
-    text: string;
     title: string;
     warning: string;
-    listItemBackground: string;
-    listItemText: string;
-    background: string;
-    navBackground: string;
-    dropdownBackground: string;
-    cardBackground: string;
-    cardText: string;
-    popupBackground: string;
-    popupText: string;
+    primaryText: string;
+    secondaryText: string;
+    tertiaryText: string;
+    primaryBackground: string;
+    secondaryBackground: string;
+    tertiaryBackground: string;
     button: string;
     buttonHover: string;
     buttonText: string;
@@ -37,27 +33,23 @@ export type ColorSchemeType = {
 export const ColorScheme = {
 
     dark: {
-        text: "#EEEEEE",
-        title: "#fcffe5",
+        title: "#E4FF30",
         warning: "#FF0B55",
-        listItemBackground: "#ffffff",
-        listItemText: "#000000",      
-        background: "#757575",
-        navBackground: "#121214",
-        dropdownBackground: "#000000",
-        cardBackground: "#171717",
-        cardText: "#FFFFFF",
-        popupBackground: "#ffffff",
-        popupText: "#000000",
-        button: "#259dff",
+        primaryText: "#FFFFFF",
+        secondaryText: "#EEEEEE",
+        tertiaryText: "#000000",
+        primaryBackground: "#0f0f0f", 
+        secondaryBackground: "#000000",
+        tertiaryBackground: "#FFFFFF",    
+        button: "#008BFF",
         buttonHover: "#00559a",
         buttonDisabled: "#444444",
         buttonText: "#000000",
-        buttonStart: "#73c833",
+        buttonStart: "#3CCF4E",
         buttonStartHover: "#1e7e34",
         buttonStop: "#cc3a3a",
         buttonStopHover: "#bd2130", 
-        icon: "#0e0e0e",
+        icon: "#000000",
         graph: "#E4FF30",
         graphStacked: [
             "#FF5733",
@@ -71,18 +63,14 @@ export const ColorScheme = {
     },
 
     light: {
-        text: "#FFFFFF",
         title: "#FF6500",
-        warning: "#FF6500",       
-        listItemBackground: "#f0f0f0",
-        listItemText: "#000000",
-        background: "#222222",
-        navBackground: "#121214",
-        dropdownBackground: "#1E3E62",
-        cardBackground: "#1E3E62",
-        cardText: "#FFFFFF",
-        popupBackground: "#000000",
-        popupText: "#FFFFFF",
+        warning: "#FF6500",
+        primaryText: "#000000",
+        secondaryText: "#333333",
+        tertiaryText: "#666666",       
+        primaryBackground: "#FFFFFF",
+        secondaryBackground: "#E0E0E0",
+        tertiaryBackground: "#FFFFFF",
         button: "#008BFF",
         buttonHover: "#00559a",
         buttonText: "#000000",

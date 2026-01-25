@@ -18,3 +18,9 @@ export type HourlyTotals = {
     [nickname: string]: number | string; // total time per item
 };
 
+export type EventSummary = {
+  event_id: number;
+  start_ts: string;
+  end_ts: string | null;
+};
+

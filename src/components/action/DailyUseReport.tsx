@@ -1,4 +1,4 @@
-// src/components/items/GetDailyUse.tsx
+// src/components/items/DailyUseReport.tsx
 import React, { useEffect, useState } from "react";
 import "../Components.css";
 
@@ -7,13 +7,13 @@ type DailyUsage = {
   total_usage_minutes: number; // Total usage time in minutes
 };
 
-/* GetDailyUse Component
+/* DailyUseReport Component
 --------------------------------------------------------------------------------
 Description: Fetches and displays daily usage totals for a given item.
 Props:
     - itemId: ID of the electrical item to fetch usage for.
 ------------------------------------------------------------------------------*/
-const GetDailyUse: React.FC<{ itemId: number }> = ({ itemId }) => {
+const DailyUseReport: React.FC<{ itemId: number }> = ({ itemId }) => {
     const [dailyUsage, setDailyUsage] = useState<DailyUsage[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -48,23 +48,28 @@ const GetDailyUse: React.FC<{ itemId: number }> = ({ itemId }) => {
         }
     }, [itemId]);
 
+    const latestUsage = dailyUsage.length > 0
+        ? [...dailyUsage].sort((a, b) => b.usage_date.localeCompare(a.usage_date))[0]
+        : null;
+
     /* Render daily usage totals
     ----------------------------------------------------------------------------
     - Displays a list of dates with corresponding total usage time in minutes
     --------------------------------------------------------------------------*/
     return (
         <div>
-        {loading && <div>Loading...</div>}
-        {error && <div style={{ color: 'red' }}>Error: {error}</div>}
-        <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
-            {dailyUsage.map((usage) => (
-            <li key={usage.usage_date}>
-                <strong>Total Run Time | {usage.usage_date}</strong> | {usage.total_usage_minutes.toFixed(2)} minutes
-            </li>
-            ))}
-        </ul>
+            {loading && <div>Loading...</div>}
+            {error && <div style={{ color: 'red' }}>Error: {error}</div>}
+            {latestUsage && (
+            <div className="daily-usage-report">
+                <p>
+                    <strong>Last Use:</strong> {new Date(latestUsage.usage_date).toLocaleDateString()} for{" "}
+                    {latestUsage.total_usage_minutes.toFixed(2)} minutes
+                </p>
+            </div>
+            )}
         </div>
     );
 };
 
-export default GetDailyUse;
+export default DailyUseReport;

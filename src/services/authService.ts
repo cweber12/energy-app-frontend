@@ -1,5 +1,5 @@
 // src/services/authService.ts
-import { LoginResponse } from "../../types/authType";
+import { LoginResponse } from "../../types/authTypes";
 
 /* User Login
 --------------------------------------------------------------------------------

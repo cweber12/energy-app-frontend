@@ -43,7 +43,7 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     return (
         <header 
             className="header"
-            style={{ backgroundColor: colors.navBackground }}
+            style={{ backgroundColor: colors.secondaryBackground }}
             >
             <div 
                 style={{

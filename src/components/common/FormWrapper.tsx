@@ -15,7 +15,7 @@ const FormWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div 
         className="form-wrapper" 
-        style={{ backgroundColor: colors.navBackground }}
+        style={{ backgroundColor: colors.secondaryBackground }}
         >
         {children}
     </div>

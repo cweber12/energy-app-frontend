@@ -34,7 +34,9 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
     --------------------------------------------------------------------------*/
     return (
         <Card>
-            <h2 style={{marginBottom: "1rem"}}>Hourly Total Time (min) : {startDate}</h2>
+            <div className="card-header">
+                <h2>Item Event Duration | {startDate}</h2>
+            </div>
             <ResponsiveContainer width={800} height={400}>
                 <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />

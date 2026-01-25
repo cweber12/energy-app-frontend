@@ -15,7 +15,7 @@ const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div 
         className="card" 
-        style={{ backgroundColor: colors.cardBackground, color: colors.text }}
+        style={{ backgroundColor: colors.secondaryBackground, color: colors.secondaryText }}
         >
         {children}
     </div>

@@ -3,7 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
 import { login } from "../../services/authService";
-import { LoginForm } from "../../../types/authType";
+import { LoginForm } from "../../../types/authTypes";
 import "../../App.css";
 import "../Components.css";
 import FormWrapper from "../common/FormWrapper";

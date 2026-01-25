@@ -41,7 +41,9 @@ const UsageGraph: React.FC<{
     --------------------------------------------------------------------------*/
     return (
         <Card>
-            <h2 style={{marginBottom: "1rem"}}>Hourly Usage (kWh) : {date}</h2>
+            <div className="card-header">
+                <h2>Hourly Usage | {date}</h2>
+            </div>
             {readings.length > 0 && (
                 <ResponsiveContainer width={800} height={400}>
                     <BarChart data={readings}>

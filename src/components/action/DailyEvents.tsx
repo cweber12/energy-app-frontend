@@ -2,51 +2,9 @@
 import React, { useEffect, useState } from "react";
 import "../Components.css";
 import { useTheme } from "../../context/ThemeContext";
+import { groupEventsByDate, formatElapsed } from "../../services/eventService";
+import { EventSummary } from "../../../types/eventTypes";
 import Card from "../common/Card";
-
-type UsageEvent = {
-  event_id: number;
-  start_ts: string;
-  end_ts: string | null;
-};
-
-/* Helper function to group usage events by date
---------------------------------------------------------------------------------
-- Groups an array of UsageEvent objects by their usage date (YYYY-MM-DD).
-- Returns an object where keys are dates and values are arrays of UsageEvent.
-------------------------------------------------------------------------------*/
-const groupEventsByDate = (events: UsageEvent[]) => {
-    const grouped: { [date: string]: UsageEvent[] } = {};
-    events.forEach(event => {
-        const dateKey = new Date(event.start_ts).toISOString().slice(0, 10); 
-        if (!grouped[dateKey]) grouped[dateKey] = [];
-        grouped[dateKey].push(event);
-    });
-    return grouped;
-};
-
-/* Helper function to format elapsed time between start and end timestamps
---------------------------------------------------------------------------------
-- Takes start and end ISO-8601 timestamp strings.
-- Returns a formatted string showing elapsed time in h, m, s.
-------------------------------------------------------------------------------*/
-const formatElapsed = (start: string, end: string | null) => {
-    if (!end) return "Ongoing";
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const ms = endDate.getTime() - startDate.getTime();
-    const sec = Math.floor(ms / 1000);
-    const min = Math.floor(sec / 60);
-    const hr = Math.floor(min / 60);
-    const remMin = min % 60;
-    if (hr === 0 && remMin === 0) {
-        return `${sec % 60}s`;
-    } else if (hr === 0) {
-        return `${remMin}m ${sec % 60}s`;
-    } else {
-        return `${hr}h ${remMin}m ${sec % 60}s`;
-    }
-};
 
 /* GetDailyEvents Component
 --------------------------------------------------------------------------------
@@ -56,9 +14,13 @@ dropdown.
 Props:
     - itemId: ID of the electrical item to fetch usage events for.
 ------------------------------------------------------------------------------*/
-const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
+const DailyEvents: React.FC<{ 
+    itemId: number, 
+    setShowDailyEvents: React.Dispatch<React.SetStateAction<boolean>>
+
+}> = ({ itemId, setShowDailyEvents }) => {
     const { colors } = useTheme();
-    const [usageEvents, setUsageEvents] = useState<UsageEvent[]>([]);
+    const [usageEvents, setUsageEvents] = useState<EventSummary[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -77,7 +39,7 @@ const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
             if (!response.ok) {
                 throw new Error(`${response.statusText}`);
             }
-            const data: UsageEvent[] = await response.json();
+            const data: EventSummary[] = await response.json();
             setUsageEvents(data);
             } catch (err) {
             setError(err instanceof Error ? err.message : "Unknown error");
@@ -101,13 +63,32 @@ const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
     return (
         <div>
             {loading && <p>Loading usage events...</p>}
-            {error && <p style={{ color: colors.text }}>Error: {error}</p>}
+            {error && <p style={{ color: colors.primaryText }}>Error: {error}</p>}
             {!loading && !error && usageEvents.length === 0 && (
                 <p>No usage events found for this item.</p>
             )}
             {!loading && !error && usageEvents.length > 0 && (
                 <Card>
-                    <h2 style={{marginBottom: "1rem"}}>Usage Events</h2>
+                    <div className="row" 
+                        style={{ 
+                            justifyContent: "space-between", 
+                            alignItems: "center",
+                            boxSizing: "border-box",
+                            width: "100%",
+                            marginBottom: "1rem"
+                        }}>
+                        <h2>Events For Item {itemId}</h2>
+                        <button 
+                            onClick={() => setShowDailyEvents(false)}
+                            style={{ 
+                                backgroundColor: colors.button,
+                                color: colors.buttonText,
+                                marginLeft: "auto"
+                            }}
+                        >
+                            Close
+                        </button>
+                    </div>
                     <table className="usage-events-table">
                         <thead>
                             <tr>
@@ -140,4 +121,4 @@ const GetDailyEvents: React.FC<{ itemId: number }> = ({ itemId }) => {
     );
 };
 
-export default GetDailyEvents;
+export default DailyEvents;

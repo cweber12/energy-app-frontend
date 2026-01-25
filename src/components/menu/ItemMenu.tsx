@@ -6,7 +6,7 @@ import "../Components.css";
 import Card from "../common/Card";
 import SetUsageEvent from "../action/SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import GetDailyUse from "../action/GetDailyUse";
+import DailyUseReport from "../action/DailyUseReport";
 import { useElectricalItems } from "../../hooks/useItem";
 
 /* ItemMenu Component
@@ -22,11 +22,13 @@ const ItemMenu: React.FC<{
     propertyId: string;
     setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
     setShowDailyEvents: React.Dispatch<React.SetStateAction<boolean>>;
+    showDailyEvents: boolean;
     setItemId: React.Dispatch<React.SetStateAction<string>>;
 }> = ({
     propertyId, 
     setShowItemInput,
     setShowDailyEvents,
+    showDailyEvents,
     setItemId
 }) => {
 
@@ -51,16 +53,8 @@ const ItemMenu: React.FC<{
     return (
         <Card>
             <div 
-            className="row" 
-            style={{ 
-                justifyContent: "space-between", 
-                alignItems: "center", 
-                boxSizing: "border-box",
-                width: "100%", 
-                backgroundColor: colors.cardBackground,
-                marginBottom: "1rem",
-                }}>
-            <h2>Electrical Items</h2> 
+                className="card-header">
+            <h2>ITEMS</h2> 
             <button 
                 onClick={() => setShowItemInput(true)}
                 style={{ 
@@ -68,18 +62,18 @@ const ItemMenu: React.FC<{
                     color: colors.buttonText,
                 }}
                 >
-                + Add Item
+                Add
             </button>
             </div>
             
-            <ul className="list" style={{padding: 0, margin: 0, borderRadius: "8px", listStyle: "none"}}>
+            <ul className="list" style={{listStyle: "none"}}>
                 {items.map((item, idx) => (
                     <React.Fragment key={item.item_id}>
                         <li 
                             className="list-item"
                             style={{
-                                backgroundColor: colors.listItemBackground,
-                                color: colors.listItemText,
+                                backgroundColor: colors.tertiaryBackground,
+                                color: colors.tertiaryText,
                                 position: "relative",
                             }}
                         >
@@ -110,13 +104,15 @@ const ItemMenu: React.FC<{
                             <div
                                 className="item-info-popup"
                                 style={{
-                                    background: colors.popupBackground,
-                                    color: colors.popupText,
+                                    background: colors.secondaryBackground,
+                                    color: colors.secondaryText,
                                     position: "relative",
                                 }}
                             >
-                                
-                                <GetDailyUse itemId={item.item_id} />
+                                <div className="row" style={{width: "100%", justifyContent: "space-between"}}>
+                                    <DailyUseReport 
+                                        itemId={item.item_id}
+                                    />
                                     <button
                                         style={{
                                             backgroundColor: colors.button,
@@ -124,11 +120,12 @@ const ItemMenu: React.FC<{
                                         }}
                                         onClick={() => {
                                             setItemId(item.item_id.toString());
-                                            setShowDailyEvents(true);
+                                            setShowDailyEvents(prev => !prev);
                                         }}
                                     >
-                                        View All
+                                        {showDailyEvents ? "Hide All" : "View All"}
                                     </button>
+                                </div>
                              
                                 <div>Category | {categories[item.category_id]}</div>
                                 <div>Usage Type | {usageTypes[item.usage_type_id]}</div>

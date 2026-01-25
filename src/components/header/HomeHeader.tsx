@@ -14,7 +14,7 @@ const HomeHeader = () => {
     return (
         <header 
             className="header" 
-            style={{backgroundColor: colors.navBackground}}
+            style={{backgroundColor: colors.secondaryBackground}}
             >
             <h1 style={{ color: colors.title}}>
                 WattWatch
