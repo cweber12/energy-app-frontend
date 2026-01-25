@@ -1,34 +1,12 @@
 // src/services/groupEvents.ts
-
-import { GroupedEvent } from "../hooks/useEventsByDate";
-
-type Event = {
-    event_id: number; // identifies start/end event pair
-    start_ts: string; // ISO-8601 string ("2024-06-15T14:30:00Z")
-    end_ts: string | null; // ISO-8601 string or null
-    elapsed_minutes: number; // total time in minutes
-};
-
-type GroupedEvents = {
-    usage_date: string; // "2024-06-15"
-    nickname: string; // (Fridge, Washer, etc.)
-    events: Event[]; // array of events for that item on that date
-};
-
-type HourlyTotals = {
-    hour: string;
-    [nickname: string]: number | string; // total time per item
-};
+import { GroupedEvents, HourlyTotals } from "../../types/eventTypes";
 
 /* Helper function to group events by hour and sum elapsed minutes per item 
 --------------------------------------------------------------------------------
-Parameters:
-- data: Array of Event objects grouped by date and nickname
-Returns:    
-- hourlyTotals: Array of HourlyTotals objects for each item used that hour
+Parameters | data: GroupedEvents[] array of grouped event data.
+--------------------------------------------------------------------------------
+Returns    | HourlyTotals[] array for charting
 ------------------------------------------------------------------------------*/
-
-
 export function groupEventsByHour(data: GroupedEvents[]): HourlyTotals[] {
     // Create hours array: {"00:00", "01:00", ..., "23:00"}
     const hours = Array.from({ length: 24 }, (_, i) =>
@@ -64,8 +42,11 @@ export function groupEventsByHour(data: GroupedEvents[]): HourlyTotals[] {
     return hourlyTotals;
 }
 
-export async function fetchEventsByDate(startDate: string): Promise<GroupedEvent[]> {
-    const response = await fetch(`http://127.0.0.1:5000/item_usage_events/by_date/${startDate}`);
+export async function fetchEventsByDate(
+    startDate: string
+): Promise<GroupedEvents[]> {
+    const response = 
+    await fetch(`http://127.0.0.1:5000/item_usage_events/by_date/${startDate}`);
     if (!response.ok) throw new Error("Failed to fetch events by date");
     return response.json();
 }

@@ -5,43 +5,25 @@ import {
     fetchItemCategories, 
     fetchUsageTypes 
 } from "../services/itemService";
+import { 
+    CategoryMap, 
+    UsageTypeMap, 
+    Item 
+} from "../../types/itemTypes";
 
-// Type definition for category mapping (1 -> "HVAC", etc.)
-export type CategoryType = {
-    category_id: number;
-    category_name: string;
-};
-
-// Type definition for usage type mapping (1 -> "Intermittent", etc.)
-export type UsageType = {
-    usage_type_id: number;
-    usage_type_name: string;
-};
-
-// Type definition for electrical item
-export type ItemType = {
-    item_id: number; 
-    nickname: string; 
-    category_id: number; 
-    usage_type_id: number; 
-    rated_watts: number; 
-};
-
-/* Fetch Electrical Items Hook
+/* Fetch Electrical Items by Property
 --------------------------------------------------------------------------------
-Description: Fetches electrical items associated with a property ID, along with
-their categories and usage types.
 Params:
     - propertyId: ID of the property to fetch items for.
 Returns:
-    - items: List of electrical items (ItemType).
-    - categories: Mapping of category IDs to category names (CategoryType).
-    - usageTypes: Mapping of usage type IDs to usage type names (UsageType).
+    - items: Item[]
+    - categories: CategoryMap;
+    - usageTypes: UsageTypeMap;
 ------------------------------------------------------------------------------*/
 export function useElectricalItems(propertyId: string) {
-    const [items, setItems] = useState<ItemType[]>([]);
-    const [categories, setCategories] = useState<{ [key: number]: string }>({});
-    const [usageTypes, setUsageTypes] = useState<{ [key: number]: string }>({});
+    const [items, setItems] = useState<Item[]>([]);
+    const [categories, setCategories] = useState<CategoryMap>({});
+    const [usageTypes, setUsageTypes] = useState<UsageTypeMap>({});
 
     useEffect(() => {
         if (!propertyId) return;
@@ -70,9 +52,3 @@ export function useElectricalItems(propertyId: string) {
 
     return { items, categories, usageTypes };
 }
-
-export type UseElectricalItemsReturn = {
-    items: ItemType[];
-    categories: CategoryType[];
-    usageTypes: UsageType[];
-};

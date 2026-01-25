@@ -5,12 +5,7 @@ import "../../App.css";
 import "../Components.css";
 import PropertyMenu from "../menu/PropertyMenu";
 import UploadUsageReport from "../action/UploadUsageReport";
-
-// Type for individual interval reading (from energy provider)
-type IntervalReading = {
-    hour: string; // e.g. "14:00"
-    kWh: number; // e.g. 1.234
-};
+import { IntervalReading } from '../../../types/reportTypes';
 
 type AccountDashboardHeaderProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;

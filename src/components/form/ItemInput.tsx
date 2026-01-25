@@ -1,8 +1,8 @@
 // src/components/items/ItemInput.tsx
 import React, { useState } from "react";
-import { useElectricalItems } from "../../hooks/useElectricalItems";
+import { useElectricalItems } from "../../hooks/useItem";
 import { addElectricalItem } from "../../services/itemService";
-
+import { ItemInputForm } from "../../../types/itemTypes";
 import HeaderDropdown from "../common/HeaderDropdown";
 import "../Components.css";
 
@@ -10,14 +10,6 @@ import "../Components.css";
 type ItemInputProps = {
     propertyId: string;
     setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-// Type definition for form state
-type FormType = {
-    category_id: number | ""; 
-    usage_type_id: number | "";
-    nickname: string;
-    rated_watts: number | "";
 };
 
 /*  Item Input Component
@@ -32,7 +24,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
     propertyId, 
     setShowItemInput 
 }) => {
-    const [form, setForm] = useState<FormType>({
+    const [form, setForm] = useState<ItemInputForm>({
         category_id: "", 
         usage_type_id: "", 
         nickname: "", 

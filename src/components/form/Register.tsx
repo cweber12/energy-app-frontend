@@ -3,17 +3,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
 import { fetchUserByUsername, registerUser } from "../../services/userService";
+import { RegisterForm } from "../../../types/userTypes";
 import "../../App.css";
 import "../Components.css";
 import FormWrapper from "../common/FormWrapper";
-
-// Form data type
-type FormData = {
-    username: string;
-    password: string;
-    email: string;   
-};
-
 /*  Register Component
 --------------------------------------------------------------------------------
 Description: A registration form that allows new users to sign up.
@@ -27,14 +20,14 @@ const Register: React.FC = () => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormData>();
+    } = useForm<RegisterForm>();
 
     /* Handle form submission to register new user
     ----------------------------------------------------------------------------
     - fetchUserByUsername checks if username already exists
     - If not, registerUser sends POST request to create new user
     --------------------------------------------------------------------------*/
-    const onSubmit = async (data: FormData) => {
+    const onSubmit = async (data: RegisterForm) => {
         const user = await fetchUserByUsername(data.username);
         if (user) {
             console.log("Register | Username already exists.");

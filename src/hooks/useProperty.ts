@@ -1,27 +1,10 @@
 // src/hooks/useProperties.ts
 import { useState, useEffect } from "react";
 import { fetchPropertiesByUser } from "../services/propertyService";
+import { Property, PropertyOption } from "../../types/propertyTypes";
 
-
-// Type definition for property object
-export type Property = {
-    property_id: string;
-    street_address: string;
-    city: string;
-    state_abbreviation: string;
-    zip: string;
-};
-
-// Type definition for property option in dropdown 
-export type PropertyOption = {
-    value: string; // property_id
-    label: string; // street_address
-};
-
-/* Fetch Properties Hook
+/* Fetch Properties by User
 --------------------------------------------------------------------------------
-Description: Fetches properties associated with a user ID with 
-fetchPropertiesByUser and prepares options for a dropdown menu.
 Params:
     - userId: ID of the user to fetch properties for.
 Returns:

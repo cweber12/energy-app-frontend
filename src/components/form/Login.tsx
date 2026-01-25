@@ -3,16 +3,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
 import { login } from "../../services/authService";
+import { LoginForm } from "../../../types/authType";
 import "../../App.css";
 import "../Components.css";
 import FormWrapper from "../common/FormWrapper";
 import { NavigateFunction } from "react-router-dom";
-
-// Define the shape of the form data
-type FormData = {
-    email: string;
-    password: string;
-};
 
 /*  Login Component
 --------------------------------------------------------------------------------
@@ -29,7 +24,7 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormData>();
+    } = useForm<LoginForm>();
 
     // Consolidate button styling
     const buttonProps = {
@@ -43,7 +38,7 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
     ----------------------------------------------------------------------------
     - Sends POST request with email and password
     --------------------------------------------------------------------------*/
-    const onSubmit = async (data: FormData) => {
+    const onSubmit = async (data: LoginForm) => {
         try {
             const result = await login(data.email, data.password);
             console.log('Login | Login successful:', result);

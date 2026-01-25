@@ -1,12 +1,13 @@
-import { Property } from "../hooks/useProperties";
+// src/services/propertyService.ts
+import { Property, PropertyForm } from "../../types/propertyTypes";
 
-export type PropertyForm = {
-    street_address: string;
-    city: string;
-    state_abbreviation: string;
-    zip: string;
-};
-
+/* Add Property
+--------------------------------------------------------------------------------
+Params   | userId: ID of the user adding the property.
+         | form: PropertyForm object with property details.
+--------------------------------------------------------------------------------
+Returns  | Response object from the fetch call.
+------------------------------------------------------------------------------*/
 export async function addProperty(userId: string, form: PropertyForm) {
     const response = await fetch("http://127.0.0.1:5000/properties", {
         method: "POST",
@@ -19,6 +20,12 @@ export async function addProperty(userId: string, form: PropertyForm) {
     return response;
 }
 
+/* Fetch Properties by User
+--------------------------------------------------------------------------------
+Params   | userId: ID of the user to fetch properties for.
+--------------------------------------------------------------------------------
+Returns  | Property[] array of property objects.
+------------------------------------------------------------------------------*/
 export async function fetchPropertiesByUser(userId: string): Promise<Property[]> {
     const response = await fetch(`http://127.0.0.1:5000/properties/${userId}`);
     if (!response.ok) throw new Error("Failed to fetch properties");

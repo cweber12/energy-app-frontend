@@ -1,14 +1,9 @@
 // src/components/report/UsageReport.tsx
 import React from 'react';
+import { IntervalReading } from '../../../types/reportTypes';
 import "../../App.css";
 import "../Components.css";
 import Card from '../common/Card';
-
-// Type for individual interval reading (tuple)
-type IntervalReading = {
-    hour: string;
-    kWh: number;
-};
 
 /*  Usage Report Component
 --------------------------------------------------------------------------------

@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import "../Components.css";
 import HeaderDropdown from "../common/HeaderDropdown";
-import { addProperty, PropertyForm } from "../../services/propertyService";
-
+import { addProperty } from "../../services/propertyService";
+import { PropertyForm } from "../../../types/propertyTypes";
 
 /*  Property Input Component
 --------------------------------------------------------------------------------

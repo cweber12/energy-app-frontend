@@ -7,9 +7,7 @@ import Card from "../common/Card";
 import SetUsageEvent from "../action/SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import GetDailyUse from "../action/GetDailyUse";
-import { useElectricalItems } from "../../hooks/useElectricalItems";
-
-
+import { useElectricalItems } from "../../hooks/useItem";
 
 /* ItemMenu Component
 --------------------------------------------------------------------------------
@@ -34,7 +32,7 @@ const ItemMenu: React.FC<{
 
     /* State variables
     ----------------------------------------------------------------------------
-    - infoOpenIndex: Index of the item whose info popup is open
+    - infoOpenIndex: Index of the item with info popup open (null if none)
     - colors: Theme colors from context
     - items, categories, usageTypes: Data from useElectricalItems hook
     --------------------------------------------------------------------------*/
@@ -44,11 +42,11 @@ const ItemMenu: React.FC<{
     
     /* Render ItemMenu component
     ----------------------------------------------------------------------------
-    - Displays list of electrical items for the selected property
-    - Left: Item nickname with dropdown to show more info
-    - Right: SetUsageEvent component for starting/ending usage events
-    - Info popup shows daily usage, category, usage type, rated watts
-    - "+ Add Item" button to show ItemInput component 
+    Displays list of electrical items with expandable info popups
+    Elements:
+        - Header with title and Add Item button
+        - List of items with nickname and expand/collapse icon
+        - Info popup with daily usage, category, usage type, rated watts
     --------------------------------------------------------------------------*/
     return (
         <Card>

@@ -1,22 +1,10 @@
 // src/components/menu/PropertyMenu.tsx
 import React, { useState, useEffect } from 'react';
+import { Property, PropertyOption } from '../../../types/propertyTypes';
 import Select from 'react-select';
 import type { CSSObjectWithLabel } from "react-select";
 import "../../App.css";
 import "../Components.css";
-
-type Property = {
-    property_id: string;
-    street_address: string;
-    city: string;
-    state_abbreviation: string;
-    zip: string;
-};
-
-type PropertyOption = {
-    value: string;
-    label: string;
-};
 
 type PropertyMenuProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;

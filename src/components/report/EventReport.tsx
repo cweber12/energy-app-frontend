@@ -3,27 +3,14 @@ import React, { useEffect, useState } from "react";
 import "../Components.css";
 import Card from "../common/Card";
 import "../../App.css";
-
-// Type definitions for event data
-type Event = {
-    event_id: number; // identifies start/end event pair
-    start_ts: string; // ISO-8601 string ("2024-06-15T14:30:00Z")
-    end_ts: string | null; // ISO-8601 string or null if ongoing
-    elapsed_minutes: number; 
-};
-
-type GroupedEvent = {
-    usage_date: string; // "2024-06-15"
-    nickname: string; // (Fridge, Washer, etc.)
-    events: Event[]; // array of events for that item on that date
-};
+import { GroupedEvents } from "../../../types/eventTypes"; 
 
 /* Event Report Component
 --------------------------------------------------------------------------------
 Generates a table of usage events for all items on a given date.
 ------------------------------------------------------------------------------*/
 const EventReport: React.FC<{ startDate: string }> = ({ startDate }) => {
-    const [data, setData] = useState<GroupedEvent[]>([]);
+    const [data, setData] = useState<GroupedEvents[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

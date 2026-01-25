@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import Card from "../common/Card";
 import { useTheme } from "../../context/ThemeContext";
-import { useEventsByDate } from "../../hooks/useEventsByDate";
+import { useEventsByDate } from "../../hooks/useEvent";
 
 /* Event Graph Component
 --------------------------------------------------------------------------------
