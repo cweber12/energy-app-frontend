@@ -5,6 +5,8 @@ import { addElectricalItem } from "../../supabase_services/itemsService";
 import { ItemInputForm } from "../../../types/itemTypes";
 import HeaderDropdown from "../common/HeaderDropdown";
 import "../../styles/Components.css";
+import { LuMinimize2 } from "react-icons/lu";
+import { useTheme } from "../../context/ThemeContext";
 
 // Type definitions for props
 type ItemInputProps = {
@@ -34,6 +36,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
     });
     const [message, setMessage] = useState("");
     const { categories , usageTypes } = useAllItems(propertyId);
+    const { colors } = useTheme();
     
     /* Handle form input changes
     ----------------------------------------------------------------------------
@@ -94,6 +97,17 @@ const ItemInput: React.FC<ItemInputProps> = ({
     --------------------------------------------------------------------------*/
     return (
         <HeaderDropdown>
+            <div className="card-header">
+                <h3 >Add New Item</h3>
+                <LuMinimize2
+                    style={{
+                        cursor: "pointer",
+                        width: "32px",
+                        height: "32px",
+                    }}
+                    onClick={() => setShowItemInput(false)}
+                />
+            </div>
             <form className="form" onSubmit={handleSubmit}>
              <label className="form-label">
                 Category:
@@ -148,17 +162,12 @@ const ItemInput: React.FC<ItemInputProps> = ({
                 />
             </label>
             <br />
-            <div className="button-group">
-                <button type="submit" className="auth-button">Add</button>
-                <button
-                    type="button"
-                    className="auth-button"
-                    style={{ marginLeft: "10px" }}
-                    onClick ={() => setShowItemInput(false)}
-                >
-                    Cancel
-                </button>
-            </div>
+
+            <button type="submit" style={{
+                backgroundColor: colors.tertiaryBackground,
+                color: colors.tertiaryText
+            }}>Add</button>
+
             {message && <div>{message}</div>}
             </form>
         </HeaderDropdown>

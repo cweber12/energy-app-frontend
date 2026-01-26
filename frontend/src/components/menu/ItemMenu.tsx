@@ -8,8 +8,11 @@ import SetUsageEvent from "../action/SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import LastUseReport from "../report/LastUseReport";
 import { useAllItems } from "../../hooks/useItem";
-import { IoMdAddCircleOutline } from "react-icons/io";
+import { IoMdAdd } from "react-icons/io";
 import { IoOpenOutline } from "react-icons/io5";
+import ItemEventsReport from "../report/ItemEventsReport";
+import { LuMinimize2, LuMaximize2 } from "react-icons/lu";
+import { set } from "react-hook-form";
 
 /* ItemMenu Component
 --------------------------------------------------------------------------------
@@ -60,11 +63,14 @@ const ItemMenu: React.FC<{
     --------------------------------------------------------------------------*/
     return (
         <Card>
-            <div 
-                className="card-header">
-            <h2>Items</h2> 
+            <div className="card-header">
+            <h3>ITEMS</h3> 
             {!showItemInput && (
-                <IoMdAddCircleOutline 
+                <div 
+                    className="upload-button"
+                    style={{ backgroundColor: colors.iconTertiary }}
+                >
+                <IoMdAdd 
                     style={{ 
                         cursor: "pointer", 
                         color: colors.iconSecondary,
@@ -73,6 +79,8 @@ const ItemMenu: React.FC<{
                     }}
                     onClick={() => setShowItemInput(true)}
                 />
+                Add Item
+                </div>
             )}
             </div>
             
@@ -92,7 +100,11 @@ const ItemMenu: React.FC<{
                                 {infoOpenIndex === idx ? (
                                     <FaAngleUp
                                         style={{ cursor: "pointer", color: colors.iconTertiary}}
-                                        onClick={() => setInfoOpenIndex(null)}
+                                        onClick={() => (
+                                            setInfoOpenIndex(null),
+                                            setShowDailyEvents(false)
+                                        )}
+
                                     />
                                 ) : ( 
                                     <FaAngleDown
@@ -101,7 +113,12 @@ const ItemMenu: React.FC<{
                                     />
                                 )}
                                 <span
-                                    style={{ maxWidth: "300px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                    style={{ 
+                                        maxWidth: "300px", 
+                                        overflow: "hidden", 
+                                        textOverflow: "ellipsis", 
+                                        whiteSpace: "nowrap" 
+                                    }}>
                                     {item.nickname}
                                 </span>
                             </div>
@@ -111,6 +128,7 @@ const ItemMenu: React.FC<{
                             ) : null}
                         </li>
                         {infoOpenIndex === idx && (
+                            <>
                             <div
                                 className="item-info-popup"
                                 style={{
@@ -121,13 +139,15 @@ const ItemMenu: React.FC<{
                             >
                                 {item.id &&  (
                                     <div className="child-row" style={{width: "100%", justifyContent: "space-between"}}>
-                                        <p><strong>Category:</strong> {categories[item.category_id]}<br/>
-                                        <strong>Frequency:</strong> {usageTypes[item.usage_type_id]}<br/>
-                                        {item.rated_watts > 0 && `Rated Watts: ${item.rated_watts}W`}
-                                        </p>
+                                        <div style={{color: colors.secondaryText}}>
+                                            <p><strong>Category:</strong> {categories[item.category_id]}<br/>
+                                            <strong>Frequency:</strong> {usageTypes[item.usage_type_id]}<br/>
+                                            {item.rated_watts > 0 && `Rated Watts: ${item.rated_watts}W`}
+                                            </p>
+                                        </div>
                                         <LastUseReport itemId={item.id} />
-                                        {!showDailyEvents && (
-                                            <IoOpenOutline
+                                        {showDailyEvents ? (
+                                            <LuMinimize2
                                                 style={{
                                                     cursor: "pointer",
                                                     color: colors.iconSecondary,
@@ -135,16 +155,34 @@ const ItemMenu: React.FC<{
                                                     height: "32px",
                                                 }}
                                                 onClick={() => {
-                                                    setItemId(item.id);
-                                                    setItemNickname(item.nickname);
+                                                    setShowDailyEvents(prev => !prev);
+                                                }}
+                                            />
+                                        ) : (
+                                            <LuMaximize2
+                                                style={{
+                                                    cursor: "pointer",
+                                                    color: colors.iconSecondary,
+                                                    width: "32px",
+                                                    height: "32px",
+                                                }}
+                                                onClick={() => {
                                                     setShowDailyEvents(prev => !prev);
                                                 }}
                                             />
                                         )}
                                     </div>
                                 )}
-                            </div>    
-                       
+                            </div>
+                            {showDailyEvents && (
+                                <ItemEventsReport
+                                    itemId={item.id}
+                                    itemNickname={item.nickname}
+                                    setShowDailyEvents={setShowDailyEvents}
+                                />
+                    
+                            )} 
+                            </>
                         )}
                     </React.Fragment>
                 ))}

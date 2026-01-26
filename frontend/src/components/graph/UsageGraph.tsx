@@ -10,6 +10,7 @@ import {
     CartesianGrid, 
 } from 'recharts';
 import GraphWrapper from '../common/GraphWrapper';
+import Card from '../common/Card';
 import "../../App.css";
 import "../../styles/Components.css";
 import { useTheme } from '../../context/ThemeContext';
@@ -40,8 +41,11 @@ const UsageGraph: React.FC<{
         - Tooltip shows kWh value on hover.
     --------------------------------------------------------------------------*/
     return (
+        <Card>
+            <div className="card-header">
+                <h3>Hourly Usage Report | {date}</h3>
+            </div>
         <GraphWrapper>
-            <h2 style={{ marginBottom: "1rem" }}>Hourly Usage Report | {date}</h2>
             {readings.length > 0 && (
                 <ResponsiveContainer width={800} height={400}>
                     <BarChart data={readings}>
@@ -57,6 +61,7 @@ const UsageGraph: React.FC<{
                 </ResponsiveContainer>
             )}
         </GraphWrapper>
+        </Card>
     );
 };
 

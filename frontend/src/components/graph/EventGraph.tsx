@@ -14,6 +14,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { useEventsByDate } from "../../hooks/useEvent";
 import { groupEventsByHour } from "../../utils/eventUtils";
 import GraphWrapper from "../common/GraphWrapper";
+import Card from "../common/Card";
 import "../../App.css";
 import "../../styles/Components.css";
 
@@ -41,33 +42,37 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
         - Tooltip shows breakdown of total time per item on hover.
     --------------------------------------------------------------------------*/
     return (
-        <GraphWrapper>
-            <h2 style={{ marginBottom: "1rem" }}>Item Usage Report | {startDate}</h2>
-            <ResponsiveContainer width={800} height={400}>
-                <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
-                    <YAxis label={{ value: "Total Time (min)", angle: -90, position: "insideLeft" }} />
-                    <Tooltip
-                        contentStyle={{ background: "#fff", color: "#000", border: `1px solid #000` }}
-                        itemStyle={{ color: "#000" }}
-                        formatter={(value, name) => [`${value} min`, name]}
-                    />
-                    
-                    <Legend />
-
-                    {nicknames.map((nick, idx) => (
-                        <Bar
-                            key={nick}
-                            dataKey={nick}
-                            stackId="a"
-                            fill={colors.graphStacked?.[idx % colors.graphStacked.length] || colors.graph}
-                            name={nick}
+        <Card>
+            <div className="card-header">
+                <h3>Usage Events by Hour | {startDate}</h3>
+            </div>
+            <GraphWrapper>
+                <ResponsiveContainer width={800} height={400}>
+                    <BarChart data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
+                        <YAxis label={{ value: "Total Time (min)", angle: -90, position: "insideLeft" }} />
+                        <Tooltip
+                            contentStyle={{ background: "#fff", color: "#000", border: `1px solid #000` }}
+                            itemStyle={{ color: "#000" }}
+                            formatter={(value, name) => [`${value} min`, name]}
                         />
-                    ))}
-                </BarChart>
-            </ResponsiveContainer>
-        </GraphWrapper>
+                        
+                        <Legend />
+
+                        {nicknames.map((nick, idx) => (
+                            <Bar
+                                key={nick}
+                                dataKey={nick}
+                                stackId="a"
+                                fill={colors.graphStacked?.[idx % colors.graphStacked.length] || colors.graph}
+                                name={nick}
+                            />
+                        ))}
+                    </BarChart>
+                </ResponsiveContainer>
+            </GraphWrapper>
+        </Card>
     );
 };
 

@@ -7,6 +7,7 @@ import { startEvent, endEvent } from "../../supabase_services/eventsService";
 import "../../App.css";
 import "../../styles/Components.css";
 import { set } from "react-hook-form";
+import { IoPlayOutline, IoStopOutline } from "react-icons/io5";
 
 type SetUsageEventProps = {
   itemId: number; // ID of the electrical item
@@ -98,14 +99,22 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
       <div className="item-usage-event">
         <button
         style={{
-            backgroundColor: colors.buttonStart,
+            backgroundColor: colors.button,
             color: colors.buttonText,
         }}
           onClick={() => {
             startUsageEvent();
           }}
         >
-          Start 
+          
+          <IoPlayOutline size={24} 
+          style={{ 
+            marginRight: "8px", 
+            color: colors.buttonText
+
+          }} 
+          /> 
+          Start
         </button>
       </div>
       ) : (
@@ -120,7 +129,14 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
               
             }}
           >
-            End
+            
+            <IoStopOutline size={24} 
+            style={{ 
+              marginRight: "8px",
+              color: colors.buttonText
+            }} 
+            />
+            Stop
           </button>
           {startTimeString ? (
             <div> 

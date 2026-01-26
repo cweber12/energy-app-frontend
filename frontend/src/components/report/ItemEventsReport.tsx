@@ -27,6 +27,16 @@ const ItemEventsReport: React.FC<{
     const { colors } = useTheme();
     const [usageEvents, setUsageEvents] = useState<EventSummary[]>([]);
 
+    const thStyle = {
+        backgroundColor: colors.tertiaryBackground,
+        color: colors.tertiaryText,
+    };
+
+    const tdStyles = {
+        backgroundColor: colors.secondaryBackground,
+        color: colors.secondaryText,
+    };
+
     /* Fetch usage events when itemId changes
     ----------------------------------------------------------------------------
     - Sends GET request to backend API to fetch usage events for the item
@@ -43,22 +53,8 @@ const ItemEventsReport: React.FC<{
     --------------------------------------------------------------------------*/
     return (
             
-        <Card>
-            <div className="card-header">
-                <h2>{itemNickname} Uses</h2>
-                <IoMdClose
-                    style={{
-                        cursor: "pointer",
-                        color: colors.iconSecondary,
-                        width: "32px",
-                        height: "32px",
-                    }}
-                    onClick={() => setShowDailyEvents(false)}
-                />
-            </div>
-
-            
-            
+        <div style={{width: "100%"}}>
+          
             {loading && (
                 <div className="card-header">
                     <p>Loading usage events...</p>
@@ -79,31 +75,31 @@ const ItemEventsReport: React.FC<{
                     <table className="usage-events-table">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Elapsed</th>
+                                <th style={thStyle}>Date</th>
+                                <th style={thStyle}>Start Time</th>
+                                <th style={thStyle}>End Time</th>
+                                <th style={thStyle}>Elapsed</th>
                             </tr>
                         </thead>
                         <tbody>
                             {Object.entries(groupedEvents).map(([date, events]) =>
                                 events.map((event, idx) => (
                                     <tr key={`${date}-${event.event_id}`}>
-                                        <td>{idx === 0 ? date : ""}</td>
-                                        <td>{new Date(event.start_ts).toLocaleTimeString()}</td>
-                                        <td>
+                                        <td style={tdStyles}>{idx === 0 ? date : ""}</td>
+                                        <td style={tdStyles}>{new Date(event.start_ts).toLocaleTimeString()}</td>
+                                        <td style={tdStyles}>
                                             {event.end_ts
                                                 ? new Date(event.end_ts).toLocaleTimeString()
                                                 : "Ongoing"}
                                         </td>
-                                        <td>{formatElapsed(event.start_ts, event.end_ts)}</td>
+                                        <td style={tdStyles}>{formatElapsed(event.start_ts, event.end_ts)}</td>
                                     </tr>
                                 ))
                             )}
                         </tbody>
                     </table>
             )}
-        </Card>
+        </div>
             
     );
 };

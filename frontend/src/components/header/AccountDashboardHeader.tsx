@@ -6,6 +6,9 @@ import "../../styles/Components.css";
 import PropertyMenu from "../menu/PropertyMenu";
 import UploadUsageReport from "../action/UploadUsageReport";
 import { IntervalReading } from '../../../types/reportTypes';
+import { IoLogOutOutline } from "react-icons/io5";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 type AccountDashboardHeaderProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,6 +36,7 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
    
     const { colors } = useTheme();
     const username = sessionStorage.getItem("username") || "Guest";
+    const [showUserMenu, setShowUserMenu] = React.useState<boolean>(false);
 
     /* Render Account Dashboard Header
     ----------------------------------------------------------------------------
@@ -43,7 +47,7 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     return (
         <header 
             className="header"
-            style={{ backgroundColor: colors.secondaryBackground }}
+            style={{ backgroundColor: colors.tertiaryBackground }}
             >
             <div 
                 style={{
@@ -73,27 +77,59 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                 </div>
             </div>
                 
-            <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "10px"}}>
-                <h3 style={{ color: colors.title}}>
-                    {username ? username : "Guest"} logged in
-                </h3>
-                <div className="button-group">
-                    <button 
-                        className="button"
-                        style={{
-                            backgroundColor: colors.button,
-                            color: colors.buttonText
+            <div 
+                style={{
+                    display: "flex", 
+                    flexDirection: "column", 
+                    alignItems: "flex-end", 
+                    gap: "10px",
+                    color: colors.tertiaryText
+                }}>
+                <div className="user">
+                    <FaRegCircleUser
+                        style={{ 
+                            color: colors.iconTertiary,
+                            width: "32px", 
+                            height: "32px" 
                         }}
-                        onClick={() => {
-                            // Clear session storage and redirect to home page
-                            sessionStorage.clear();
-                            window.location.href = "/";
-                        }}
-                    >
-                        Logout
-                    </button>
-                    
+                    /> 
+                    <h3>{username ? username : "Guest"}</h3>
+                    {showUserMenu ? (
+                        <FaAngleUp
+                            style={{ width: "32px", height: "32px", cursor: "pointer" }}
+                            onClick={() => setShowUserMenu(false)}
+                        />
+                    ) : (
+                        <FaAngleDown
+                            style={{ width: "32px", height: "32px", cursor: "pointer" }}
+                            onClick={() => setShowUserMenu(true)}
+                        />
+                    )}
+                    {showUserMenu && (
+                        <div 
+                            className="user-menu-dropdown"
+                            style={{ backgroundColor: colors.secondaryBackground, color: colors.secondaryText }}
+                            >
+                            <div className="dropdown-item">
+                            Logout 
+                            <IoLogOutOutline
+                                style={{ 
+                                    cursor: "pointer", 
+                                    color: colors.iconSecondary,
+                                    width: "32px",
+                                    height: "32px",
+                                }}
+                                onClick={() => {
+                                    // Clear session storage and redirect to home page
+                                    sessionStorage.clear();
+                                    window.location.href = "/";
+                                }}
+                            />
+                            </div>    
+                        </div>
+                    )}
                 </div>
+                
             </div>
             
         </header>

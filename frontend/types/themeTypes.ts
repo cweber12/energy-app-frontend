@@ -10,6 +10,7 @@ export type ColorSchemeType = {
     primaryText: string;
     secondaryText: string;
     tertiaryText: string;
+    mutedText: string;
     primaryBackground: string;
     secondaryBackground: string;
     tertiaryBackground: string;
@@ -17,8 +18,6 @@ export type ColorSchemeType = {
     buttonHover: string;
     buttonText: string;
     buttonDisabled: string;
-    buttonStart: string;
-    buttonStartHover: string;
     buttonStop: string;
     buttonStopHover: string;
     iconPrimary: string;

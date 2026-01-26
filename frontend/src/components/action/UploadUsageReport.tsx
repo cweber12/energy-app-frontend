@@ -1,5 +1,8 @@
 // src/components/report/UploadUsageReport.tsx
 import React from "react";
+import { useTheme } from "../../context/ThemeContext";
+import { FiUpload } from "react-icons/fi"; // Import your preferred icon
+
 
 // Type for individual interval reading (tuple)
 type IntervalReading = {
@@ -67,6 +70,8 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
     setDate
 }) => {
 
+    const { colors } = useTheme();
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -79,8 +84,18 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
     };
 
     return (
-        <div>
-            <input type="file" accept=".xml" onChange={handleFileChange} />
+        <div className="upload-button" style={{ backgroundColor: colors.button, color: colors.buttonText }}>
+            <label htmlFor="xml-upload" className="upload-label">
+                <FiUpload size={32} />
+                <input
+                    id="xml-upload"
+                    type="file"
+                    accept=".xml"
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                />
+                Upload Usage Report
+            </label>
         </div>
     );
 };

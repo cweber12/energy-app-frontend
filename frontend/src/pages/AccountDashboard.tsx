@@ -67,7 +67,7 @@ const AccountDashboard = () => {
                 />
             )}
             {propertyId && (
-                <div className="row" style={{gap: 0, alignItems: "flex-start"}}>
+                <div className="column" style={{gap: 0, alignItems: "flex-start"}}>
                     <ItemMenu 
                         propertyId={propertyId}
                         refreshItems={refreshItems}
@@ -78,13 +78,6 @@ const AccountDashboard = () => {
                         setItemId={setItemId}
                         setItemNickname={setItemNickname}
                     />
-                    {showDailyEvents && itemId && (
-                        <ItemEventsReport
-                            itemId={itemId}
-                            itemNickname={itemNickname}
-                            setShowDailyEvents={setShowDailyEvents}
-                        />
-                    )}
                 </div>
             )}
             {readings.length > 0 && (
