@@ -19,7 +19,10 @@ Returns:
     - categories: CategoryMap;
     - usageTypes: UsageTypeMap;
 ------------------------------------------------------------------------------*/
-export function useElectricalItems(propertyId: string) {
+export function useAllItems(
+    propertyId: string, 
+    refreshItems: number = 0
+) {
     const [items, setItems] = useState<Item[]>([]);
     const [categories, setCategories] = useState<CategoryMap>({});
     const [usageTypes, setUsageTypes] = useState<UsageTypeMap>({});
@@ -47,7 +50,7 @@ export function useElectricalItems(propertyId: string) {
                 setUsageTypes({});
                 console.error("Error fetching usage types:", error);
             });
-    }, [propertyId]);
+    }, [propertyId, refreshItems]);
 
     return { items, categories, usageTypes };
 }

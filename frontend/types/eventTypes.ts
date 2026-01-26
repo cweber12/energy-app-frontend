@@ -19,8 +19,29 @@ export type HourlyTotals = {
 };
 
 export type EventSummary = {
-  event_id: number;
-  start_ts: string;
-  end_ts: string | null;
+    event_id: number;
+    start_ts: string;
+    end_ts: string | null;
+};
+
+export type DailyUsage = {
+    usage_date: string;
+    total_usage_minutes: number;
+};
+
+export type EventStart = {
+    event_id: number;
+    start_ts: string;
+};
+
+export type EventEnd = {
+    event_id: number;
+    end_ts: string;
+};
+
+export type LastEvent = {
+    event_id: number;
+    start_ts: string;
+    end_ts: string | null;
 };
 

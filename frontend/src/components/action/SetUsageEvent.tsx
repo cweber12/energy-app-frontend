@@ -1,8 +1,12 @@
 // src/components/items/SetUsageEvent.tsx
 import React, { useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
+import { useLastEvent } from "../../hooks/useEvent";
+import { EventStart, EventEnd } from "../../../types/eventTypes";
+import { startEvent, endEvent } from "../../supabase_services/eventsService";
 import "../../App.css";
 import "../../styles/Components.css";
+import { set } from "react-hook-form";
 
 type SetUsageEventProps = {
   itemId: number; // ID of the electrical item
@@ -16,117 +20,47 @@ Props:
 ------------------------------------------------------------------------------*/
 const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   const { colors } = useTheme();
-  const [startTime, setStartTime] = React.useState<Date | null>(null);
   const [startTimeString, setStartTimeString] = React.useState<string>("");
-  const [endTime, setEndTime] = React.useState<Date | null>(null);
   const [endTimeString, setEndTimeString] = React.useState<string>("");
-  const [eventId, setEventId] = React.useState<number | null>(null);
+  const [running, setRunning] = React.useState<boolean>(false);
+  const [currentEventId, setCurrentEventId] = React.useState<number | null>(null);
 
-  /* Fetch latest start and end timestamps when itemId changes
-  ----------------------------------------------------------------------------
-  - Fetches latest start and end timestamps for the given itemId
-  - Sets startTime, endTime, and eventId state variables based on response
-  --------------------------------------------------------------------------*/
+  /* Fetch last event timestamps for an item when itemId changes
+  ----------------------------------------------------------------------------*/
+  const { startTs, endTs, eventId} = useLastEvent(itemId);
+
   useEffect(() => {
-    if (!itemId) return;
-    console.log("Fetching usage event data for item ID:", itemId);
-
-    /* Fetch latest start timestamp
-    ----------------------------------------------------------------------------
-    - GET request to fetch latest start timestamp for the item
-    - Sets startTime and eventId state variables based on response
-    --------------------------------------------------------------------------*/
-    fetch(`http://127.0.0.1:5000/item_usage_event_start/item/${itemId}/latest_start`)
-      .then(async response => {
-        const text = await response.text();
-        try {
-          const data = JSON.parse(text);
-          if (data.error) {
-            setStartTime(null);
-            setEventId(null);
-            return;
-          }
-          if (data.latest_start_ts) {
-            console.log("item id: ", itemId);
-            console.log("Latest start timestamp data:", data);
-            const start = new Date(data.latest_start_ts);
-            setStartTime(start);
-            console.log("initial start time string:", start);
-            setEventId(data.event_id);
-          } else {
-            setStartTime(null);
-            setEventId(null);
-          }
-        } catch {
-          console.error('Non-JSON response:', text);
-          setStartTime(null);
-          setEventId(null);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching latest start timestamp:', error);
-      });
-
-    /* Fetch latest end timestamp
-    ----------------------------------------------------------------------------
-    - GET request to fetch latest end timestamp for the item
-    - Sets endTime state variable based on response
-    --------------------------------------------------------------------------*/
-    fetch(`http://127.0.0.1:5000/item_usage_event_end/item/${itemId}/latest_end`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }) 
-        .then(response => response.json())
-        .then(data => {
-            if (data && !data.error && data.latest_end_ts) {
-                console.log("Latest end timestamp data:", data);
-                const end = new Date(data.latest_end_ts);
-                console.log("initial end time string:", end);
-                setEndTime(end);
-            } else {
-                setEndTime(null);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching latest end timestamp:', error);
-        });
-  }, [itemId]);
+    if (startTs === null) {
+        setStartTimeString("");
+    } else {
+      setStartTimeString(startTs.toLocaleString());
+      setCurrentEventId(eventId);
+      if (endTs === null) {
+          setEndTimeString("");
+          setRunning(true);
+      } else {
+          setRunning(false);
+          setEndTimeString(endTs.toLocaleString());
+      }
+    }
+  }, [startTs, endTs]); 
 
   /* Start a new usage event
   ------------------------------------------------------------------------------
-  - Sends POST request to create a new usage event for the item
-  - Sets startTime, eventId, and resets endTime on success
-  - Button to trigger is only shown if there is no ongoing event 
-    - No startTime or endTime is set for that item (no starts recorded)
-    - Most recent startTime has endTIme with same eventId (last use ended)
+  - Sends POST request to start a new usage event for the item
   ----------------------------------------------------------------------------*/
   const startUsageEvent = () => {
-      fetch(`http://127.0.0.1:5000/item_usage_event_start`, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-              item_id: itemId,
-              start_ts: new Date().toISOString()
-          })
-      })
-          .then(response => {
-              if (!response.ok) throw new Error("Network response was not ok");
-              return response.json();
-          })
-          .then(data => {
-              const start = new Date(data.start_ts);
-              setStartTime(start);
-              setStartTimeString(start.toLocaleString());
-              setEventId(data.event_id);
-              setEndTime(null);
-          })
-          .catch(error => {
-              console.error('Error creating usage event:', error);
-          });
+      startEvent(itemId, new Date().toISOString())
+        .then((data: EventStart) => {
+          setRunning(true);
+          const start = new Date(data.start_ts);
+          setStartTimeString(start.toLocaleString());
+          setCurrentEventId(data.event_id); 
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Error creating usage event:', error);
+        });
   };
 
   /* End the current usage event
@@ -135,28 +69,20 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   - Sets endTime on success
   ----------------------------------------------------------------------------*/
   const endUsageEvent = () => {
-    if (!eventId) return;
-    fetch(`http://127.0.0.1:5000/item_usage_event_end`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            event_id: eventId,
-            end_ts: new Date().toISOString()
-        })
-    })
-        .then(response => {
-            if (!response.ok) throw new Error("Network response was not ok");
-            return response.json();
-        })
-        .then(data => {
-            const end = new Date(data.end_ts);
-            setEndTime(end);
-            setEndTimeString(end.toLocaleString());
+      if (currentEventId === null) {
+          console.error('No ongoing event to end.');
+          return;
+      }
+      endEvent(currentEventId, new Date().toISOString())
+        .then((data: EventEnd) => {
+          const end = new Date(data.end_ts);
+          setEndTimeString(end.toLocaleString());
+          setRunning(false);
+          setCurrentEventId(null);
+          console.log(data);
         })
         .catch(error => {
-            console.error('Error ending usage event:', error);
+          console.error('Error ending usage event:', error);
         });
   };
 
@@ -168,7 +94,7 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   ----------------------------------------------------------------------------*/
   return (
     <>
-      {endTime || !startTime ? (
+      {!running ? (
       <div className="item-usage-event">
         <button
         style={{

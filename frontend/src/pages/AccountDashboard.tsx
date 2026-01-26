@@ -6,9 +6,10 @@ import PageWrapper from '../components/common/PageWrapper';
 import PropertyInput from '../components/form/PropertyInput';
 import ItemMenu from '../components/menu/ItemMenu';
 import ItemInput from '../components/form/ItemInput';
-import DailyEvents from '../components/action/DailyEvents';
+import ItemEventsReport from '../components/report/ItemEventsReport';
 import UsageGraph from '../components/graph/UsageGraph';
 import EventGraph from '../components/graph/EventGraph';
+import EventReport from '../components/report/EventReport';
 import { IntervalReading } from '../../types/reportTypes';
 
 /*  Account Dashboard Page
@@ -21,13 +22,14 @@ const AccountDashboard = () => {
         React.useState<boolean>(false);
     const [showItemInput, setShowItemInput] = React.useState<boolean>(false);
     const [propertyId, setPropertyId] = React.useState<string>("");
-    const [itemId, setItemId] = React.useState<string>("");
+    const [itemId, setItemId] = React.useState<number>(0);
     const [showDailyEvents, setShowDailyEvents] = 
         React.useState<boolean>(false);
     const userId = sessionStorage.getItem("user_id") || "";
     const [readings, setReadings] = useState<IntervalReading[]>([]);
     const [date, setDate] = useState<string>("");
     const [itemNickname, setItemNickname] = useState<string>("");
+    const [refreshItems, setRefreshItems] = useState(0);
     
     
     /* Render Account Dashboard Page
@@ -61,21 +63,24 @@ const AccountDashboard = () => {
                 <ItemInput 
                     propertyId={propertyId}
                     setShowItemInput={setShowItemInput}
+                    onItemAdded={() => setRefreshItems(x => x + 1)}
                 />
             )}
             {propertyId && (
                 <div className="row" style={{gap: 0, alignItems: "flex-start"}}>
                     <ItemMenu 
                         propertyId={propertyId}
+                        refreshItems={refreshItems}
                         setShowItemInput={setShowItemInput}
+                        showItemInput={showItemInput}
                         setShowDailyEvents={setShowDailyEvents}
                         showDailyEvents={showDailyEvents}
                         setItemId={setItemId}
                         setItemNickname={setItemNickname}
                     />
                     {showDailyEvents && itemId && (
-                        <DailyEvents
-                            itemId={parseInt(itemId)} 
+                        <ItemEventsReport
+                            itemId={itemId}
                             itemNickname={itemNickname}
                             setShowDailyEvents={setShowDailyEvents}
                         />

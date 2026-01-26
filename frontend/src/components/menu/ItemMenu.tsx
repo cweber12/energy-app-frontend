@@ -6,8 +6,10 @@ import "../../styles/Components.css";
 import Card from "../common/Card";
 import SetUsageEvent from "../action/SetUsageEvent";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import DailyUseReport from "../action/DailyUseReport";
-import { useElectricalItems } from "../../hooks/useItem";
+import LastUseReport from "../report/LastUseReport";
+import { useAllItems } from "../../hooks/useItem";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import { IoOpenOutline } from "react-icons/io5";
 
 /* ItemMenu Component
 --------------------------------------------------------------------------------
@@ -20,17 +22,21 @@ Description: Displays a list of electrical items for a selected property.
 ------------------------------------------------------------------------------*/
 const ItemMenu: React.FC<{
     propertyId: string;
+    refreshItems: number;
     setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
+    showItemInput: boolean;
     setShowDailyEvents: React.Dispatch<React.SetStateAction<boolean>>;
     showDailyEvents: boolean;
-    setItemId: React.Dispatch<React.SetStateAction<string>>;
+    setItemId: React.Dispatch<React.SetStateAction<number>>;
     setItemNickname: React.Dispatch<React.SetStateAction<string>>;
 }> = ({
     propertyId, 
+    refreshItems,
     setShowItemInput,
+    showItemInput,
     setShowDailyEvents,
     showDailyEvents,
-    setItemId, 
+    setItemId,
     setItemNickname,
 }) => {
 
@@ -38,12 +44,12 @@ const ItemMenu: React.FC<{
     ----------------------------------------------------------------------------
     - infoOpenIndex: Index of the item with info popup open (null if none)
     - colors: Theme colors from context
-    - items, categories, usageTypes: Data from useElectricalItems hook
+    - items, categories, usageTypes: Data from useAllItems hook
     --------------------------------------------------------------------------*/
     const { colors } = useTheme();
     const [infoOpenIndex, setInfoOpenIndex] = useState<number | null>(null);
-    const { items, categories, usageTypes } = useElectricalItems(propertyId);
-    
+    const { items, categories, usageTypes } = useAllItems(propertyId, refreshItems);
+
     /* Render ItemMenu component
     ----------------------------------------------------------------------------
     Displays list of electrical items with expandable info popups
@@ -57,20 +63,22 @@ const ItemMenu: React.FC<{
             <div 
                 className="card-header">
             <h2>Items</h2> 
-            <button 
-                onClick={() => setShowItemInput(true)}
-                style={{ 
-                    backgroundColor: colors.button,
-                    color: colors.buttonText,
-                }}
-                >
-                Add
-            </button>
+            {!showItemInput && (
+                <IoMdAddCircleOutline 
+                    style={{ 
+                        cursor: "pointer", 
+                        color: colors.iconSecondary,
+                        width: "32px",
+                        height: "32px",
+                    }}
+                    onClick={() => setShowItemInput(true)}
+                />
+            )}
             </div>
             
             <ul className="list" style={{listStyle: "none"}}>
                 {items.map((item, idx) => (
-                    <React.Fragment key={item.item_id}>
+                    <React.Fragment key={item.id}>
                         <li 
                             className="list-item"
                             style={{
@@ -80,15 +88,15 @@ const ItemMenu: React.FC<{
                             }}
                         >
             
-                            <div className="row" style={{gap: "16px"}}>
+                            <div className="child-row">
                                 {infoOpenIndex === idx ? (
                                     <FaAngleUp
-                                        style={{ cursor: "pointer", color: colors.icon}}
+                                        style={{ cursor: "pointer", color: colors.iconTertiary}}
                                         onClick={() => setInfoOpenIndex(null)}
                                     />
                                 ) : ( 
                                     <FaAngleDown
-                                        style={{ cursor: "pointer", color: colors.icon}}
+                                        style={{ cursor: "pointer", color: colors.iconTertiary}}
                                         onClick={() => setInfoOpenIndex(idx)}
                                     />
                                 )}
@@ -99,7 +107,7 @@ const ItemMenu: React.FC<{
                             </div>
                             {/* Only for intermittent use items */}
                             {item.usage_type_id === 2 ? (
-                                <SetUsageEvent itemId={item.item_id}/>
+                                <SetUsageEvent itemId={item.id}/>
                             ) : null}
                         </li>
                         {infoOpenIndex === idx && (
@@ -111,30 +119,32 @@ const ItemMenu: React.FC<{
                                     position: "relative",
                                 }}
                             >
-                                <div className="row" style={{width: "100%", justifyContent: "space-between"}}>
-                                    <DailyUseReport 
-                                        itemId={item.item_id}
-                                    />
-                                    <button
-                                        style={{
-                                            backgroundColor: colors.button,
-                                            color: colors.buttonText,
-                                        }}
-                                        onClick={() => {
-                                            setItemId(item.item_id.toString());
-                                            setItemNickname(item.nickname);
-                                            setShowDailyEvents(prev => !prev);
-                                        }}
-                                    >
-                                        {showDailyEvents ? "Hide All" : "View All"}
-                                    </button>
-                                </div>
-                             
-                                <div>Category | {categories[item.category_id]}</div>
-                                <div>Usage Type | {usageTypes[item.usage_type_id]}</div>
-                                <div>Rated Watts | {item.rated_watts}</div>
-                                
-                            </div>
+                                {item.id &&  (
+                                    <div className="child-row" style={{width: "100%", justifyContent: "space-between"}}>
+                                        <p><strong>Category:</strong> {categories[item.category_id]}<br/>
+                                        <strong>Frequency:</strong> {usageTypes[item.usage_type_id]}<br/>
+                                        {item.rated_watts > 0 && `Rated Watts: ${item.rated_watts}W`}
+                                        </p>
+                                        <LastUseReport itemId={item.id} />
+                                        {!showDailyEvents && (
+                                            <IoOpenOutline
+                                                style={{
+                                                    cursor: "pointer",
+                                                    color: colors.iconSecondary,
+                                                    width: "32px",
+                                                    height: "32px",
+                                                }}
+                                                onClick={() => {
+                                                    setItemId(item.id);
+                                                    setItemNickname(item.nickname);
+                                                    setShowDailyEvents(prev => !prev);
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                )}
+                            </div>    
+                       
                         )}
                     </React.Fragment>
                 ))}

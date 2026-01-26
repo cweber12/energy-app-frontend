@@ -1,5 +1,6 @@
 // src/components/report/EventReport.tsx
 import React, { useEffect, useState } from "react";
+import { useEventsByDate } from "../../hooks/useEvent";
 import "../../styles/Components.css";
 import Card from "../common/Card";
 import "../../App.css";
@@ -10,31 +11,12 @@ import { GroupedEvents } from "../../../types/eventTypes";
 Generates a table of usage events for all items on a given date.
 ------------------------------------------------------------------------------*/
 const EventReport: React.FC<{ startDate: string }> = ({ startDate }) => {
-    const [data, setData] = useState<GroupedEvents[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     /* Fetch event data when startDate changes
-        - When client uploads .xml usage report from utiility provider, date is 
-          extracted and passed as startDate prop to this component.
-        - Fetches all usage events for that date from backend API.
-        - Populates data state variable with the result.
     --------------------------------------------------------------------------*/
-    useEffect(() => {
-        setLoading(true);
-        fetch(
-            `http://127.0.0.1:5000/item_usage_events/by_date/${startDate}`
-        )
-            .then((res) => res.json())
-            .then((result) => {
-                setData(result);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError("Failed to fetch event data: " + err.message);
-                setLoading(false);
-            });
-    }, [startDate]);
+    const { data } = useEventsByDate(startDate);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;

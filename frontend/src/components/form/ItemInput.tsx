@@ -1,7 +1,7 @@
 // src/components/items/ItemInput.tsx
 import React, { useState } from "react";
-import { useElectricalItems } from "../../hooks/useItem";
-import { addElectricalItem } from "../../services/itemService";
+import { useAllItems } from "../../hooks/useItem";
+import { addElectricalItem } from "../../supabase_services/itemsService";
 import { ItemInputForm } from "../../../types/itemTypes";
 import HeaderDropdown from "../common/HeaderDropdown";
 import "../../styles/Components.css";
@@ -10,6 +10,7 @@ import "../../styles/Components.css";
 type ItemInputProps = {
     propertyId: string;
     setShowItemInput: React.Dispatch<React.SetStateAction<boolean>>;
+    onItemAdded: () => void;
 };
 
 /*  Item Input Component
@@ -22,7 +23,8 @@ Props:
 ------------------------------------------------------------------------------*/
 const ItemInput: React.FC<ItemInputProps> = ({ 
     propertyId, 
-    setShowItemInput 
+    setShowItemInput,
+    onItemAdded,
 }) => {
     const [form, setForm] = useState<ItemInputForm>({
         category_id: "", 
@@ -31,7 +33,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
         rated_watts: "", 
     });
     const [message, setMessage] = useState("");
-    const { categories , usageTypes } = useElectricalItems(propertyId);
+    const { categories , usageTypes } = useAllItems(propertyId);
     
     /* Handle form input changes
     ----------------------------------------------------------------------------
@@ -66,7 +68,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
                 nickname: form.nickname,
                 rated_watts: Number(form.rated_watts),
             });
-            if (response.ok) {
+            if (response.item_id) {
                 setMessage("Item added successfully!");
                 setForm({
                     category_id: "",
@@ -75,6 +77,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
                     rated_watts: "",
                 });
                 setShowItemInput(false);
+                onItemAdded();
             } else {
                 setMessage("Failed to add item.");
             }

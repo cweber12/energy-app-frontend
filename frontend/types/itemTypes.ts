@@ -22,7 +22,7 @@ export type UsageTypeMap = {
 
 // Type definition for electrical item
 export type Item = {
-    item_id: number; 
+    id: number; 
     nickname: string; 
     category_id: number; 
     usage_type_id: number; 

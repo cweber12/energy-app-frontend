@@ -21,7 +21,9 @@ export type ColorSchemeType = {
     buttonStartHover: string;
     buttonStop: string;
     buttonStopHover: string;
-    icon: string;
+    iconPrimary: string;
+    iconSecondary: string;
+    iconTertiary: string;
     graph: string;
     graphStacked: string[];  
 };

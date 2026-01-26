@@ -53,6 +53,8 @@
     align-items: flex-start;
     justify-content: center;
     position: relative; 
+    width: 30vw; 
+    min-width: fit-content;
     margin-top: 1.5rem;
     margin-left: 1.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -66,7 +68,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 1rem 1.5rem;
+    padding: 1rem;
     box-sizing: border-box;
     font-size: 1.2rem;
     font-weight: bold;
@@ -204,8 +206,21 @@
 .row {
     display: flex; 
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.row > * {
+    flex: 1 1 0; 
+}
+
+.child-row {
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
 }
 
@@ -217,7 +232,13 @@
     gap: 10px;
 }
 
-.usage-events-table,
+
+.usage-events-table {
+    width: 100%;
+    border: 1px solid #525252;
+    border-collapse: collapse;
+}
+
 .usage-events-table th,
 .usage-events-table td {
     border: 1px solid #525252;

@@ -1,21 +1,5 @@
-// src/services/groupEvents.ts
 import { EventSummary, GroupedEvents, HourlyTotals } from "../../types/eventTypes";
 
-export async function fetchEventsByDate(
-    startDate: string
-): Promise<GroupedEvents[]> {
-    const response = 
-    await fetch(`http://127.0.0.1:5000/item_usage_events/by_date/${startDate}`);
-    if (!response.ok) throw new Error("Failed to fetch events by date");
-    return response.json();
-}
-
-/* Helper function to group events by date 
---------------------------------------------------------------------------------
-Parameters | events: EventSummary[] array of event summaries.
---------------------------------------------------------------------------------
-Returns    | Object with dates as keys and arrays of EventSummary as values.
-------------------------------------------------------------------------------*/
 export const groupEventsByDate = (events: EventSummary[]) => {
     const grouped: { [date: string]: EventSummary[] } = {};
     events.forEach(event => {

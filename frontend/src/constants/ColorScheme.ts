@@ -25,7 +25,9 @@ export const ColorScheme : { dark: ColorSchemeType; light: ColorSchemeType } = {
         buttonStartHover: "#1e7e34",
         buttonStop: "#cc3a3a",
         buttonStopHover: "#bd2130", 
-        icon: "#000000",
+        iconPrimary: "#E4FF30",
+        iconSecondary: "#FFFFFF",
+        iconTertiary: "#000000",
         graph: "#E4FF30",
         graphStacked: [
             "#FF5733",
@@ -54,8 +56,10 @@ export const ColorScheme : { dark: ColorSchemeType; light: ColorSchemeType } = {
         buttonStart: "#28a745",
         buttonStartHover: "#1e7e34",
         buttonStop: "#dc3545",
-        buttonStopHover: "#bd2130", 
-        icon: "#000000",
+        buttonStopHover: "#bd2130",
+        iconPrimary: "#FF6500", 
+        iconSecondary: "#000000",
+        iconTertiary: "#666666",
         graph: "#E4FF30",
         graphStacked: [
             "#FF5733",

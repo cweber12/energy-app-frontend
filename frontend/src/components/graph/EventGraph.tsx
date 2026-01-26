@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import { useTheme } from "../../context/ThemeContext";
 import { useEventsByDate } from "../../hooks/useEvent";
+import { groupEventsByHour } from "../../utils/eventUtils";
 import GraphWrapper from "../common/GraphWrapper";
 import "../../App.css";
 import "../../styles/Components.css";
@@ -25,8 +26,13 @@ Props:
 ------------------------------------------------------------------------------*/
 const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
     const { colors } = useTheme();
+    
     // Data structure for chart
-    const { chartData, nicknames } = useEventsByDate(startDate);
+    const { data } = useEventsByDate(startDate);
+    const chartData = groupEventsByHour(data);
+    const nicknames = Array.from(new Set(data.flatMap(
+        g => g.nickname ? [g.nickname] : []
+    )));
     
     /* Render stacked bar chart
     ----------------------------------------------------------------------------

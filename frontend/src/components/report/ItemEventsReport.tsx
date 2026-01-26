@@ -2,9 +2,13 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/Components.css";
 import { useTheme } from "../../context/ThemeContext";
-import { groupEventsByDate, formatElapsed } from "../../services/eventService";
+import { groupEventsByDate, formatElapsed } from "../../utils/eventUtils";
 import { EventSummary } from "../../../types/eventTypes";
+import "../../App.css";
+import "../../styles/Components.css";
+import { useAllEvents } from "../../hooks/useEvent";
 import Card from "../common/Card";
+import { IoMdAddCircleOutline, IoMdClose } from "react-icons/io";
 
 /* GetDailyEvents Component
 --------------------------------------------------------------------------------
@@ -14,7 +18,7 @@ dropdown.
 Props:
     - itemId: ID of the electrical item to fetch usage events for.
 ------------------------------------------------------------------------------*/
-const DailyEvents: React.FC<{ 
+const ItemEventsReport: React.FC<{ 
     itemId: number,
     itemNickname: string,
     setShowDailyEvents: React.Dispatch<React.SetStateAction<boolean>>
@@ -22,76 +26,56 @@ const DailyEvents: React.FC<{
 }> = ({ itemId, itemNickname, setShowDailyEvents }) => {
     const { colors } = useTheme();
     const [usageEvents, setUsageEvents] = useState<EventSummary[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
 
     /* Fetch usage events when itemId changes
     ----------------------------------------------------------------------------
     - Sends GET request to backend API to fetch usage events for the item
     - Populates usageEvents state variable with the result
     --------------------------------------------------------------------------*/
-    useEffect(() => {
-        const fetchUsageEvents = async () => {
-            setLoading(true);
-            try {
-                const response = await fetch(
-                    `http://127.0.0.1:5000/item_usage_events/item/${itemId}`
-            );
-            if (!response.ok) {
-                throw new Error(`${response.statusText}`);
-            }
-            const data: EventSummary[] = await response.json();
-            setUsageEvents(data);
-            } catch (err) {
-            setError(err instanceof Error ? err.message : "Unknown error");
-            } finally {
-            setLoading(false);
-            }
-        };
-
-        if (itemId) {
-            fetchUsageEvents();
-        }
-        }, [itemId]);
+    const { data, loading, error } = useAllEvents(itemId);
 
     // Group usage events by date for rendering
-    const groupedEvents = groupEventsByDate(usageEvents);
+    const groupedEvents = groupEventsByDate(data);
 
     /* Render usage events grouped by date
     ----------------------------------------------------------------------------
     - Displays a table of usage events with Date, Start Time, End Time, Elapsed
     --------------------------------------------------------------------------*/
     return (
-        <div>
-            {loading && <p>Loading usage events...</p>}
-            {error && <p style={{ color: colors.primaryText }}>Error: {error}</p>}
-            {!loading && !error && usageEvents.length === 0 && (
-                <p>No usage events found for this item.</p>
+            
+        <Card>
+            <div className="card-header">
+                <h2>{itemNickname} Uses</h2>
+                <IoMdClose
+                    style={{
+                        cursor: "pointer",
+                        color: colors.iconSecondary,
+                        width: "32px",
+                        height: "32px",
+                    }}
+                    onClick={() => setShowDailyEvents(false)}
+                />
+            </div>
+
+            
+            
+            {loading && (
+                <div className="card-header">
+                    <p>Loading usage events...</p>
+                </div>
             )}
-            {!loading && !error && usageEvents.length > 0 && (
-                <Card>
-                    <div className="row" 
-                        style={{ 
-                            justifyContent: "space-between", 
-                            alignItems: "center",
-                            boxSizing: "border-box",
-                            width: "100%",
-                            marginBottom: "1rem"
-                        }}>
-                        <div className="card-header">
-                            <h2>All {itemNickname} Use</h2>
-                            <button 
-                                onClick={() => setShowDailyEvents(false)}
-                                style={{ 
-                                    backgroundColor: colors.button,
-                                    color: colors.buttonText,
-                                    marginLeft: "auto"
-                                }}
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
+            {error && (
+                <div className="card-header">
+                    <p>Error loading usage events: {error}</p>
+                </div>
+            )}
+            {(!loading && !error && data.length === 0) && (
+                <div className="card-header">
+                    <p>No usage events found for this item.</p>
+                </div>
+            )}
+
+            {!loading && !error && data.length > 0 && (
                     <table className="usage-events-table">
                         <thead>
                             <tr>
@@ -118,10 +102,10 @@ const DailyEvents: React.FC<{
                             )}
                         </tbody>
                     </table>
-                </Card>
             )}
-        </div>
+        </Card>
+            
     );
 };
 
-export default DailyEvents;
+export default ItemEventsReport;
