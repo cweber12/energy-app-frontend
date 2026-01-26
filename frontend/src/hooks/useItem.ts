@@ -1,14 +1,13 @@
-// src/hooks/useElectricalItems.ts
 import { useState, useEffect } from "react";
-import { 
-    fetchItemsByProperty, 
-    fetchItemCategories, 
-    fetchUsageTypes 
-} from "../services/itemService";
-import { 
-    CategoryMap, 
-    UsageTypeMap, 
-    Item 
+import {
+    fetchItemsByProperty,
+    fetchItemCategories,
+    fetchUsageTypes
+} from "../supabase_services/itemsService";
+import {
+    CategoryMap,
+    UsageTypeMap,
+    Item
 } from "../../types/itemTypes";
 
 /* Fetch Electrical Items by Property

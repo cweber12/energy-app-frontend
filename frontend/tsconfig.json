@@ -41,5 +41,7 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "include": ["src"], 
+  "exclude": ["../supabase", "../backend", "node_modules", "build"]
 }

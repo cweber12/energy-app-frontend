@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import "../../styles/Components.css";
 import HeaderDropdown from "../common/HeaderDropdown";
-import { addProperty } from "../../services/propertyService";
+//import { addProperty } from "../../services/propertyService";
+import { addProperty } from "../../supabase_services/propertiesService";
 import { PropertyForm } from "../../../types/propertyTypes";
 
 /*  Property Input Component
@@ -40,18 +41,15 @@ const PropertyInput: React.FC<{
     e.preventDefault();
     setMessage("");
     try {
-        const response = await addProperty(userId, form as PropertyForm);
-        if (response.ok) {
-            setMessage("Property added successfully!");
-            setForm({
-                street_address: "",
-                city: "",
-                state_abbreviation: "",
-                zip: "",
-            });
-        } else {
-            setMessage("Failed to add property: " + response.statusText);
-        }
+      // const response = await addProperty(userId, form as PropertyForm);
+      const response = await addProperty(form as PropertyForm);
+      setMessage("Property added successfully!" + response.property_id);
+      setForm({
+          street_address: "",
+          city: "",
+          state_abbreviation: "",
+          zip: "",
+      });   
     } catch (err) {
         setMessage("Error adding property: " + (err as Error).message);
     }

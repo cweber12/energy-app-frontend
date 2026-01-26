@@ -1,6 +1,8 @@
 // src/components/menu/PropertyMenu.tsx
 import React, { useState, useEffect } from 'react';
+import { useProperties } from "../../hooks/useProperty";
 import { Property, PropertyOption } from '../../../types/propertyTypes';
+import { fetchMyProperties } from "../../supabase_services/propertiesService";
 import Select from 'react-select';
 import type { CSSObjectWithLabel } from "react-select";
 import "../../App.css";
@@ -23,12 +25,9 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
     setShowPropertyInput, 
     setPropertyId, 
 }) => {
-    const userId = sessionStorage.getItem("user_id");
-    
-    // State to hold property options for the dropdown and Add Property option
-    const [options, setOptions] = useState([
-        { value: 'add', label: 'Add Property' }
-    ]);
+
+    // Fetch properties and options using custom hook
+    const { options } = useProperties(sessionStorage.getItem("user_id") ?? "");
 
     // Custom styles for react-select
     const customStyles = {
@@ -41,27 +40,6 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
             color: 'black',
         }),
     };
-
-    /* Fetch properties for the user on component mount
-    --------------------------------------------------------------------------*/
-    useEffect(() => {
-        if (!userId) return;
-        fetch(`http://127.0.0.1:5000/properties/${userId}`)
-            .then(response => response.json())
-            .then(data => {
-                
-                setOptions([
-                    { value: 'add', label: 'Add Property' },
-                    ...data.map((prop: Property) => ({
-                        value: prop.property_id,
-                        label: prop.street_address
-                    }))
-                ]);
-            })
-            .catch(error => {
-                console.error('Error fetching properties:', error);
-            });
-    }, [userId]);
 
     /* Handle property selection changes
     --------------------------------------------------------------------------*/

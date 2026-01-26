@@ -1,0 +1,8 @@
+{
+  "deno.enable": false,
+  "deno.enablePaths": ["supabase"],
+  "deno.unstable": true,
+
+  // point VS Code at your Deno config for the supabase folder
+  "deno.config": "./supabase/deno.json"
+}
