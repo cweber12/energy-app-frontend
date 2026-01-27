@@ -1,5 +1,6 @@
 {
   "name": "energy_app_frontend",
+  "homepage": "https://cweber12.github.io/energy-app-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
