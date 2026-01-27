@@ -1,103 +1,133 @@
 // src/components/report/UploadUsageReport.tsx
 import React from "react";
 import { useTheme } from "../../context/ThemeContext";
-import { FiUpload } from "react-icons/fi"; // Import your preferred icon
+import { FiUpload } from "react-icons/fi";
+import { useSaveUsageReport } from "../../hooks/useSaveUsageReport";
 
-
-// Type for individual interval reading (tuple)
+// type definition for hourly reading from usage report
 type IntervalReading = {
-    hour: string; // e.g. "14:00"
-    kWh: number; // e.g. 1.234
+  hour: string;
+  kWh: number;
 };
 
-// Props for UploadUsageReport component
+// type definition for component props
 type UploadUsageReportProps = {
+    propertyId: string;
     setReadings: React.Dispatch<React.SetStateAction<IntervalReading[]>>;
     setDate: React.Dispatch<React.SetStateAction<string>>;
+
 };
 
-/* Parse XML usage report
-    - Extracts IntervalReading nodes
-    - Converts epoch start time to hour string
-    - Converts Wh value to kWh
-    - Populates readings array
-    - Extracts date from first reading and sets via setDate
+/* Function to parse XML usage report and extract interval readings
+--------------------------------------------------------------------------------
+Params  | xmlString: string - XML content as string
+        | setDate: function to update date state in parent component
+--------------------------------------------------------------------------------
+Returns | Array of IntervalReading objects with hour and kWh values
 ------------------------------------------------------------------------------*/
 function parseXml(
-    xmlString: string, 
-    setDate: React.Dispatch<React.SetStateAction<string>>
+  xmlString: string,
+  setDate: React.Dispatch<React.SetStateAction<string>>
 ): IntervalReading[] {
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(xmlString, "application/xml");
-    const readings: IntervalReading[] = [];
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(xmlString, "application/xml");
+  const readings: IntervalReading[] = [];
 
-    // Find all IntervalReading nodes
-    const intervalReadings = Array.from(
-        xml.getElementsByTagNameNS("*", "IntervalReading")
-    );
+  const intervalReadings = Array.from(xml.getElementsByTagNameNS("*", "IntervalReading"));
 
-    intervalReadings.forEach((reading) => {
-        // Get start time (epoch seconds)
-        const startNode = reading.getElementsByTagNameNS("*", "start")[0];
-        const valueNode = reading.getElementsByTagNameNS("*", "value")[0];
+  intervalReadings.forEach((reading) => {
+    const startNode = reading.getElementsByTagNameNS("*", "start")[0];
+    const valueNode = reading.getElementsByTagNameNS("*", "value")[0];
 
-        // If both nodes exist, parse values
-        if (startNode && valueNode) {
-            const startEpoch = parseInt(startNode.textContent || "0", 10);
-            const currentDate = new Date(startEpoch * 1000);
-            console.log("Parsed date:", currentDate.toISOString());
-            if (!isNaN(currentDate.getTime())) {
-                const isoString = currentDate.toISOString();
-                const datePart = isoString.split('T')[0];
-                if (datePart) setDate(datePart);
-            }           
-            const hour = 
-                currentDate.toLocaleTimeString(
-                    [], 
-                    { hour: '2-digit', minute: '2-digit' }
-                );
-            // Value is in Wh, convert to kWh (kWh displayed on SDGE portal)
-            const kWh = parseFloat(valueNode.textContent || "0") / 1000;
-            readings.push({ hour, kWh });
-        }
-    });
+    if (startNode && valueNode) {
+      const startEpoch = parseInt(startNode.textContent || "0", 10);
+      const currentDate = new Date(startEpoch * 1000);
 
-    return readings;
+      if (!isNaN(currentDate.getTime())) {
+        const isoString = currentDate.toISOString();
+        const datePart = isoString.split("T")[0];
+        if (datePart) setDate(datePart);
+      }
+
+      const hour = currentDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const kWh = parseFloat(valueNode.textContent || "0") / 1000;
+      readings.push({ hour, kWh });
+    }
+  });
+
+  return readings;
 }
 
+/*  UploadUsageReport Component
+--------------------------------------------------------------------------------
+Props | propertyId: ID of the selected property
+      | setReadings: Function to update interval readings state in parent 
+      | setDate: Function to update report date state in parent component
+------------------------------------------------------------------------------*/
 const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
+    propertyId,
     setReadings,
-    setDate
+    setDate,
 }) => {
+  const { colors } = useTheme();
+  const { saveReport, isSaving, saveError } = useSaveUsageReport();
 
-    const { colors } = useTheme();
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const text = event.target?.result as string;
-            setReadings(parseXml(text, setDate));
-        };
-        reader.readAsText(file);
+    const reader = new FileReader();
+
+    reader.onload = async (event) => {
+      const text = event.target?.result as string;
+
+      let reportDate = "";
+      const captureDate: React.Dispatch<React.SetStateAction<string>> = (v) => {
+        const next = typeof v === "function" ? v(reportDate) : v;
+        reportDate = next;
+        setDate(next);
+      };
+
+      const parsed = parseXml(text, captureDate);
+      setReadings(parsed);
+
+      if (!reportDate) return;
+
+      try {
+        await saveReport({
+          property_id: propertyId ? parseInt(propertyId, 10) : 0,
+          report_date: reportDate,
+          readings: parsed,
+          interval_minutes: 60,
+          source_filename: file.name,
+        });
+      } catch (err) {
+        console.error("Failed to save usage report:", err);
+      }
     };
 
-    return (
-        <div className="upload-button" style={{ backgroundColor: colors.button, color: colors.buttonText }}>
-            <label htmlFor="xml-upload" className="upload-label">
-                <FiUpload size={32} />
-                <input
-                    id="xml-upload"
-                    type="file"
-                    accept=".xml"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                />
-                Upload Usage Report
-            </label>
-        </div>
-    );
+    reader.readAsText(file);
+  };
+
+  /* Render upload button and file input
+  ----------------------------------------------------------------------------*/
+  return (
+    <div className="upload-button" style={{ backgroundColor: colors.button, color: colors.buttonText }}>
+      <label htmlFor="xml-upload" className="upload-label">
+        <FiUpload size={32} />
+        <input
+          id="xml-upload"
+          type="file"
+          accept=".xml"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+          disabled={isSaving}
+        />
+        {isSaving ? "Saving..." : "Upload Usage Report"}
+      </label>
+      {saveError && <div style={{ marginTop: 8 }}>{saveError}</div>}
+    </div>
+  );
 };
 
 export default UploadUsageReport;

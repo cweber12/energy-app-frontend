@@ -13,6 +13,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 type AccountDashboardHeaderProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
     setPropertyId: React.Dispatch<React.SetStateAction<string>>;
+    propertyId: string;
     setReadings: React.Dispatch<React.SetStateAction<IntervalReading[]>>;
     setDate: React.Dispatch<React.SetStateAction<string>>;
     refreshProperties: number;
@@ -30,10 +31,10 @@ Props: State setter functions for AccountDashboard states
 const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     setShowPropertyInput, 
     setPropertyId,
+    propertyId,
     setReadings, 
     setDate, 
     refreshProperties,
-
 }) => {
    
     const { colors } = useTheme();
@@ -74,6 +75,7 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                         refreshProperties={refreshProperties}
                     />
                     <UploadUsageReport
+                        propertyId={propertyId}
                         setReadings={setReadings}
                         setDate={setDate}
                     />

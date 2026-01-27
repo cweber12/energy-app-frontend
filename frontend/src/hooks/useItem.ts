@@ -12,12 +12,12 @@ import {
 
 /* Fetch Electrical Items by Property
 --------------------------------------------------------------------------------
-Params:
-    - propertyId: ID of the property to fetch items for.
-Returns:
-    - items: Item[]
-    - categories: CategoryMap;
-    - usageTypes: UsageTypeMap;
+Params  | propertyId: string ID of the property to fetch items for.
+        | refreshItems?: number optional dependency to trigger refresh.
+--------------------------------------------------------------------------------
+Returns | items: Item[] array of electrical items.
+        | categories: { [key: number]: string } mapping of category IDs to names.
+        | usageTypes: { [key: number]: string } mapping of usage type IDs to names.
 ------------------------------------------------------------------------------*/
 export function useAllItems(
     propertyId: string, 

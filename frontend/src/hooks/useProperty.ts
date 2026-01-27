@@ -5,11 +5,11 @@ import { Property, PropertyOption } from "../../types/propertyTypes";
 
 /* Fetch Properties by User
 --------------------------------------------------------------------------------
-Params:
-    - userId: ID of the user to fetch properties for.
-Returns:
-    - properties: Property[] array of property objects.
-    - options: { value: property_id, label: street_address }[] for dropdown.
+Params  | userId: string ID of the user to fetch properties for.
+        | refreshProperties?: number optional dependency to trigger refresh.
+--------------------------------------------------------------------------------
+Returns | properties: Property[] array of user properties.
+        | options: PropertyOption[] array for dropdown selection.
 ------------------------------------------------------------------------------*/
 export function useProperties(
     userId: string, refreshProperties?: number) {

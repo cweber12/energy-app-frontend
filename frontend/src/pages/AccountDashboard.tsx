@@ -6,7 +6,6 @@ import PageWrapper from '../components/common/PageWrapper';
 import PropertyInput from '../components/form/PropertyInput';
 import ItemMenu from '../components/menu/ItemMenu';
 import ItemInput from '../components/form/ItemInput';
-import ItemEventsReport from '../components/report/ItemEventsReport';
 import UsageGraph from '../components/graph/UsageGraph';
 import EventGraph from '../components/graph/EventGraph';
 import EventReport from '../components/report/EventReport';
@@ -49,6 +48,7 @@ const AccountDashboard = () => {
         <AccountDashboardHeader
             setShowPropertyInput={setShowPropertyInput}
             setPropertyId={setPropertyId}
+            propertyId={propertyId}
             setReadings={setReadings}
             setDate={setDate}
             refreshProperties={refreshProperties}
@@ -88,7 +88,7 @@ const AccountDashboard = () => {
                     <UsageGraph 
                         readings={readings}
                         date={date}
-                        />
+                    />
                     <EventGraph startDate={date} />
                 </div>
             )}
