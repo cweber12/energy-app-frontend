@@ -9,6 +9,7 @@ import "../../styles/Components.css";
 import { useAllEvents } from "../../hooks/useEvent";
 import Card from "../common/Card";
 import { IoMdAddCircleOutline, IoMdClose } from "react-icons/io";
+import { formatIsoInLA } from "../../utils/dateUtils";
 
 /* GetDailyEvents Component
 --------------------------------------------------------------------------------
@@ -86,11 +87,9 @@ const ItemEventsReport: React.FC<{
                                 events.map((event, idx) => (
                                     <tr key={`${date}-${event.event_id}`}>
                                         <td style={tdStyles}>{idx === 0 ? date : ""}</td>
-                                        <td style={tdStyles}>{new Date(event.start_ts).toLocaleTimeString()}</td>
+                                        <td style={tdStyles}>{formatIsoInLA(event.start_ts)}</td>
                                         <td style={tdStyles}>
-                                            {event.end_ts
-                                                ? new Date(event.end_ts).toLocaleTimeString()
-                                                : "Ongoing"}
+                                        {event.end_ts ? formatIsoInLA(event.end_ts) : "Ongoing"}
                                         </td>
                                         <td style={tdStyles}>{formatElapsed(event.start_ts, event.end_ts)}</td>
                                     </tr>

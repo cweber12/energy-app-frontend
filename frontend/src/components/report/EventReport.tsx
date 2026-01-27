@@ -5,6 +5,7 @@ import "../../styles/Components.css";
 import Card from "../common/Card";
 import "../../App.css";
 import { GroupedEvents } from "../../../types/eventTypes"; 
+import { formatIsoInLA } from "../../utils/dateUtils";
 
 /* Event Report Component
 --------------------------------------------------------------------------------
@@ -43,12 +44,8 @@ const EventReport: React.FC<{ startDate: string }> = ({ startDate }) => {
                             <tr key={event.event_id}>
                                 <td>{idx === 0 ? group.nickname : ""}</td>
                                 <td>{idx === 0 ? group.usage_date : ""}</td>
-                                <td>{new Date(event.start_ts).toLocaleTimeString()}</td>
-                                <td>
-                                    {event.end_ts
-                                        ? new Date(event.end_ts).toLocaleTimeString()
-                                        : "Ongoing"}
-                                </td>
+                                <td>{formatIsoInLA(event.start_ts)}</td>
+                                <td>{event.end_ts ? formatIsoInLA(event.end_ts) : "Ongoing"}</td>
                                 <td>
                                     {event.elapsed_minutes !== null
                                         ? Math.round(event.elapsed_minutes)

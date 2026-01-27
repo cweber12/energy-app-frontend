@@ -69,6 +69,37 @@ function minutesBetween(startIso: string, endIso: string) {
   return (b - a) / 60000;
 }
 
+const LA_TZ = "America/Los_Angeles";
+
+function laDateKeyFromIso(iso: string): string {
+  const d = new Date(iso);
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: LA_TZ,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d); // YYYY-MM-DD
+}
+
+function laYmdFromIso(iso: string): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: LA_TZ,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(iso)); // YYYY-MM-DD
+}
+
+function addDays(dateStr: string, days: number): string {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + days);
+  const yy = dt.getUTCFullYear();
+  const mm = String(dt.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(dt.getUTCDate()).padStart(2, "0");
+  return `${yy}-${mm}-${dd}`;
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return options();
 
@@ -219,10 +250,7 @@ Deno.serve(async (req: Request) => {
           if (!endTs) return;
           const mins = minutesBetween(s.start_ts, endTs);
           if (mins === null) return;
-          const d = new Date(s.start_ts);
-          const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(
-            d.getUTCDate(),
-          ).padStart(2, "0")}`;
+          const key = laYmdFromIso(s.start_ts);
           totals.set(key, (totals.get(key) ?? 0) + mins);
         });
 
@@ -334,65 +362,65 @@ Deno.serve(async (req: Request) => {
 
     // GET /events/by_date/:start_date
     if (req.method === "GET" && rest[0] === "events" && rest[1] === "by_date") {
-      const startDate = rest[2];
-      if (!startDate) return json({ message: "start_date query parameter is required" }, 400);
+        const startDate = rest[2];
+        if (!startDate) return json({ message: "start_date query parameter is required" }, 400);
 
-      const { startIso, endIso } = dayRangeUtc(startDate);
+        const endDate = addDays(startDate, 2); // wide net
 
-      const { data: items, error: itemsErr } = await supabase
-        .from("items")
-        .select("id, nickname, property_id, properties!inner(user_id)")
-        .eq("properties.user_id", userId)
-        .order("nickname", { ascending: true });
+        const { data: items, error: itemsErr } = await supabase
+            .from("items")
+            .select("id, nickname, property_id, properties!inner(user_id)")
+            .eq("properties.user_id", userId)
+            .order("nickname", { ascending: true });
 
-      if (itemsErr) throw itemsErr;
+        if (itemsErr) throw itemsErr;
 
-      const itemIds = (items ?? []).map((i: any) => i.id);
-      if (itemIds.length === 0) return json([], 200);
+        const itemIds = (items ?? []).map((i: any) => i.id);
+        if (itemIds.length === 0) return json([], 200);
 
-      const nickByItemId = new Map<number, string>();
-      (items ?? []).forEach((i: any) => nickByItemId.set(i.id, i.nickname));
+        const nickByItemId = new Map<number, string>();
+        (items ?? []).forEach((i: any) => nickByItemId.set(i.id, i.nickname));
 
-      const { data: starts, error: sErr } = await supabase
-        .from("event_start")
-        .select("event_id, item_id, start_ts")
-        .in("item_id", itemIds)
-        .gte("start_ts", startIso)
-        .lt("start_ts", endIso)
-        .order("start_ts", { ascending: false });
+        const { data: starts, error: sErr } = await supabase
+            .from("event_start")
+            .select("event_id, item_id, start_ts")
+            .in("item_id", itemIds)
+            .gte("start_ts", `${startDate}T00:00:00.000Z`)
+            .lt("start_ts", `${endDate}T00:00:00.000Z`)
+            .order("start_ts", { ascending: false });
 
-      if (sErr) throw sErr;
+        if (sErr) throw sErr;
 
-      const eventIds = (starts ?? []).map((r: any) => r.event_id);
-      const { data: ends, error: eErr } = eventIds.length
-        ? await supabase.from("event_end").select("event_id, end_ts").in("event_id", eventIds)
-        : { data: [], error: null };
+        const filteredStarts = (starts ?? []).filter((s: any) => laDateKeyFromIso(s.start_ts) === startDate);
 
-      if (eErr) throw eErr;
+        const eventIds = filteredStarts.map((r: any) => r.event_id);
+        const { data: ends, error: eErr } = eventIds.length
+            ? await supabase.from("event_end").select("event_id, end_ts").in("event_id", eventIds)
+            : { data: [], error: null };
 
-      const endMap = new Map<number, string>();
-      (ends ?? []).forEach((r: any) => endMap.set(r.event_id, r.end_ts));
+        if (eErr) throw eErr;
 
-      const grouped = new Map<string, { usage_date: string; nickname: string; events: any[] }>();
+        const endMap = new Map<number, string>();
+        (ends ?? []).forEach((r: any) => endMap.set(r.event_id, r.end_ts));
 
-      (starts ?? []).forEach((s: any) => {
-        const nickname = nickByItemId.get(s.item_id) ?? "Unknown";
-        const endTs = endMap.get(s.event_id) ?? null;
-        const elapsed = endTs ? minutesBetween(s.start_ts, endTs) : null;
+        const grouped = new Map<string, { usage_date: string; nickname: string; events: any[] }>();
 
-        const key = `${startDate}||${nickname}`;
-        if (!grouped.has(key)) grouped.set(key, { usage_date: startDate, nickname, events: [] });
+        filteredStarts.forEach((s: any) => {
+            const nickname = nickByItemId.get(s.item_id) ?? "Unknown";
+            const endTs = endMap.get(s.event_id) ?? null;
+            const key = `${startDate}||${nickname}`;
+            if (!grouped.has(key)) grouped.set(key, { usage_date: startDate, nickname, events: [] });
 
-        grouped.get(key)!.events.push({
-          event_id: s.event_id,
-          start_ts: s.start_ts,
-          end_ts: endTs,
-          elapsed_minutes: elapsed,
+            grouped.get(key)!.events.push({
+            event_id: s.event_id,
+            start_ts: s.start_ts,
+            end_ts: endTs,
+            elapsed_minutes: endTs ? (new Date(endTs).getTime() - new Date(s.start_ts).getTime()) / 60000 : null,
+            });
         });
-      });
 
-      const result = Array.from(grouped.values()).sort((a, b) => a.nickname.localeCompare(b.nickname));
-      return json(result, 200);
+        const result = Array.from(grouped.values()).sort((a, b) => a.nickname.localeCompare(b.nickname));
+        return json(result, 200);
     }
 
     return json({ error: "Not found" }, 404);

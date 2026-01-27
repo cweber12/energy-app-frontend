@@ -1,9 +1,10 @@
 import { EventSummary, GroupedEvents, HourlyTotals } from "../../types/eventTypes";
+import { laYmdFromIso } from "./dateUtils"; 
 
 export const groupEventsByDate = (events: EventSummary[]) => {
     const grouped: { [date: string]: EventSummary[] } = {};
     events.forEach(event => {
-        const dateKey = new Date(event.start_ts).toISOString().slice(0, 10); 
+        const dateKey = laYmdFromIso(event.start_ts);
         if (!grouped[dateKey]) grouped[dateKey] = [];
         grouped[dateKey].push(event);
     });

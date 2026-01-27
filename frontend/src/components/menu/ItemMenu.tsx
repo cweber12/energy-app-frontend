@@ -12,6 +12,7 @@ import { IoMdAdd } from "react-icons/io";
 import { IoOpenOutline } from "react-icons/io5";
 import ItemEventsReport from "../report/ItemEventsReport";
 import { LuMinimize2, LuMaximize2 } from "react-icons/lu";
+import { TbTableShortcut } from "react-icons/tb";
 import { set } from "react-hook-form";
 
 /* ItemMenu Component
@@ -159,7 +160,7 @@ const ItemMenu: React.FC<{
                                                 }}
                                             />
                                         ) : (
-                                            <LuMaximize2
+                                            <TbTableShortcut
                                                 style={{
                                                     cursor: "pointer",
                                                     color: colors.iconSecondary,

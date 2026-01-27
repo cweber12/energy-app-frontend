@@ -63,7 +63,7 @@ export const ColorScheme : { dark: ColorSchemeType; light: ColorSchemeType } = {
             "#FF5733",
             "#33FF57",
             "#3357FF",
-            "#F333FF",
+            "#fcff33",
             "#33FFF5",
         ],
     },

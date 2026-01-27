@@ -48,7 +48,7 @@ export function useDailyTotalsByDate(itemId: number) {
                 console.error("Error fetching daily totals by date:", err);
             });
     }, [itemId]);
-
+    console.log("useDailyTotalsByDate data:", data);
     return { data };
 }
 
@@ -67,7 +67,7 @@ export function useAllEvents(itemId: number) {
             })
             .finally(() => setLoading(false));
     }, [itemId]);
-
+    console.log("useAllEvents data:", data);
     return { data, loading, error };
 }
 
