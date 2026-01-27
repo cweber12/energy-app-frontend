@@ -2,8 +2,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
-import { loginWithSupabase } from "../../services/authService";
 import { LoginForm } from "../../../types/authTypes";
+import { supabase } from "../../lib/supabaseClient";
 import "../../App.css";
 import "../../styles/Components.css";
 import FormWrapper from "../common/FormWrapper";
@@ -38,21 +38,25 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
     ----------------------------------------------------------------------------
     - Sends POST request with email and password
     --------------------------------------------------------------------------*/
-    const onSubmit = async (data: LoginForm) => {
+    const onSubmit = async (formData: LoginForm) => {
         try {
-            const result = await loginWithSupabase(data.email, data.password);
-            if (result.email) {
-                sessionStorage.setItem("username", result.username);
-                sessionStorage.setItem("user_id", result.user_id ?? "");
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: formData.email,
+                password: formData.password,
+            });
+            if (data.user) {
+                sessionStorage.setItem("user_id", data.user.id);
+                sessionStorage.setItem("username", data.user.user_metadata.username);
                 navigate("/account");
-            } else {
-                sessionStorage.removeItem("username");
-                setMessage("Login failed. Please check your credentials and try again.");
+            } else if (error) {
+                setMessage(error.message);
             }
         } catch (err) {
             console.error('Login | Error during login:', err);
             setMessage("Login failed. Please check your credentials and try again.");
         }
+
+       
     };
 
     /* Render login form

@@ -11,6 +11,7 @@ import "../../styles/Components.css";
 type PropertyMenuProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
     setPropertyId: React.Dispatch<React.SetStateAction<string>>;
+    refreshProperties: number;
 };
 
 /*  Property Menu Component
@@ -23,11 +24,12 @@ Props:
 ------------------------------------------------------------------------------*/
 const PropertyMenu: React.FC<PropertyMenuProps> = ({ 
     setShowPropertyInput, 
-    setPropertyId, 
+    setPropertyId,
+    refreshProperties, 
 }) => {
 
     // Fetch properties and options using custom hook
-    const { options } = useProperties(sessionStorage.getItem("user_id") ?? "");
+    const { options } = useProperties(sessionStorage.getItem("user_id") ?? "", refreshProperties);
 
     // Custom styles for react-select
     const customStyles = {

@@ -15,6 +15,7 @@ type AccountDashboardHeaderProps = {
     setPropertyId: React.Dispatch<React.SetStateAction<string>>;
     setReadings: React.Dispatch<React.SetStateAction<IntervalReading[]>>;
     setDate: React.Dispatch<React.SetStateAction<string>>;
+    refreshProperties: number;
 };
 
 /*  AccountDashboardHeader Component
@@ -30,7 +31,8 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     setShowPropertyInput, 
     setPropertyId,
     setReadings, 
-    setDate
+    setDate, 
+    refreshProperties,
 
 }) => {
    
@@ -69,6 +71,7 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     <PropertyMenu 
                         setShowPropertyInput={setShowPropertyInput} 
                         setPropertyId={setPropertyId}
+                        refreshProperties={refreshProperties}
                     />
                     <UploadUsageReport
                         setReadings={setReadings}
@@ -110,21 +113,23 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                             className="user-menu-dropdown"
                             style={{ backgroundColor: colors.secondaryBackground, color: colors.secondaryText }}
                             >
-                            <div className="dropdown-item">
-                            Logout 
-                            <IoLogOutOutline
-                                style={{ 
-                                    cursor: "pointer", 
-                                    color: colors.iconSecondary,
-                                    width: "32px",
-                                    height: "32px",
-                                }}
+                            <div 
+                                className="dropdown-item"
                                 onClick={() => {
-                                    // Clear session storage and redirect to home page
-                                    sessionStorage.clear();
-                                    window.location.href = "/";
+                                        // Clear session storage and redirect to home page
+                                        sessionStorage.clear();
+                                        window.location.href = "/";
                                 }}
-                            />
+                                >
+                                Logout 
+                                <IoLogOutOutline
+                                    style={{ 
+                                        cursor: "pointer", 
+                                        color: colors.iconSecondary,
+                                        width: "32px",
+                                        height: "32px",
+                                    }}
+                                />
                             </div>    
                         </div>
                     )}

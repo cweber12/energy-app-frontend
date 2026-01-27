@@ -64,11 +64,12 @@ const ItemMenu: React.FC<{
     return (
         <Card>
             <div className="card-header">
-            <h3>ITEMS</h3> 
+            {items.length > 0 && <h3>ITEMS</h3>}
             {!showItemInput && (
                 <div 
                     className="upload-button"
                     style={{ backgroundColor: colors.iconTertiary }}
+                    onClick={() => setShowItemInput(true)}
                 >
                 <IoMdAdd 
                     style={{ 
@@ -77,7 +78,6 @@ const ItemMenu: React.FC<{
                         width: "32px",
                         height: "32px",
                     }}
-                    onClick={() => setShowItemInput(true)}
                 />
                 Add Item
                 </div>

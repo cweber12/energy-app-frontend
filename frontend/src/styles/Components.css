@@ -10,6 +10,17 @@
     position: relative;
 }
 
+.home-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    margin-top: 5rem; 
+}
+
 /* Header Styles */
 .header {
     display: flex; 
@@ -212,9 +223,9 @@
 .form-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: 0px 20px;
+    padding: 1.5rem;
     width: fit-content;
 }
 

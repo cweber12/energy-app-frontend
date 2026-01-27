@@ -30,6 +30,7 @@ const AccountDashboard = () => {
     const [date, setDate] = useState<string>("");
     const [itemNickname, setItemNickname] = useState<string>("");
     const [refreshItems, setRefreshItems] = useState(0);
+    const [refreshProperties, setRefreshProperties] = useState(0);
     
     
     /* Render Account Dashboard Page
@@ -50,12 +51,14 @@ const AccountDashboard = () => {
             setPropertyId={setPropertyId}
             setReadings={setReadings}
             setDate={setDate}
+            refreshProperties={refreshProperties}
          />
         <PageWrapper>
             {showPropertyInput && (
                 <PropertyInput 
                     userId={userId} 
                     setShowPropertyInput={setShowPropertyInput} 
+                    setRefreshProperties={setRefreshProperties}
                 />
                 
             )}

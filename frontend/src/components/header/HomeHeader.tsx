@@ -3,6 +3,7 @@ import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../../styles/Components.css";
+import OpenDemo from "../action/OpenDemo";
 
 /* Home Header Component
 --------------------------------------------------------------------------------
@@ -14,12 +15,17 @@ const HomeHeader = () => {
     return (
         <header 
             className="header" 
-            style={{backgroundColor: colors.secondaryBackground}}
+            style={{
+                backgroundColor: colors.tertiaryBackground,
+                color: colors.tertiaryText,
+                alignItems: "center",
+
+            }}
             >
             <h1 style={{ color: colors.title}}>
                 WattWatch
             </h1>
-            
+            <OpenDemo />
         </header>
     );
 }

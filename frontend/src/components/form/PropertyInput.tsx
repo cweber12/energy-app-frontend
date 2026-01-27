@@ -15,8 +15,13 @@ Props:
 ------------------------------------------------------------------------------*/
 const PropertyInput: React.FC<{ 
   userId: string,
-  setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>
-}> = ({ userId, setShowPropertyInput }) => {
+  setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>, 
+  setRefreshProperties: React.Dispatch<React.SetStateAction<number>>,
+}> = ({ 
+  userId, 
+  setShowPropertyInput, 
+  setRefreshProperties 
+}) => {
   const [form, setForm] = useState({
     street_address: "",
     city: "",
@@ -49,7 +54,9 @@ const PropertyInput: React.FC<{
           city: "",
           state_abbreviation: "",
           zip: "",
-      });   
+      });
+      setRefreshProperties(prev => prev + 1);
+      setShowPropertyInput(false);   
     } catch (err) {
         setMessage("Error adding property: " + (err as Error).message);
     }

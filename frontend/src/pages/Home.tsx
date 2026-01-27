@@ -6,6 +6,7 @@ import Login from '../components/form/Login';
 import Register from '../components/form/Register';
 import HomeHeader from '../components/header/HomeHeader';
 import PageWrapper from '../components/common/PageWrapper';
+import HomeWrapper from '../components/common/HomeWrapper';
 import Card from '../components/common/Card';
 
 /*  Home Page
@@ -33,24 +34,28 @@ function Home() {
     return (
         <>
             <HomeHeader/>
-            <PageWrapper>
-                <Card>
+            <HomeWrapper>
+
                     {showLogin && <Login navigate={navigate} />}
                     {showRegister && <Register />}
                     <span 
                         style={{ 
                             cursor: "pointer",
-                            textDecoration: "underline"
+                            textDecoration: "underline",
+                            marginTop: "1rem",
+                            fontSize: "1.2rem",
                         }}
                         onClick={() => {
                             setShowLogin(!showLogin);
                             setShowRegister(!showRegister);
                         }}
                     >
-                        {showLogin ? "Don't have an account? Register here." : "Already have an account? Login here."}
+                        {showLogin ? 
+                        "Don't have an account? Register here." : 
+                        "Already have an account? Login here."}
                     </span>
-                </Card>
-            </PageWrapper>
+                
+            </HomeWrapper>
         </>
     );
 }

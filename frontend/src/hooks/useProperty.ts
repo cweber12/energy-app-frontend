@@ -11,7 +11,8 @@ Returns:
     - properties: Property[] array of property objects.
     - options: { value: property_id, label: street_address }[] for dropdown.
 ------------------------------------------------------------------------------*/
-export function useProperties(userId: string) {
+export function useProperties(
+    userId: string, refreshProperties?: number) {
     const [options, setOptions] = useState<PropertyOption[]>([
         { value: 'add', label: 'Add Property' }
     ]);
@@ -33,7 +34,7 @@ export function useProperties(userId: string) {
                 setOptions([{ value: 'add', label: 'Add Property' }]);
                 console.error("Error fetching properties:", error);
             });
-    }, [userId]);
+    }, [userId, refreshProperties]);
 
     return { properties, options };
 }

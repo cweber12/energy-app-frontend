@@ -1,8 +1,8 @@
 import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { registerWithSupabase } from "../../services/authService";
 import { useTheme } from "../../context/ThemeContext";
 import type { RegisterForm } from "../../../types/userTypes";
+import { supabase } from "../../lib/supabaseClient";
 import "../../App.css";
 import "../../styles/Components.css";
 import FormWrapper from "../common/FormWrapper";
@@ -12,36 +12,41 @@ const Register: React.FC = () => {
   const [message, setMessage] = React.useState<string | null>(null);
 
   const {
-    register,      // react-hook-form register
-    handleSubmit,  // react-hook-form handleSubmit
+    register,
+    handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<RegisterForm>();
 
   const onSubmit: SubmitHandler<RegisterForm> = async (form) => {
     setMessage(null);
 
-    const result = await registerWithSupabase(
-        form.email,
-        form.password,
-        form.username
-        );
-
-        if (result.errorMessage) {
-            setMessage(result.errorMessage);
-            return;
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: { username: form.username }
         }
+      });
 
-        if (!result.sessionExists) {
-            setMessage("Check your email to confirm your account.");
-        } else {
-            setMessage(`Account created for ${form.username}! You can now log in.`);
-        }
+      if (error) {
+        setMessage(error.message);
+        return;
+      }
+
+      if (!data.session) {
+        setMessage("Check your email to confirm your account.");
+      } else {
+        setMessage(`Account created for ${form.username}! You can now log in.`);
+      }
+    } catch (err) {
+      setMessage("Registration failed. Please try again.");
+    }
   };
 
   return (
     <FormWrapper>
       <h2>Register</h2>
-
       <form
         className="form auth-form"
         style={{ width: "300px" }}
