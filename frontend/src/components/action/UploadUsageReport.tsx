@@ -42,11 +42,13 @@ function parseXml(
     if (startNode && valueNode) {
       const startEpoch = parseInt(startNode.textContent || "0", 10);
       const currentDate = new Date(startEpoch * 1000);
+      console.log("Parsed date:", currentDate);
 
       if (!isNaN(currentDate.getTime())) {
-        const isoString = currentDate.toISOString();
-        const datePart = isoString.split("T")[0];
-        if (datePart) setDate(datePart);
+        const localDate = currentDate.toLocaleDateString("en-CA"); // "YYYY-MM-DD"
+        console.log("Local Date:", localDate);
+        setDate(localDate);
+        console.log("Report date set to:", localDate);
       }
 
       const hour = currentDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

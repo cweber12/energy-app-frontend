@@ -11,6 +11,8 @@ import EventGraph from '../components/graph/EventGraph';
 import EventReport from '../components/report/EventReport';
 import { IntervalReading } from '../../types/reportTypes';
 import { useLatestUsageReport } from "../hooks/useLatestUsageReport";
+import { useUsageReportNavigator } from "../hooks/useUsageReportNavigator";
+
 
 
 /*  Account Dashboard Page
@@ -38,10 +40,15 @@ const AccountDashboard = () => {
     const {
         readings: savedReadings,
         date: savedDate,
-        isLoading: isLoadingSaved,
-        error: savedError,
-    } = useLatestUsageReport(propertyIdNum);
-    
+        canPrev,
+        canNext,
+        goPrev,
+        goNext,
+        isLoading,
+        error,
+    } = useUsageReportNavigator(propertyIdNum, refreshProperties, { utility: "SDGE", meterName: null });
+
+    // uploaded override (existing state)
     const displayReadings = readings.length > 0 ? readings : savedReadings;
     const displayDate = date || savedDate;
 
@@ -98,6 +105,33 @@ const AccountDashboard = () => {
             )}
             {displayReadings.length > 0 && (
                 <div className="column" style={{ gap: 0 }}>
+                    <div className="row" style={{ gap: 12, alignItems: "center" }}>
+                    <button
+                        disabled={!canPrev}
+                        onClick={async () => {
+                        setReadings([]); // switch from uploaded override back to saved
+                        setDate("");
+                        await goPrev();
+                        }}
+                    >
+                        Prev
+                    </button>
+
+                    <button
+                        disabled={!canNext}
+                        onClick={async () => {
+                        setReadings([]);
+                        setDate("");
+                        await goNext();
+                        }}
+                    >
+                        Next
+                    </button>
+
+                    {isLoading && <span>Loading…</span>}
+                    {error && <span>{error}</span>}
+                    </div>
+
                     <UsageGraph readings={displayReadings} date={displayDate} />
                     <EventGraph startDate={displayDate} />
                 </div>

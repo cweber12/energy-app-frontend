@@ -7,6 +7,7 @@ import type {
     MeterRow, 
     UsageReportRow, 
     UsageIntervalRow,
+    UsageReportMeta
 } from "../../types/reportTypes";
 import { 
     formatIsoHourMinuteLA, 
@@ -248,4 +249,28 @@ export async function fetchMostRecentUsageReportForProperty(params: {
   }));
 
   return { date: latest.report_date, readings };
+}
+
+/* Function to fetch a usage report with intervals by date
+------------------------------------------------------------------------------*/
+export async function fetchReportWithIntervalsByDate(params: {
+    meterId: number;
+    reportDate: string; // YYYY-MM-DD
+}): Promise<{
+    report: UsageReportMeta | null;
+    intervals: UsageIntervalRow[];
+    prev: UsageReportMeta | null;
+    next: UsageReportMeta | null;
+    requested_date: string;
+    used_date: string;
+    is_exact: boolean;
+}> {
+    const headers = await getHeaders(); // reuse your existing getHeaders() in this file
+    const res = await fetch(
+        `${SUPABASE_URL}/functions/v1/usage_report/meter/${params.meterId}/date/${params.reportDate}`,
+        { headers }
+    );
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(json?.error ?? json?.message ?? "Failed to fetch report");
+    return json;
 }

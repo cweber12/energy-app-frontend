@@ -37,3 +37,13 @@ export type UsageIntervalRow = {
   start_ts: string; // timestamptz ISO
   kwh: number;
 };
+
+export type UsageReportMeta = {
+    report_id: number;
+    meter_id: number;
+    report_date: string; // YYYY-MM-DD
+    interval_minutes: number;
+    source_filename: string | null;
+    created_at: string;
+};
+
