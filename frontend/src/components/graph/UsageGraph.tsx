@@ -14,19 +14,13 @@ import Card from '../common/Card';
 import "../../App.css";
 import "../../styles/Components.css";
 import { useTheme } from '../../context/ThemeContext';
-
-// Type for individual interval reading (from energy provider)
-type IntervalReading = {
-    hour: string;
-    kWh: number;
-};
+import type { IntervalReading } from '../../../types/reportTypes';
 
 /* Usage Graph Component
 --------------------------------------------------------------------------------
 Generates a bar chart of kWh usage per hour for a given date.
-Props:
-    - readings: Array of interval readings (IntervalReading)).
-    - date: Date string (YYYY-MM-DD) to display in the title.
+Props | readings: IntervalReading[] - Array of usage readings
+      | date: string - Date of the usage report
 ------------------------------------------------------------------------------*/
 const UsageGraph: React.FC<{ 
     readings: IntervalReading[], 
@@ -36,9 +30,9 @@ const UsageGraph: React.FC<{
 
     /* Render bar chart
     ----------------------------------------------------------------------------
-        - XAxis: Hour of day
-        - YAxis: kWh usage
-        - Tooltip shows kWh value on hover.
+    XAxis | Hour of day
+    YAxis | kWh usage
+    Tooltip shows kWh value on hover.
     --------------------------------------------------------------------------*/
     return (
         <Card>
