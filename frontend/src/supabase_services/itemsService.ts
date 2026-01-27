@@ -3,6 +3,14 @@ import type { Category, UsageType, Item, ElectricalItemForm } from "../../types/
 import { supabase } from "../lib/supabaseClient";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../config/supabase";
 
+/* Helper function to perform authenticated fetch requests to Supabase Functions
+--------------------------------------------------------------------------------
+Params  | path: string endpoint path
+        | method: "GET" | "POST" | "PUT" | "DELETE" HTTP method
+        | body?: unknown optional request body
+--------------------------------------------------------------------------------
+Returns | T generic type of the response data
+------------------------------------------------------------------------------*/
 async function authedFetch<T>(
   path: string,
   method: "GET" | "POST" | "PUT" | "DELETE",
@@ -37,6 +45,13 @@ async function authedFetch<T>(
   return json as T;
 }
 
+/* Add a new electrical item to a property
+--------------------------------------------------------------------------------
+Params  | propertyId: string ID of the property
+        | form: ElectricalItemForm form data for the new item
+--------------------------------------------------------------------------------
+Returns | { item_id: number } object with the new item's ID
+------------------------------------------------------------------------------*/
 export async function addElectricalItem(
   propertyId: string,
   form: ElectricalItemForm,
@@ -47,12 +62,22 @@ export async function addElectricalItem(
   });
 }
 
+/* Fetch all items for a given property
+--------------------------------------------------------------------------------
+Params  | propertyId: string ID of the property
+--------------------------------------------------------------------------------
+Returns | Item[] array of items for the property
+------------------------------------------------------------------------------*/
 export async function fetchItemsByProperty(propertyId: string): Promise<Item[]> {
   const data = await authedFetch<Item[]>(`/property/${propertyId}`, "GET");
   if (!Array.isArray(data)) throw new Error("Unexpected response");
   return data;
 }
 
+/* Fetch all item categories
+--------------------------------------------------------------------------------
+Returns | { [key: number]: string } mapping of category IDs to names
+------------------------------------------------------------------------------*/
 export async function fetchItemCategories(): Promise<{ [key: number]: string }> {
   const { data, error } = await supabase
     .from("item_category")
@@ -67,6 +92,10 @@ export async function fetchItemCategories(): Promise<{ [key: number]: string }> 
   return categoryMap;
 }
 
+/* Fetch all usage types
+--------------------------------------------------------------------------------
+Returns | { [key: number]: string } mapping of usage type IDs to names
+------------------------------------------------------------------------------*/
 export async function fetchUsageTypes(): Promise<{ [key: number]: string }> {
   const { data, error } = await supabase
     .from("usage_type")

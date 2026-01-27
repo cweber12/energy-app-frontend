@@ -1,3 +1,4 @@
+// frontend/src/supabase_services/eventsService.ts
 import { supabase } from "../lib/supabaseClient";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../config/supabase";
 import { 
@@ -22,6 +23,12 @@ async function getHeaders() {
     };
 }
 
+/* Fetch all event summaries for a given item
+--------------------------------------------------------------------------------
+Params  | itemId: number ID of the item to fetch events for.
+--------------------------------------------------------------------------------
+Returns | data: EventSummary[] array of all event summaries for the item.
+------------------------------------------------------------------------------*/
 export async function fetchAllEvents(itemId: number): Promise<EventSummary[]> {
     const headers = await getHeaders();
     const response = await fetch(
@@ -32,6 +39,12 @@ export async function fetchAllEvents(itemId: number): Promise<EventSummary[]> {
     return response.json();
 }
 
+/* Fetch events grouped by date starting from a specific date
+--------------------------------------------------------------------------------
+Params  | startDate: string in 'YYYY-MM-DD' format
+--------------------------------------------------------------------------------
+Returns | data: GroupedEvents[] array of events grouped by date.
+------------------------------------------------------------------------------*/
 export async function fetchEventsByDate(startDate: string): Promise<GroupedEvents[]> {
     const headers = await getHeaders();
     const response = await fetch(
@@ -42,7 +55,15 @@ export async function fetchEventsByDate(startDate: string): Promise<GroupedEvent
     return response.json();
 }
 
-export async function fetchItemDailyUsage(itemId: number): Promise<{ usage_date: string, total_usage_minutes: number }[]> {
+/* Fetch daily usage totals for a given item
+--------------------------------------------------------------------------------
+Params  | itemId: number ID of the item to fetch daily totals for.
+--------------------------------------------------------------------------------
+Returns | data: DailyUsage[] array of daily usage totals.
+------------------------------------------------------------------------------*/
+export async function fetchItemDailyUsage(
+    itemId: number
+): Promise<{ usage_date: string, total_usage_minutes: number }[]> {
     const headers = await getHeaders();
     const response = await fetch(
         `${SUPABASE_URL}/functions/v1/events/end/item/${itemId}/daily_usage`,
@@ -52,6 +73,13 @@ export async function fetchItemDailyUsage(itemId: number): Promise<{ usage_date:
     return response.json();
 }
 
+/* Start a new event for an item
+--------------------------------------------------------------------------------
+Params  | item_id: number ID of the item
+        | start_ts: string ISO timestamp for event start
+--------------------------------------------------------------------------------
+Returns | JSON response from the API
+------------------------------------------------------------------------------*/
 export async function startEvent(item_id: number, start_ts: string) {
     const headers = await getHeaders();
     console.log("Starting event for item_id:", item_id, "at", start_ts);
@@ -67,6 +95,13 @@ export async function startEvent(item_id: number, start_ts: string) {
     return response.json();
 }
 
+/* End an existing event
+--------------------------------------------------------------------------------
+Params  | event_id: number ID of the event to end   
+        | end_ts: string ISO timestamp for event end
+--------------------------------------------------------------------------------
+Returns | JSON response from the API
+------------------------------------------------------------------------------*/
 export async function endEvent(event_id: number, end_ts: string) {
     const headers = await getHeaders();
     console.log("Ending event for event_id:", event_id, "at", end_ts);
@@ -82,6 +117,12 @@ export async function endEvent(event_id: number, end_ts: string) {
     return response.json();
 }
 
+/* Fetch the last start event for an item
+--------------------------------------------------------------------------------
+Params  | item_id: number ID of the item
+--------------------------------------------------------------------------------
+Returns | EventStart object with last start timestamp
+------------------------------------------------------------------------------*/
 export async function fetchLastStart(item_id: number) : Promise<EventStart> {
     const headers = await getHeaders();
     const response = await fetch(
@@ -95,6 +136,12 @@ export async function fetchLastStart(item_id: number) : Promise<EventStart> {
     return response.json();
 }
 
+/* Fetch the last end event for an item
+--------------------------------------------------------------------------------
+Params  | item_id: number ID of the item
+--------------------------------------------------------------------------------
+Returns | EventEnd object with last end timestamp
+------------------------------------------------------------------------------*/
 export async function fetchLastEnd(item_id: number) : Promise<EventEnd> {
     const headers = await getHeaders();
     const response = await fetch(

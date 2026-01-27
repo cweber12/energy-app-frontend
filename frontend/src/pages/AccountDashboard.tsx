@@ -10,6 +10,8 @@ import UsageGraph from '../components/graph/UsageGraph';
 import EventGraph from '../components/graph/EventGraph';
 import EventReport from '../components/report/EventReport';
 import { IntervalReading } from '../../types/reportTypes';
+import { useLatestUsageReport } from "../hooks/useLatestUsageReport";
+
 
 /*  Account Dashboard Page
 --------------------------------------------------------------------------------
@@ -30,8 +32,19 @@ const AccountDashboard = () => {
     const [itemNickname, setItemNickname] = useState<string>("");
     const [refreshItems, setRefreshItems] = useState(0);
     const [refreshProperties, setRefreshProperties] = useState(0);
+
+    const propertyIdNum = propertyId ? Number(propertyId) : 0;
+
+    const {
+        readings: savedReadings,
+        date: savedDate,
+        isLoading: isLoadingSaved,
+        error: savedError,
+    } = useLatestUsageReport(propertyIdNum);
     
-    
+    const displayReadings = readings.length > 0 ? readings : savedReadings;
+    const displayDate = date || savedDate;
+
     /* Render Account Dashboard Page
     ----------------------------------------------------------------------------
     Contents: 
@@ -83,13 +96,10 @@ const AccountDashboard = () => {
                     />
                 </div>
             )}
-            {readings.length > 0 && (
+            {displayReadings.length > 0 && (
                 <div className="column" style={{ gap: 0 }}>
-                    <UsageGraph 
-                        readings={readings}
-                        date={date}
-                    />
-                    <EventGraph startDate={date} />
+                    <UsageGraph readings={displayReadings} date={displayDate} />
+                    <EventGraph startDate={displayDate} />
                 </div>
             )}
         </PageWrapper>

@@ -1,20 +1,22 @@
 // frontend/src/supabase_services/usageReportService.ts
 import { supabase } from "../lib/supabaseClient";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../config/supabase";
+import type { 
+    IntervalReading, 
+    UsageIntervalInput, 
+    MeterRow, 
+    UsageReportRow, 
+    UsageIntervalRow,
+} from "../../types/reportTypes";
+import { 
+    formatIsoHourMinuteLA, 
+    parseHourToLocalDateTime,
+ } from "../utils/dateUtils";
 
-// Type definition for interval reading
-export type IntervalReading = {
-  hour: string; 
-  kWh: number;
-};
-
-// Type definition for usage interval input
-export type UsageIntervalInput = {
-  start_ts: string; // ISO
-  kwh: number;
-};
-
-// Helper to get auth headers
+/* Helper function to get authenticated headers
+--------------------------------------------------------------------------------
+Returns | HeadersInit object with Authorization and Content-Type headers
+------------------------------------------------------------------------------*/
 async function getHeaders(): Promise<HeadersInit> {
   const { data, error } = await supabase.auth.getSession();
   if (error) throw error;
@@ -27,7 +29,8 @@ async function getHeaders(): Promise<HeadersInit> {
   };
 }
 
-// Generic function to call usage report related edge functions
+/* Generic function to call Supabase Functions for usage reports
+------------------------------------------------------------------------------*/
 async function fn<T>(
   fnName: "meter" | "usage_report" | "usage_interval",
   path: string,
@@ -50,48 +53,6 @@ async function fn<T>(
   const json = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(json?.error ?? json?.message ?? `Request failed (${res.status})`);
   return json as T;
-}
-
-/* Function to parse hour string to local DateTime
---------------------------------------------------------------------------------
-Params  | reportDate: string - Date in YYYY-MM-DD format
-        | hourStr: string - Hour representation (e.g., "14:00", "2:00 PM")
---------------------------------------------------------------------------------
-Returns | Date object representing the local date and time
-------------------------------------------------------------------------------*/
-export
-function parseHourToLocalDateTime(reportDate: string, hourStr: string): Date {
-    const trimmed = hourStr.trim();
-
-    const m24 = trimmed.match(/^(\d{1,2}):(\d{2})$/);
-    if (m24) {
-        const hh = Number(m24[1]);
-        const mm = Number(m24[2]);
-        return new Date(`${reportDate}T${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}:00`);
-    }
-
-    const m12 = trimmed.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-    if (m12) {
-        const [, hhStr, mmStr, apStr] = m12; 
-
-        if (!hhStr || !mmStr || !apStr) {
-            throw new Error(`Unrecognized hour format: ${hourStr}`);
-        }
-
-        let hh = Number(hhStr);
-        const mm = Number(mmStr);
-        const ap = apStr.toUpperCase();
-
-        if (ap === "PM" && hh !== 12) hh += 12;
-        if (ap === "AM" && hh === 12) hh = 0;
-
-        return new Date(`${reportDate}T${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}:00`);
-    }
-
-    const dt = new Date(trimmed);
-    if (!Number.isNaN(dt.getTime())) return dt;
-
-    throw new Error(`Unrecognized hour format: ${hourStr}`);
 }
 
 /* Function to ensure meter exists or create it
@@ -205,4 +166,86 @@ export async function uploadUsageReport(params: {
 
   const result = await bulkInsertUsageIntervals({ report_id, intervals });
   return { meter_id, report_id, inserted: result.count };
+}
+
+
+/* Function to fetch meters by property
+--------------------------------------------------------------------------------
+Params  | propertyId: number - ID of the property
+--------------------------------------------------------------------------------
+Returns | MeterRow[] - Array of meters for the property
+------------------------------------------------------------------------------*/
+export async function fetchMetersByProperty(propertyId: number): Promise<MeterRow[]> {
+  const headers = await getHeaders();
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/meter/property/${propertyId}`, { headers });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.error ?? json?.message ?? "Failed to fetch meters");
+  return (json ?? []) as MeterRow[];
+}
+
+/* Function to fetch usage reports by meter
+--------------------------------------------------------------------------------
+Params  | meterId: number - ID of the meter
+--------------------------------------------------------------------------------
+Returns | UsageReportRow[] - Array of usage reports for the meter
+------------------------------------------------------------------------------*/
+export async function fetchReportsByMeter(meterId: number): Promise<UsageReportRow[]> {
+  const headers = await getHeaders();
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/usage_report/meter/${meterId}`, { headers });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.error ?? json?.message ?? "Failed to fetch reports");
+  return (json ?? []) as UsageReportRow[];
+}
+
+/* Function to fetch usage intervals by report
+--------------------------------------------------------------------------------
+Params  | reportId: number - ID of the usage report
+--------------------------------------------------------------------------------
+Returns | UsageIntervalRow[] - Array of usage intervals for the report
+------------------------------------------------------------------------------*/
+export async function fetchIntervalsByReport(reportId: number): Promise<UsageIntervalRow[]> {
+  const headers = await getHeaders();
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/usage_interval/report/${reportId}`, { headers });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.error ?? json?.message ?? "Failed to fetch intervals");
+  return (json ?? []) as UsageIntervalRow[];
+}
+
+/* Function to fetch the most recent usage report for a property
+--------------------------------------------------------------------------------
+Params  | propertyId: number - ID of the property
+        | utility?: string - Optional utility name to filter by
+        | meterName?: string | null - Optional meter name to filter by
+--------------------------------------------------------------------------------
+Returns | { date: string; readings: IntervalReading[] } | null - Most recent 
+          usage report data or null if none found
+------------------------------------------------------------------------------*/
+export async function fetchMostRecentUsageReportForProperty(params: {
+  propertyId: number;
+  utility?: string;
+  meterName?: string | null;
+}): Promise<{ date: string; readings: IntervalReading[] } | null> {
+  const meters = await fetchMetersByProperty(params.propertyId);
+
+  const meter =
+    meters.find(
+      (m) =>
+        (params.utility ? m.utility === params.utility : true) &&
+        ((params.meterName ?? null) === (m.meter_name ?? null)),
+    ) ?? meters[0];
+
+  if (!meter) return null;
+
+  const reports = await fetchReportsByMeter(meter.meter_id);
+  const latest = reports[0]; // already ordered by report_date desc in the function
+  if (!latest) return null;
+
+  const intervals = await fetchIntervalsByReport(latest.report_id);
+
+  const readings: IntervalReading[] = intervals.map((r) => ({
+    hour: formatIsoHourMinuteLA(r.start_ts),
+    kWh: r.kwh,
+  }));
+
+  return { date: latest.report_date, readings };
 }
