@@ -5,9 +5,8 @@ import "../App.css";
 import Login from '../components/form/Login';
 import Register from '../components/form/Register';
 import HomeHeader from '../components/header/HomeHeader';
-import PageWrapper from '../components/common/PageWrapper';
 import HomeWrapper from '../components/common/HomeWrapper';
-import Card from '../components/common/Card';
+import OpenDemo from '../components/button/OpenDemo';
 
 /*  Home Page
 --------------------------------------------------------------------------------
@@ -35,7 +34,6 @@ function Home() {
         <>
             <HomeHeader/>
             <HomeWrapper>
-
                     {showLogin && <Login navigate={navigate} />}
                     {showRegister && <Register />}
                     <span 
@@ -54,7 +52,7 @@ function Home() {
                         "Don't have an account? Register here." : 
                         "Already have an account? Login here."}
                     </span>
-                
+                    <OpenDemo />
             </HomeWrapper>
         </>
     );

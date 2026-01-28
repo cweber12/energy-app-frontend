@@ -5,7 +5,7 @@ import type { RegisterForm } from "../../../types/userTypes";
 import { supabase } from "../../lib/supabaseClient";
 import "../../App.css";
 import "../../styles/Components.css";
-import FormWrapper from "../common/FormWrapper";
+import AuthFormWrapper from "../common/AuthFormWrapper";
 
 const Register: React.FC = () => {
   const { colors } = useTheme();
@@ -45,7 +45,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <FormWrapper>
+    <AuthFormWrapper>
       <h2>Register</h2>
       <form
         className="form auth-form"
@@ -90,7 +90,7 @@ const Register: React.FC = () => {
       {message && (
         <p style={{ color: colors.warning, marginTop: "1rem" }}>{message}</p>
       )}
-    </FormWrapper>
+    </AuthFormWrapper>
   );
 };
 

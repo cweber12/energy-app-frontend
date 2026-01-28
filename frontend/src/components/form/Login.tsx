@@ -6,7 +6,7 @@ import { LoginForm } from "../../../types/authTypes";
 import { supabase } from "../../lib/supabaseClient";
 import "../../App.css";
 import "../../styles/Components.css";
-import FormWrapper from "../common/FormWrapper";
+import AuthFormWrapper from "../common/AuthFormWrapper";
 import { NavigateFunction } from "react-router-dom";
 
 /*  Login Component
@@ -66,7 +66,7 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
     Displays error message if login fails
     --------------------------------------------------------------------------*/
     return (
-        <FormWrapper>
+        <AuthFormWrapper>
             <h2>Login</h2>
             <form 
             className="form auth-form" 
@@ -106,7 +106,7 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
                     {message}
                 </p>
             )}
-        </FormWrapper>
+        </AuthFormWrapper>
     );
 }
 

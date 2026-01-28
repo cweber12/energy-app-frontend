@@ -53,34 +53,28 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
             style={{ 
                 backgroundColor: colors.secondaryBackground }}
             >
-            <div 
+            <img
+                src={`${process.env.PUBLIC_URL}/watt-watch-logo.png`}
+                alt="WattWatch Logo"
+                style={{ height: "8rem", marginRight: "1rem" }}
+            />
+            <div
                 style={{
                     display: "flex", 
-                    flexDirection: "column", 
+                    flexDirection: "row", 
                     alignItems: "flex-start", 
                     gap: "10px"
                 }}>
-                <h2 style={{ color: colors.title}}>
-                    Account Dashboard
-                </h2>
-                <div
-                    style={{
-                        display: "flex", 
-                        flexDirection: "row", 
-                        alignItems: "flex-start", 
-                        gap: "10px"
-                    }}>
-                    <PropertyMenu 
-                        setShowPropertyInput={setShowPropertyInput} 
-                        setPropertyId={setPropertyId}
-                        refreshProperties={refreshProperties}
-                    />
-                    <UploadUsageReport
-                        propertyId={propertyId}
-                        setReadings={setReadings}
-                        setDate={setDate}
-                    />
-                </div>
+                <PropertyMenu 
+                    setShowPropertyInput={setShowPropertyInput} 
+                    setPropertyId={setPropertyId}
+                    refreshProperties={refreshProperties}
+                />
+                <UploadUsageReport
+                    propertyId={propertyId}
+                    setReadings={setReadings}
+                    setDate={setDate}
+                />
             </div>
                 
             <div 

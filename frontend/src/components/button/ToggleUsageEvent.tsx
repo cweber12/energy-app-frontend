@@ -111,7 +111,7 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
           /> 
       </div>
       ) : (
-        <div className="row" style={{ alignItems: "center" }}>          
+        <div className="column" style={{ alignItems: "flex-end" }}>          
             <FaCircleStop size={32} 
             style={{ 
               marginRight: "8px",
@@ -127,11 +127,6 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
           {startTimeString ? (
             <div> 
               Started at: {startTimeString}
-            </div>
-          ) : null}
-          {endTimeString ? (
-            <div>
-              Ended at: {endTimeString}
             </div>
           ) : null}
         </div>

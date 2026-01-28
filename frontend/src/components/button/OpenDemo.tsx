@@ -34,20 +34,20 @@ const OpenDemo: React.FC = () => {
     };
 
     return (
-        <div 
-            style={{ 
-                textAlign: "center", 
-                marginRight: "2.5rem" 
-            }}>
+        <>
             <button
                 style={{
-                    backgroundColor: colors.buttonStop,
+                    backgroundColor: colors.button,
                     color: colors.buttonText,
                     fontSize: "20px",
                     borderRadius: "8px",
-                    width: "250px",
                     border: "none",
-                    cursor: "pointer"
+                    cursor: "pointer", 
+                    alignSelf: "center",
+                    width: "300px",
+                    height: "52px",
+                    marginTop: "1rem",
+
                 }}
                 onClick={handleDemoLogin}
                 disabled={loading}
@@ -56,11 +56,11 @@ const OpenDemo: React.FC = () => {
                 {loading ? "Logging in..." : "Open Demo Account"}
             </button>
             {message && (
-                <div style={{ color: colors.warning, marginTop: "1rem" }}>
+                <p style={{ color: colors.warning, marginTop: "1rem", textAlign: "center" }}>
                     {message}
-                </div>
+                </p>
             )}
-        </div>
+        </>
     );
 };
 

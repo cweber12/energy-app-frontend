@@ -3,7 +3,6 @@ import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../../styles/Components.css";
-import OpenDemo from "../button/OpenDemo";
 
 /* Home Header Component
 --------------------------------------------------------------------------------
@@ -19,13 +18,16 @@ const HomeHeader = () => {
                 backgroundColor: colors.secondaryBackground,
                 color: colors.secondaryText,
                 alignItems: "center",
+                justifyContent: "flex-start",
+                gap: "2rem",
 
             }}
             >
-            <h1 style={{ color: colors.title}}>
-                WattWatch
-            </h1>
-            <OpenDemo />
+            <img
+                src={`${process.env.PUBLIC_URL}/watt-watch-logo.png`}
+                alt="WattWatch Logo"
+                style={{ height: "8rem", marginRight: "1rem" }}
+            />
         </header>
     );
 }
