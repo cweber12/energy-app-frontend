@@ -35,27 +35,25 @@ const UsageGraph: React.FC<{
     Tooltip shows kWh value on hover.
     --------------------------------------------------------------------------*/
     return (
-        <Card>
-            <div className="card-header">
-                <h3>Hourly Usage Report | {date}</h3>
-            </div>
-        <GraphWrapper>
-            {readings.length > 0 && (
-                <ResponsiveContainer width={800} height={400}>
-                    <BarChart data={readings}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
-                        <YAxis label={{ value: "kWh", angle: -90, position: "insideLeft" }} />
-                        <Tooltip
-                            contentStyle={{ background: "#fff", color: "#000", border: `1px solid #000` }}
-                            itemStyle={{ color: "#000" }}
-                        />
-                        <Bar dataKey="kWh" fill={colors.graph} name="kWh" />
-                    </BarChart>
-                </ResponsiveContainer>
-            )}
-        </GraphWrapper>
-        </Card>
+        <>
+            <h3 className="graph-header">HOURLY METER LOAD</h3>
+            <GraphWrapper>
+                {readings.length > 0 && (
+                    <ResponsiveContainer width={800} height={400}>
+                        <BarChart data={readings}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
+                            <YAxis label={{ value: "kWh", angle: -90, position: "insideLeft" }} />
+                            <Tooltip
+                                contentStyle={{ background: "#fff", color: "#000", border: `1px solid #000` }}
+                                itemStyle={{ color: "#000" }}
+                            />
+                            <Bar dataKey="kWh" fill={colors.graph} name="kWh" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                )}
+            </GraphWrapper>
+        </>
     );
 };
 

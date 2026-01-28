@@ -42,10 +42,8 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
         - Tooltip shows breakdown of total time per item on hover.
     --------------------------------------------------------------------------*/
     return (
-        <Card>
-            <div className="card-header">
-                <h3>Usage Events by Hour | {startDate}</h3>
-            </div>
+        <>
+            <h3 className="graph-header">HOURLY RUN TIMES</h3>
             <GraphWrapper>
                 <ResponsiveContainer width={800} height={400}>
                     <BarChart data={chartData}>
@@ -72,7 +70,7 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
                     </BarChart>
                 </ResponsiveContainer>
             </GraphWrapper>
-        </Card>
+        </>
     );
 };
 

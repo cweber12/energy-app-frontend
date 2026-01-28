@@ -4,16 +4,16 @@ import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../../styles/Components.css";
 import Card from "../common/Card";
-import SetUsageEvent from "../action/SetUsageEvent";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import ToggleUsageEvent from "../button/ToggleUsageEvent";
 import LastUseReport from "../report/LastUseReport";
 import { useAllItems } from "../../hooks/useItem";
-import { IoMdAdd } from "react-icons/io";
-import { IoOpenOutline } from "react-icons/io5";
 import ItemEventsReport from "../report/ItemEventsReport";
 import { LuMinimize2, LuMaximize2 } from "react-icons/lu";
-import { TbTableShortcut } from "react-icons/tb";
-import { set } from "react-hook-form";
+import { FiPlus } from "react-icons/fi";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { LuInfo } from "react-icons/lu";
+import CardHeader from "../common/CardHeader";
+
 
 /* ItemMenu Component
 --------------------------------------------------------------------------------
@@ -31,8 +31,6 @@ const ItemMenu: React.FC<{
     showItemInput: boolean;
     setShowDailyEvents: React.Dispatch<React.SetStateAction<boolean>>;
     showDailyEvents: boolean;
-    setItemId: React.Dispatch<React.SetStateAction<number>>;
-    setItemNickname: React.Dispatch<React.SetStateAction<string>>;
 }> = ({
     propertyId, 
     refreshItems,
@@ -40,50 +38,76 @@ const ItemMenu: React.FC<{
     showItemInput,
     setShowDailyEvents,
     showDailyEvents,
-    setItemId,
-    setItemNickname,
 }) => {
-
-    /* State variables
-    ----------------------------------------------------------------------------
-    - infoOpenIndex: Index of the item with info popup open (null if none)
-    - colors: Theme colors from context
-    - items, categories, usageTypes: Data from useAllItems hook
-    --------------------------------------------------------------------------*/
-    const { colors } = useTheme();
+    const [showItemInfo, setShowItemInfo] = useState<boolean>(false);
     const [infoOpenIndex, setInfoOpenIndex] = useState<number | null>(null);
-    const { items, categories, usageTypes } = useAllItems(propertyId, refreshItems);
+    const { colors } = useTheme();
+    const { items, categories, usageTypes } = 
+        useAllItems(propertyId, refreshItems);
 
     /* Render ItemMenu component
     ----------------------------------------------------------------------------
     Displays list of electrical items with expandable info popups
-    Elements:
-        - Header with title and Add Item button
-        - List of items with nickname and expand/collapse icon
-        - Info popup with daily usage, category, usage type, rated watts
     --------------------------------------------------------------------------*/
     return (
         <Card>
-            <div className="card-header">
-            {items.length > 0 && <h3>ITEMS</h3>}
-            {!showItemInput && (
-                <div 
-                    className="upload-button"
-                    style={{ backgroundColor: colors.iconTertiary }}
-                    onClick={() => setShowItemInput(true)}
-                >
-                <IoMdAdd 
-                    style={{ 
-                        cursor: "pointer", 
-                        color: colors.iconSecondary,
-                        width: "32px",
-                        height: "32px",
+            <CardHeader>
+                {items.length > 0 && (
+                    <>
+                        <div className="row">
+                            <h3>ITEMS</h3>
+                            <LuInfo
+                                style={{
+                                    cursor: "pointer",
+                                    color: colors.iconTertiary,
+                                    width: "24px",
+                                    height: "24px",
+                                    marginLeft: "0.5rem",
+                                }}
+                                onClick={() => setShowItemInfo(prev => !prev)}
+                            />
+                            
+                        </div>
+                        
+                    </>
+                )}
+                {!showItemInput && (
+                    <button
+                        style={{backgroundColor: colors.button, color: colors.buttonText}}
+                        onClick={() => setShowItemInput(true)}
+                    >
+                    <FiPlus 
+                        style={{ 
+                            cursor: "pointer", 
+                            color: colors.buttonText,
+                            width: "32px",
+                            height: "32px",
+                            marginRight: "0.5rem",
+                        }}
+                    />
+                    Add Item
+                    </button>
+                )}
+            </CardHeader>
+            {showItemInfo && (
+                <div
+                    className="info-popup"
+                    style={{
+                        background: colors.secondaryBackground,
+                        color: colors.secondaryText,
+                        maxWidth: "30vw",
+                        padding: "0.5rem",
+                        fontSize: "1.1rem",
                     }}
-                />
-                Add Item
+                >
+                    <p>This section lists all electrical items associated with the selected property. </p>
+                    <ul>
+                        <li>Click the down arrow to the left to view item details</li>
+                        <li>Start and stop usage events <strong>for intermittent use items</strong> using the play and stop buttons</li>
+                        <li>View detailed usage event reports by expanding the item details.</li>
+                    </ul>
                 </div>
             )}
-            </div>
             
             <ul className="list" style={{listStyle: "none"}}>
                 {items.map((item, idx) => (
@@ -91,7 +115,7 @@ const ItemMenu: React.FC<{
                         <li 
                             className="list-item"
                             style={{
-                                backgroundColor: colors.tertiaryBackground,
+                                backgroundColor: colors.secondaryBackground,
                                 color: colors.tertiaryText,
                                 position: "relative",
                             }}
@@ -99,7 +123,7 @@ const ItemMenu: React.FC<{
             
                             <div className="child-row">
                                 {infoOpenIndex === idx ? (
-                                    <FaAngleUp
+                                    <FiChevronUp
                                         style={{ cursor: "pointer", color: colors.iconTertiary}}
                                         onClick={() => (
                                             setInfoOpenIndex(null),
@@ -108,7 +132,7 @@ const ItemMenu: React.FC<{
 
                                     />
                                 ) : ( 
-                                    <FaAngleDown
+                                    <FiChevronDown
                                         style={{ cursor: "pointer", color: colors.iconTertiary}}
                                         onClick={() => setInfoOpenIndex(idx)}
                                     />
@@ -125,64 +149,57 @@ const ItemMenu: React.FC<{
                             </div>
                             {/* Only for intermittent use items */}
                             {item.usage_type_id === 2 ? (
-                                <SetUsageEvent itemId={item.id}/>
+                                <ToggleUsageEvent itemId={item.id}/>
                             ) : null}
                         </li>
                         {infoOpenIndex === idx && (
                             <>
-                            <div
-                                className="item-info-popup"
-                                style={{
-                                    background: colors.secondaryBackground,
-                                    color: colors.secondaryText,
-                                    position: "relative",
-                                }}
-                            >
-                                {item.id &&  (
-                                    <div className="child-row" style={{width: "100%", justifyContent: "space-between"}}>
-                                        <div style={{color: colors.secondaryText}}>
-                                            <p><strong>Category:</strong> {categories[item.category_id]}<br/>
-                                            <strong>Frequency:</strong> {usageTypes[item.usage_type_id]}<br/>
-                                            {item.rated_watts > 0 && `Rated Watts: ${item.rated_watts}W`}
-                                            </p>
+                                <div
+                                    className="item-info-popup"
+                                    style={{
+                                        background: colors.secondaryBackground,
+                                        color: colors.secondaryText,
+                                        position: "relative",
+                                    }}
+                                >
+                                    {item.id &&  (
+                                        <div className="child-row" style={{width: "100%", justifyContent: "space-between"}}>
+                                            <div style={{color: colors.secondaryText}}>
+                                                <p><strong>Category:</strong> {categories[item.category_id]}<br/>
+                                                <strong>Frequency:</strong> {usageTypes[item.usage_type_id]}<br/>
+                                                {item.rated_watts > 0 && `Rated Watts: ${item.rated_watts}W`}
+                                                </p>
+                                            </div>
+                                            <LastUseReport itemId={item.id} />
+                                            {showDailyEvents ? (
+                                                <LuMinimize2
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        color: colors.iconSecondary,
+                                                        width: "32px",
+                                                        height: "32px",
+                                                    }}
+                                                    onClick={() => {
+                                                        setShowDailyEvents(prev => !prev);
+                                                    }}
+                                                />
+                                            ) : (
+                                                <LuMaximize2
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        color: colors.iconSecondary,
+                                                        width: "32px",
+                                                        height: "32px",
+                                                    }}
+                                                    onClick={() => {
+                                                        setShowDailyEvents(prev => !prev);
+                                                    }}
+                                                />
+                                            )}
                                         </div>
-                                        <LastUseReport itemId={item.id} />
-                                        {showDailyEvents ? (
-                                            <LuMinimize2
-                                                style={{
-                                                    cursor: "pointer",
-                                                    color: colors.iconSecondary,
-                                                    width: "32px",
-                                                    height: "32px",
-                                                }}
-                                                onClick={() => {
-                                                    setShowDailyEvents(prev => !prev);
-                                                }}
-                                            />
-                                        ) : (
-                                            <TbTableShortcut
-                                                style={{
-                                                    cursor: "pointer",
-                                                    color: colors.iconSecondary,
-                                                    width: "32px",
-                                                    height: "32px",
-                                                }}
-                                                onClick={() => {
-                                                    setShowDailyEvents(prev => !prev);
-                                                }}
-                                            />
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                            {showDailyEvents && (
-                                <ItemEventsReport
-                                    itemId={item.id}
-                                    itemNickname={item.nickname}
-                                    setShowDailyEvents={setShowDailyEvents}
-                                />
-                    
-                            )} 
+                                    )}
+                                </div>
+                                {showDailyEvents && <ItemEventsReport itemId={item.id} />}
                             </>
                         )}
                     </React.Fragment>

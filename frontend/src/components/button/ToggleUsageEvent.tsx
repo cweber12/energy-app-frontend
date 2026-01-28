@@ -8,6 +8,7 @@ import "../../App.css";
 import "../../styles/Components.css";
 import { set } from "react-hook-form";
 import { IoPlayOutline, IoStopOutline } from "react-icons/io5";
+import { FaCirclePlay, FaCircleStop } from "react-icons/fa6";
 
 type SetUsageEventProps = {
   itemId: number; // ID of the electrical item
@@ -19,7 +20,7 @@ Description: Component to start and end usage events for an electrical item.
 Props:
     - itemId: ID of the electrical item.
 ------------------------------------------------------------------------------*/
-const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
+const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   const { colors } = useTheme();
   const [startTimeString, setStartTimeString] = React.useState<string>("");
   const [endTimeString, setEndTimeString] = React.useState<string>("");
@@ -96,48 +97,33 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   return (
     <>
       {!running ? (
-      <div className="item-usage-event">
-        <button
-        style={{
-            backgroundColor: colors.button,
-            color: colors.buttonText,
-        }}
+        <div className="row" style={{ alignItems: "center" }}> 
+          Start        
+          <FaCirclePlay size={32}
+          style={{ 
+            marginRight: "8px", 
+            color: colors.buttonStart,
+            cursor: "pointer"
+          }} 
           onClick={() => {
             startUsageEvent();
           }}
-        >
-          
-          <IoPlayOutline size={24} 
-          style={{ 
-            marginRight: "8px", 
-            color: colors.buttonText
-
-          }} 
           /> 
-          Start
-        </button>
       </div>
       ) : (
-        <div className="item-usage-event">
-          <button
-          style={{
-              backgroundColor: colors.buttonStop,
-              color: colors.buttonText,
-          }}
+        <div className="row" style={{ alignItems: "center" }}>          
+            <FaCircleStop size={32} 
+            style={{ 
+              marginRight: "8px",
+              color: colors.buttonStop,
+              cursor: "pointer"
+            }}
             onClick={() => {
               endUsageEvent();
               
-            }}
-          >
-            
-            <IoStopOutline size={24} 
-            style={{ 
-              marginRight: "8px",
-              color: colors.buttonText
             }} 
             />
             Stop
-          </button>
           {startTimeString ? (
             <div> 
               Started at: {startTimeString}
@@ -154,4 +140,4 @@ const SetUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   );
 };
 
-export default SetUsageEvent;
+export default ToggleUsageEvent;

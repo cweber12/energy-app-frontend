@@ -21,12 +21,9 @@ Props:
 ------------------------------------------------------------------------------*/
 const ItemEventsReport: React.FC<{ 
     itemId: number,
-    itemNickname: string,
-    setShowDailyEvents: React.Dispatch<React.SetStateAction<boolean>>
 
-}> = ({ itemId, itemNickname, setShowDailyEvents }) => {
+}> = ({ itemId }) => {
     const { colors } = useTheme();
-    const [usageEvents, setUsageEvents] = useState<EventSummary[]>([]);
 
     const thStyle = {
         backgroundColor: colors.tertiaryBackground,

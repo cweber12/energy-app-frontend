@@ -1,50 +1,52 @@
-# Components Directory Overview
+# Components Directory
 
-This folder contains all reusable and page-level React components for the Energy App frontend. Components are grouped by feature or type for clarity and maintainability.
+This folder contains all reusable and page-specific React components for the frontend application. Components are organized by feature and type for clarity and maintainability.
 
-## Folders and Components
+## Structure Overview
 
-### action/
+- **button/**
+	- `OpenDemo.tsx`: Button to open a demo modal or feature.
+	- `ToggleUsageEvent.tsx`: Button to toggle usage event state.
+	- `UploadUsageReport.tsx`: Button for uploading usage reports (file upload UI).
 
-- **GetDailyEvents.tsx**: Fetches and displays usage events for a specific item, grouped by date.
-- **GetDailyUse.tsx**: Fetches and displays daily usage totals (in minutes) for a given item.
-- **SetUsageEvent.tsx**: Allows starting and ending usage events for an electrical item.
-- **UploadUsageReport.tsx**: Parses and uploads XML usage reports, extracting hourly kWh readings.
+- **common/**
+	- `Card.tsx`: Generic card container component.
+	- `CardHeader.tsx`: Header for card components.
+	- `FormWrapper.tsx`: Wrapper for form layouts and styling.
+	- `GraphWrapper.tsx`: Wrapper for graph/chart components.
+	- `HeaderDropdown.tsx`: Dropdown menu for headers.
+	- `HomeWrapper.tsx`: Wrapper for home page layout.
+	- `PageWrapper.tsx`: Wrapper for page-level layout and styling.
 
-### common/
+- **form/**
+	- `ItemInput.tsx`: Input field for item data entry.
+	- `Login.tsx`: User login form.
+	- `PropertyInput.tsx`: Input field for property data entry.
+	- `Register.tsx`: User registration form.
 
-- **Card.tsx**: Reusable card component for consistent content styling.
-- **FormWrapper.tsx**: Wraps forms with consistent styling and background.
-- **HeaderDropdown.tsx**: Dropdown wrapper for header elements.
-- **PageWrapper.tsx**: Applies consistent styling to page layouts.
+- **graph/**
+	- `EventGraph.tsx`: Visualization of event data.
+	- `UsageGraph.tsx`: Visualization of usage data.
 
-### form/
+- **header/**
+	- `AccountDashboardHeader.tsx`: Header for the account dashboard page.
+	- `HomeHeader.tsx`: Header for the home page.
 
-- **ItemInput.tsx**: Form to add a new electrical item to a property.
-- **Login.tsx**: User login form with authentication.
-- **PropertyInput.tsx**: Form to add a new property for a user.
-- **Register.tsx**: Registration form for new user sign-up.
+- **menu/**
+	- `ItemMenu.tsx`: Menu for item-related actions.
+	- `PropertyMenu.tsx`: Menu for property-related actions.
 
-### graph/
+- **report/**
+	- `EventReport.tsx`: Report component for events.
+	- `ItemEventsReport.tsx`: Report for item events.
+	- `LastUseReport.tsx`: Report showing last usage information.
+	- `UsageReport.tsx`: Main usage report component.
 
-- **EventGraph.tsx**: Renders a bar chart of event durations by hour for a given item/date.
-- **UsageGraph.tsx**: Renders a bar chart of hourly kWh usage for a given day.
+## Notes
+- Each subfolder groups related components by feature or UI type.
+- Components are written in TypeScript (`.tsx`) and use functional React patterns.
+- Shared layout and UI primitives are in the `common/` folder.
+- Feature-specific components are grouped by their domain (e.g., `form/`, `graph/`, `report/`).
 
-### header/
+For more details on each component, refer to the source files and their inline documentation.
 
-- **AccountDashboardHeader.tsx**: Header for the account dashboard, includes property and report controls.
-- **HomeHeader.tsx**: Header for the home/login page, displays the app title.
-
-### menu/
-
-- **ItemMenu.tsx**: Menu for listing and managing electrical items for a property.
-- **PropertyMenu.tsx**: Menu for selecting or adding properties.
-
-### report/
-
-- **EventReport.tsx**: Displays a table of usage events grouped by item and date, including start/end times and total elapsed time.
-- **UsageReport.tsx**: Displays a table of hourly kWh usage readings for a given day.
-
----
-
-> For styling, see `Components.css` in this folder. Most components use the ThemeContext for dynamic color schemes.

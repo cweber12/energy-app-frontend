@@ -16,11 +16,10 @@ type PropertyMenuProps = {
 
 /*  Property Menu Component
 --------------------------------------------------------------------------------
-Description: A menu component to select existing properties or add a new one.
-Props:
-    - setShowPropertyInput: Function to show the PropertyInput component.
-    - setPropertyId: Function to set the selected property ID.
-    - propertyId: Currently selected property ID.
+Select existing properties or add a new one.
+Props | setShowPropertyInput: Show/hide PropertyInput component
+      | setPropertyId: Update current selected property ID
+      | refreshProperties: Dependency to trigger properties refresh
 ------------------------------------------------------------------------------*/
 const PropertyMenu: React.FC<PropertyMenuProps> = ({ 
     setShowPropertyInput, 
@@ -28,8 +27,9 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
     refreshProperties, 
 }) => {
 
-    // Fetch properties and options using custom hook
-    const { options } = useProperties(sessionStorage.getItem("user_id") ?? "", refreshProperties);
+    // Fetch properties and options with custom hook
+    const { options } = 
+        useProperties(sessionStorage.getItem("user_id") ?? "", refreshProperties);
 
     // Custom styles for react-select
     const customStyles = {
@@ -56,8 +56,6 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
     };
 
     /* Render property selection menu
-    ----------------------------------------------------------------------------
-    - Dropdown menu to select existing properties or add a new one
     --------------------------------------------------------------------------*/
     return (
         <Select

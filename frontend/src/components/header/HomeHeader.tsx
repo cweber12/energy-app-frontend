@@ -3,7 +3,7 @@ import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../../styles/Components.css";
-import OpenDemo from "../action/OpenDemo";
+import OpenDemo from "../button/OpenDemo";
 
 /* Home Header Component
 --------------------------------------------------------------------------------
@@ -16,8 +16,8 @@ const HomeHeader = () => {
         <header 
             className="header" 
             style={{
-                backgroundColor: colors.tertiaryBackground,
-                color: colors.tertiaryText,
+                backgroundColor: colors.secondaryBackground,
+                color: colors.secondaryText,
                 alignItems: "center",
 
             }}

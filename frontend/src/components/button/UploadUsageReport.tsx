@@ -3,6 +3,7 @@ import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { FiUpload } from "react-icons/fi";
 import { useSaveUsageReport } from "../../hooks/useSaveUsageReport";
+import { BsUpload } from "react-icons/bs";
 
 // type definition for hourly reading from usage report
 type IntervalReading = {
@@ -116,7 +117,7 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
   return (
     <div className="upload-button" style={{ backgroundColor: colors.button, color: colors.buttonText }}>
       <label htmlFor="xml-upload" className="upload-label">
-        <FiUpload size={32} />
+        <BsUpload size={32} style={{ color: colors.buttonText, marginRight: "0.5rem" }} />
         <input
           id="xml-upload"
           type="file"

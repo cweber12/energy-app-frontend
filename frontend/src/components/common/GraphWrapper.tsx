@@ -9,10 +9,9 @@ const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div 
         style={{ 
-            backgroundColor: colors.tertiaryBackground, 
+            backgroundColor: colors.secondaryBackground, 
             color: colors.tertiaryText, 
             padding: "1rem", 
-            boxShadow: `0 4px 8px rgba(0, 0, 0, 0.1)`,
         }}
         >
         {children}

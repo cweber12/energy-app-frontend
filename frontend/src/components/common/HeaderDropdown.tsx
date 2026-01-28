@@ -15,7 +15,11 @@ const HeaderDropdown: React.FC<{ children: React.ReactNode }> = ({ children }) =
   return (
     <div 
         className="header-dropdown-left" 
-        style={{ backgroundColor: colors.secondaryBackground }}
+        style={{ 
+          backgroundColor: colors.secondaryBackground, 
+          color: colors.secondaryText, 
+          border: `1px solid ${colors.border}` 
+        }}
         >
         {children}
     </div>

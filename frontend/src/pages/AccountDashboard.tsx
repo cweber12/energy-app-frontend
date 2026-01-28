@@ -8,12 +8,13 @@ import ItemMenu from '../components/menu/ItemMenu';
 import ItemInput from '../components/form/ItemInput';
 import UsageGraph from '../components/graph/UsageGraph';
 import EventGraph from '../components/graph/EventGraph';
-import EventReport from '../components/report/EventReport';
 import { IntervalReading } from '../../types/reportTypes';
-import { useLatestUsageReport } from "../hooks/useLatestUsageReport";
 import { useUsageReportNavigator } from "../hooks/useUsageReportNavigator";
-
-
+import Card from '../components/common/Card';
+import { useTheme } from '../context/ThemeContext';
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import CardHeader from '../components/common/CardHeader';
+import { LuInfo } from "react-icons/lu";
 
 /*  Account Dashboard Page
 --------------------------------------------------------------------------------
@@ -34,9 +35,12 @@ const AccountDashboard = () => {
     const [itemNickname, setItemNickname] = useState<string>("");
     const [refreshItems, setRefreshItems] = useState(0);
     const [refreshProperties, setRefreshProperties] = useState(0);
-
+    const { colors } = useTheme();
     const propertyIdNum = propertyId ? Number(propertyId) : 0;
+    const [showREportInfo, setShowREportInfo] = useState<boolean>(false);
 
+    /* Use custom hook to navigate usage reports
+    --------------------------------------------------------------------------*/
     const {
         readings: savedReadings,
         date: savedDate,
@@ -46,22 +50,17 @@ const AccountDashboard = () => {
         goNext,
         isLoading,
         error,
-    } = useUsageReportNavigator(propertyIdNum, refreshProperties, { utility: "SDGE", meterName: null });
+    } = useUsageReportNavigator(
+        propertyIdNum, 
+        refreshProperties, 
+        { utility: "SDGE", meterName: null }
+    );
 
     // uploaded override (existing state)
     const displayReadings = readings.length > 0 ? readings : savedReadings;
     const displayDate = date || savedDate;
 
     /* Render Account Dashboard Page
-    ----------------------------------------------------------------------------
-    Contents: 
-    - AccountDashboardHeader
-    - PropertyInput: Form to add new property
-    - ItemInput: Form to add new item
-    - ItemMenu: Menu to select items and show item actions/reports
-    - GetDailyEvents: Display daily events for selected item (start/end times)
-    - UsageGraph: Graph of usage readings from energy provider (kWh per hour)
-    - EventGraph: Graph on usage events corresponding to UsageGraph
     --------------------------------------------------------------------------*/
     return (
         <>
@@ -98,43 +97,97 @@ const AccountDashboard = () => {
                         showItemInput={showItemInput}
                         setShowDailyEvents={setShowDailyEvents}
                         showDailyEvents={showDailyEvents}
-                        setItemId={setItemId}
-                        setItemNickname={setItemNickname}
                     />
                 </div>
             )}
             {displayReadings.length > 0 && (
-                <div className="column" style={{ gap: 0 }}>
-                    <div className="row" style={{ gap: 12, alignItems: "center" }}>
-                    <button
-                        disabled={!canPrev}
-                        onClick={async () => {
-                        setReadings([]); // switch from uploaded override back to saved
-                        setDate("");
-                        await goPrev();
-                        }}
-                    >
-                        Prev
-                    </button>
+                <Card>
+                    <CardHeader>
+                        <div className="row">
+                            {!isLoading && !error && <h3>REPORT FOR {displayDate}</h3>}
+                            {isLoading && <span>Loading…</span>}
+                            {error && <span>{error}</span>}
+                            <LuInfo
+                                size={24}
+                                style={{
+                                    marginLeft: "0.5rem",
+                                    cursor: "pointer",
+                                    color: colors.primaryText,
+                                }}
+                                onClick={() => setShowREportInfo(!showREportInfo)}
+                            />
+                        </div>
 
-                    <button
-                        disabled={!canNext}
-                        onClick={async () => {
-                        setReadings([]);
-                        setDate("");
-                        await goNext();
-                        }}
-                    >
-                        Next
-                    </button>
+                        <div className="button-group">
+                            <button
+                                style={{
+                                    backgroundColor: !canPrev ? colors.buttonDisabled : colors.button, 
+                                    color: colors.buttonText
+                                }}
+                                disabled={!canPrev}
+                                onClick={async () => {
+                                setReadings([]);
+                                setDate("");
+                                await goPrev();
+                                }}
+                            >
+                                <FiChevronLeft 
+                                    size={32} 
+                                    color={colors.buttonText} 
+                                    style={{ marginRight: "0.5rem" }} 
+                                />
+                                Prev
+                            </button>
 
-                    {isLoading && <span>Loading…</span>}
-                    {error && <span>{error}</span>}
-                    </div>
+                            <button
+                                style={{
+                                    backgroundColor: !canNext ? colors.buttonDisabled : colors.button, 
+                                    color: colors.buttonText
+                                }}
+                                disabled={!canNext}
+                                onClick={async () => {
+                                setReadings([]);
+                                setDate("");
+                                await goNext();
+                                }}
+                            >
 
+                                Next
+                                <FiChevronRight 
+                                    size={32} 
+                                    color={colors.buttonText}
+                                    style={{ marginLeft: "0.5rem" }} 
+                                />
+                            </button>
+                        </div>
+                    </CardHeader>
+                    {showREportInfo && (
+                        <div 
+                            className="info-popup"
+                            style={{
+                                background: colors.secondaryBackground,
+                                color: colors.secondaryText,
+                                maxWidth: "30vw",
+                                padding: "1rem",
+                                fontSize: "1.1rem",
+                            }}
+                        >
+                            <p>
+                                This report visualizes the energy usage data for the selected property on the specified date.
+                                Compare the hourly meter load with your recorded usage events to gain insights into your energy 
+                                consumption patterns.
+                            </p>
+                            <ul>
+                                <li>The hourly meter load graph shows kWh per hour readings from the electricity meter.</li>
+                                <li>The event graph below displays your energy usage events for the selected date.</li>
+                                <li>Use the navigation buttons to view reports for different dates.</li>
+                                <li>Upload readings (.xml format) from your SDGE portal using the upload button above.</li>
+                            </ul>
+                        </div>
+                    )}
                     <UsageGraph readings={displayReadings} date={displayDate} />
                     <EventGraph startDate={displayDate} />
-                </div>
+                </Card>
             )}
         </PageWrapper>
         </>

@@ -4,7 +4,7 @@ import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../../styles/Components.css";
 import PropertyMenu from "../menu/PropertyMenu";
-import UploadUsageReport from "../action/UploadUsageReport";
+import UploadUsageReport from "../button/UploadUsageReport";
 import { IntervalReading } from '../../../types/reportTypes';
 import { IoLogOutOutline } from "react-icons/io5";
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -50,7 +50,8 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     return (
         <header 
             className="header"
-            style={{ backgroundColor: colors.tertiaryBackground }}
+            style={{ 
+                backgroundColor: colors.secondaryBackground }}
             >
             <div 
                 style={{
@@ -88,12 +89,12 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     flexDirection: "column", 
                     alignItems: "flex-end", 
                     gap: "10px",
-                    color: colors.tertiaryText
+                    color: colors.secondaryText
                 }}>
                 <div className="user">
                     <FaRegCircleUser
                         style={{ 
-                            color: colors.iconTertiary,
+                            color: colors.iconSecondary,
                             width: "32px", 
                             height: "32px" 
                         }}
@@ -101,12 +102,12 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     <h3>{username ? username : "Guest"}</h3>
                     {showUserMenu ? (
                         <FaAngleUp
-                            style={{ width: "32px", height: "32px", cursor: "pointer" }}
+                            style={{ width: "32px", height: "32px", cursor: "pointer", color: colors.iconSecondary }}
                             onClick={() => setShowUserMenu(false)}
                         />
                     ) : (
                         <FaAngleDown
-                            style={{ width: "32px", height: "32px", cursor: "pointer" }}
+                            style={{ width: "32px", height: "32px", cursor: "pointer", color: colors.iconSecondary }}
                             onClick={() => setShowUserMenu(true)}
                         />
                     )}

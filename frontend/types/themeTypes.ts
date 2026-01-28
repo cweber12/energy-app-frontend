@@ -14,10 +14,13 @@ export type ColorSchemeType = {
     primaryBackground: string;
     secondaryBackground: string;
     tertiaryBackground: string;
+    border: string;
     button: string;
     buttonHover: string;
     buttonText: string;
     buttonDisabled: string;
+    buttonStart: string;
+    buttonStartHover: string;
     buttonStop: string;
     buttonStopHover: string;
     iconPrimary: string;

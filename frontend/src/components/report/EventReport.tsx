@@ -4,7 +4,6 @@ import { useEventsByDate } from "../../hooks/useEvent";
 import "../../styles/Components.css";
 import Card from "../common/Card";
 import "../../App.css";
-import { GroupedEvents } from "../../../types/eventTypes"; 
 import { formatIsoInLA } from "../../utils/dateUtils";
 
 /* Event Report Component
