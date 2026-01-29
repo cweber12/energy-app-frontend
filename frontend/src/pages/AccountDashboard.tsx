@@ -22,22 +22,21 @@ Description: Main dashboard page for user account management and data
 visualization.
 ------------------------------------------------------------------------------*/
 const AccountDashboard = () => {
+    const userId = sessionStorage.getItem("user_id") || "";
+    
     const [showPropertyInput, setShowPropertyInput] = 
         React.useState<boolean>(false);
     const [showItemInput, setShowItemInput] = React.useState<boolean>(false);
     const [propertyId, setPropertyId] = React.useState<string>("");
-    const [itemId, setItemId] = React.useState<number>(0);
     const [showDailyEvents, setShowDailyEvents] = 
         React.useState<boolean>(false);
-    const userId = sessionStorage.getItem("user_id") || "";
     const [readings, setReadings] = useState<IntervalReading[]>([]);
     const [date, setDate] = useState<string>("");
-    const [itemNickname, setItemNickname] = useState<string>("");
     const [refreshItems, setRefreshItems] = useState(0);
     const [refreshProperties, setRefreshProperties] = useState(0);
     const { colors } = useTheme();
     const propertyIdNum = propertyId ? Number(propertyId) : 0;
-    const [showREportInfo, setShowREportInfo] = useState<boolean>(false);
+    const [showReportInfo, setShowReportInfo] = useState<boolean>(false);
 
     /* Use custom hook to navigate usage reports
     --------------------------------------------------------------------------*/
@@ -104,7 +103,8 @@ const AccountDashboard = () => {
                 <Card>
                     <CardHeader>
                         <div className="row">
-                            {!isLoading && !error && <h3>REPORT FOR {displayDate}</h3>}
+                            {!isLoading && !error && (
+                            <h3 style={{ color: colors.primaryText }}>REPORT FOR {displayDate}</h3>)}
                             {isLoading && <span>Loading…</span>}
                             {error && <span>{error}</span>}
                             <LuInfo
@@ -114,7 +114,7 @@ const AccountDashboard = () => {
                                     cursor: "pointer",
                                     color: colors.primaryText,
                                 }}
-                                onClick={() => setShowREportInfo(!showREportInfo)}
+                                onClick={() => setShowReportInfo(!showReportInfo)}
                             />
                         </div>
 
@@ -161,7 +161,7 @@ const AccountDashboard = () => {
                             </button>
                         </div>
                     </CardHeader>
-                    {showREportInfo && (
+                    {showReportInfo && (
                         <div 
                             className="info-popup"
                             style={{

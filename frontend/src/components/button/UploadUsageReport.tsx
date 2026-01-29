@@ -115,9 +115,15 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
   /* Render upload button and file input
   ----------------------------------------------------------------------------*/
   return (
-    <div className="upload-button" style={{ backgroundColor: colors.button, color: colors.buttonText }}>
+    <div 
+    className="upload-button" 
+    style={{ 
+      backgroundColor: colors.primaryBackground, 
+      color: colors.primaryText, 
+      border: `1px solid ${colors.primaryText}` 
+      }}>
       <label htmlFor="xml-upload" className="upload-label">
-        <BsUpload size={32} style={{ color: colors.buttonText, marginRight: "0.5rem" }} />
+        <BsUpload size={32} style={{ color: colors.primaryText, marginRight: "0.5rem" }} />
         <input
           id="xml-upload"
           type="file"

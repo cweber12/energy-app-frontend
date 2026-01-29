@@ -28,8 +28,8 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
 }) => {
 
     // Fetch properties and options with custom hook
-    const { options } = 
-        useProperties(sessionStorage.getItem("user_id") ?? "", refreshProperties);
+    const { options, firstPropertyId } = 
+        useProperties(sessionStorage.getItem("user_id") ?? "", refreshProperties, setPropertyId);
 
     // Custom styles for react-select
     const customStyles = {

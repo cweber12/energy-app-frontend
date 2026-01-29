@@ -15,6 +15,7 @@ import "../../App.css";
 import "../../styles/Components.css";
 import { useTheme } from '../../context/ThemeContext';
 import type { IntervalReading } from '../../../types/reportTypes';
+import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 
 /* Usage Graph Component
 --------------------------------------------------------------------------------
@@ -27,6 +28,7 @@ const UsageGraph: React.FC<{
     date: string
 }> = ({ readings, date }) => {
     const { colors } = useTheme();
+    const { width, height } = useWindowDimensions();
 
     /* Render bar chart
     ----------------------------------------------------------------------------
@@ -36,10 +38,10 @@ const UsageGraph: React.FC<{
     --------------------------------------------------------------------------*/
     return (
         <>
-            <h3 className="graph-header">HOURLY METER LOAD</h3>
+            <h3 className="graph-header">HOURLY METER READING</h3>
             <GraphWrapper>
                 {readings.length > 0 && (
-                    <ResponsiveContainer width={800} height={400}>
+                    <ResponsiveContainer width={width * 0.6} height={height * 0.3}>
                         <BarChart data={readings}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />

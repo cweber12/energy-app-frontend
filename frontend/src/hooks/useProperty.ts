@@ -12,7 +12,10 @@ Returns | properties: Property[] array of user properties.
         | options: PropertyOption[] array for dropdown selection.
 ------------------------------------------------------------------------------*/
 export function useProperties(
-    userId: string, refreshProperties?: number) {
+    userId: string, 
+    refreshProperties?: number, 
+    setPropertyId?: React.Dispatch<React.SetStateAction<string>>
+) {
     const [options, setOptions] = useState<PropertyOption[]>([
         { value: 'add', label: 'Add Property' }
     ]);
@@ -36,5 +39,14 @@ export function useProperties(
             });
     }, [userId, refreshProperties]);
 
-    return { properties, options };
+    const firstPropertyId = 
+        properties.length > 0 && properties[0]?.property_id ? 
+        properties[0]!.property_id.toString() : 
+        "";
+    
+    if (firstPropertyId && setPropertyId) {
+        setPropertyId(firstPropertyId);
+    }
+
+    return { properties, options, firstPropertyId };
 }

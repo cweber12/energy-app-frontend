@@ -9,6 +9,7 @@ import "../../styles/Components.css";
 import { set } from "react-hook-form";
 import { IoPlayOutline, IoStopOutline } from "react-icons/io5";
 import { FaCirclePlay, FaCircleStop } from "react-icons/fa6";
+import { TbClock, TbClockPlay, TbClockStop } from "react-icons/tb";
 
 type SetUsageEventProps = {
   itemId: number; // ID of the electrical item
@@ -31,6 +32,9 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   ----------------------------------------------------------------------------*/
   const { startTs, endTs, eventId} = useLastEvent(itemId);
 
+  const [playHovered, setPlayHovered] = React.useState(false);
+  const [stopHovered, setStopHovered] = React.useState(false);
+  
   useEffect(() => {
     if (startTs === null) {
         setStartTimeString("");
@@ -97,35 +101,37 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   return (
     <>
       {!running ? (
-        <div className="row" style={{ alignItems: "center" }}> 
-          Start        
-          <FaCirclePlay size={32}
-          style={{ 
-            marginRight: "8px", 
-            color: colors.buttonStart,
-            cursor: "pointer"
-          }} 
-          onClick={() => {
-            startUsageEvent();
-          }}
-          /> 
-      </div>
-      ) : (
-        <div className="column" style={{ alignItems: "flex-end" }}>          
-            <FaCircleStop size={32} 
-            style={{ 
+        <div className="row" style={{ alignItems: "center" }}>
+          Start
+          <TbClockPlay
+            size={32}
+            style={{
               marginRight: "8px",
-              color: colors.buttonStop,
+              color: playHovered ? colors.buttonStartHover : colors.buttonStart,
+              
               cursor: "pointer"
             }}
-            onClick={() => {
-              endUsageEvent();
-              
-            }} 
-            />
-            Stop
+            onMouseEnter={() => setPlayHovered(true)}
+            onMouseLeave={() => setPlayHovered(false)}
+            onClick={startUsageEvent}
+          />
+        </div>
+      ) : (
+        <div className="column" style={{ alignItems: "flex-end" }}>
+          <TbClockStop
+            size={32}
+            style={{
+              marginRight: "8px",
+              color: stopHovered ? colors.buttonStopHover : colors.buttonStop,
+              cursor: "pointer"
+            }}
+            onMouseEnter={() => setStopHovered(true)}
+            onMouseLeave={() => setStopHovered(false)}
+            onClick={endUsageEvent}
+          />
+          Stop
           {startTimeString ? (
-            <div> 
+            <div>
               Started at: {startTimeString}
             </div>
           ) : null}

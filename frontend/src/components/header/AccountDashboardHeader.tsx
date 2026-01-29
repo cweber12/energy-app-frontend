@@ -56,7 +56,7 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
             <img
                 src={`${process.env.PUBLIC_URL}/watt-watch-logo.png`}
                 alt="WattWatch Logo"
-                style={{ height: "8rem", marginRight: "1rem" }}
+                style={{ height: "80px", marginRight: "1rem", padding: "10px" }}
             />
             <div
                 style={{
@@ -89,8 +89,10 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     <FaRegCircleUser
                         style={{ 
                             color: colors.iconSecondary,
+                            backgroundColor: colors.border,
                             width: "32px", 
-                            height: "32px" 
+                            height: "32px", 
+                            borderRadius: "50%",
                         }}
                     /> 
                     <h3>{username ? username : "Guest"}</h3>

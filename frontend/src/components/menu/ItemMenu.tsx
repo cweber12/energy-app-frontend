@@ -55,7 +55,7 @@ const ItemMenu: React.FC<{
                 {items.length > 0 && (
                     <>
                         <div className="row">
-                            <h3>ITEMS</h3>
+                            <h3 style={{ color: colors.primaryText }}>ITEMS</h3>
                             <LuInfo
                                 style={{
                                     cursor: "pointer",
@@ -124,7 +124,11 @@ const ItemMenu: React.FC<{
                             <div className="child-row">
                                 {infoOpenIndex === idx ? (
                                     <FiChevronUp
-                                        style={{ cursor: "pointer", color: colors.iconTertiary}}
+                                        size={32}
+                                        style={{ 
+                                            cursor: "pointer", 
+                                            color: colors.iconTertiary, 
+                                        }}
                                         onClick={() => (
                                             setInfoOpenIndex(null),
                                             setShowDailyEvents(false)
@@ -133,6 +137,7 @@ const ItemMenu: React.FC<{
                                     />
                                 ) : ( 
                                     <FiChevronDown
+                                        size={32}
                                         style={{ cursor: "pointer", color: colors.iconTertiary}}
                                         onClick={() => setInfoOpenIndex(idx)}
                                     />
@@ -172,7 +177,7 @@ const ItemMenu: React.FC<{
                                             </div>
                                             <LastUseReport itemId={item.id} />
                                             {showDailyEvents ? (
-                                                <LuMinimize2
+                                                <FiChevronUp
                                                     style={{
                                                         cursor: "pointer",
                                                         color: colors.iconSecondary,
@@ -184,7 +189,7 @@ const ItemMenu: React.FC<{
                                                     }}
                                                 />
                                             ) : (
-                                                <LuMaximize2
+                                                <FiChevronDown
                                                     style={{
                                                         cursor: "pointer",
                                                         color: colors.iconSecondary,

@@ -1,13 +1,13 @@
 # Components Directory
 
-This folder contains all reusable and page-specific React components for the frontend application. Components are organized by feature and type for clarity and maintainability.
+This folder contains all reusable and page-specific React components for the frontend application.
 
 ## Structure Overview
 
 - **button/**
-	- `OpenDemo.tsx`: Button to open a demo modal or feature.
-	- `ToggleUsageEvent.tsx`: Button to toggle usage event state.
-	- `UploadUsageReport.tsx`: Button for uploading usage reports (file upload UI).
+	- `OpenDemo.tsx`: Button to login to demo account
+	- `ToggleUsageEvent.tsx`: Button to start and stop item usage events.
+	- `UploadUsageReport.tsx`: Button for uploading usage reports from SDGE.
 
 - **common/**
 	- `Card.tsx`: Generic card container component.
@@ -43,6 +43,7 @@ This folder contains all reusable and page-specific React components for the fro
 	- `UsageReport.tsx`: Main usage report component.
 
 ## Notes
+
 - Each subfolder groups related components by feature or UI type.
 - Components are written in TypeScript (`.tsx`) and use functional React patterns.
 - Shared layout and UI primitives are in the `common/` folder.
