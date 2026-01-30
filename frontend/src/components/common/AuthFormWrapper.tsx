@@ -17,11 +17,8 @@ const AuthFormWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) 
     <div 
         className="form-wrapper" 
         style={{ 
-          backgroundColor: colors.tertiaryBackground, 
           color: colors.tertiaryText,
           padding: '2rem',
-          borderRadius: '8px',
-          boxShadow: `0 4px 8px rgba(0, 0, 0, 0.1)`,
         }}
         >
         {children}

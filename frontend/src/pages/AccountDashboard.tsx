@@ -15,6 +15,7 @@ import { useTheme } from '../context/ThemeContext';
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import CardHeader from '../components/common/CardHeader';
 import { LuInfo } from "react-icons/lu";
+import CustomButton from '../components/button/CustomButton';
 
 /*  Account Dashboard Page
 --------------------------------------------------------------------------------
@@ -88,7 +89,6 @@ const AccountDashboard = () => {
                 />
             )}
             {propertyId && (
-                <div className="column" style={{gap: 0, alignItems: "flex-start"}}>
                     <ItemMenu 
                         propertyId={propertyId}
                         refreshItems={refreshItems}
@@ -97,10 +97,18 @@ const AccountDashboard = () => {
                         setShowDailyEvents={setShowDailyEvents}
                         showDailyEvents={showDailyEvents}
                     />
-                </div>
             )}
             {displayReadings.length > 0 && (
-                <Card>
+                <div 
+                    className="column"
+                    style={{ 
+                        gap: "1rem", 
+                        alignItems: "flex-start", 
+                        border: `1px solid ${colors.border}`,
+                        boxShadow: `0 0 4px ${colors.primaryText}`, 
+                        borderRadius: "8px",
+                    }}
+                >
                     <CardHeader>
                         <div className="row">
                             {!isLoading && !error && (
@@ -112,18 +120,14 @@ const AccountDashboard = () => {
                                 style={{
                                     marginLeft: "0.5rem",
                                     cursor: "pointer",
-                                    color: colors.primaryText,
+                                    color: colors.title,
                                 }}
                                 onClick={() => setShowReportInfo(!showReportInfo)}
                             />
                         </div>
 
                         <div className="button-group">
-                            <button
-                                style={{
-                                    backgroundColor: !canPrev ? colors.buttonDisabled : colors.button, 
-                                    color: colors.buttonText
-                                }}
+                            <CustomButton
                                 disabled={!canPrev}
                                 onClick={async () => {
                                 setReadings([]);
@@ -137,13 +141,9 @@ const AccountDashboard = () => {
                                     style={{ marginRight: "0.5rem" }} 
                                 />
                                 Prev
-                            </button>
+                            </CustomButton>
 
-                            <button
-                                style={{
-                                    backgroundColor: !canNext ? colors.buttonDisabled : colors.button, 
-                                    color: colors.buttonText
-                                }}
+                            <CustomButton
                                 disabled={!canNext}
                                 onClick={async () => {
                                 setReadings([]);
@@ -151,14 +151,13 @@ const AccountDashboard = () => {
                                 await goNext();
                                 }}
                             >
-
                                 Next
                                 <FiChevronRight 
                                     size={32} 
                                     color={colors.buttonText}
                                     style={{ marginLeft: "0.5rem" }} 
                                 />
-                            </button>
+                            </CustomButton>
                         </div>
                     </CardHeader>
                     {showReportInfo && (
@@ -187,7 +186,7 @@ const AccountDashboard = () => {
                     )}
                     <UsageGraph readings={displayReadings} date={displayDate} />
                     <EventGraph startDate={displayDate} />
-                </Card>
+                </div>
             )}
         </PageWrapper>
         </>

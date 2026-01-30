@@ -10,6 +10,7 @@ import { set } from "react-hook-form";
 import { IoPlayOutline, IoStopOutline } from "react-icons/io5";
 import { FaCirclePlay, FaCircleStop } from "react-icons/fa6";
 import { TbClock, TbClockPlay, TbClockStop } from "react-icons/tb";
+import CustomButton from "../button/CustomButton";
 
 type SetUsageEventProps = {
   itemId: number; // ID of the electrical item
@@ -101,37 +102,18 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   return (
     <>
       {!running ? (
-        <div className="row" style={{ alignItems: "center" }}>
+        <CustomButton onClick={startUsageEvent}>
           Start
-          <TbClockPlay
-            size={32}
-            style={{
-              marginRight: "8px",
-              color: playHovered ? colors.buttonStartHover : colors.buttonStart,
-              
-              cursor: "pointer"
-            }}
-            onMouseEnter={() => setPlayHovered(true)}
-            onMouseLeave={() => setPlayHovered(false)}
-            onClick={startUsageEvent}
-          />
-        </div>
+          <TbClockPlay size={32} style={{ marginRight: "8px" }}/>
+        </CustomButton>
       ) : (
         <div className="column" style={{ alignItems: "flex-end" }}>
-          <TbClockStop
-            size={32}
-            style={{
-              marginRight: "8px",
-              color: stopHovered ? colors.buttonStopHover : colors.buttonStop,
-              cursor: "pointer"
-            }}
-            onMouseEnter={() => setStopHovered(true)}
-            onMouseLeave={() => setStopHovered(false)}
-            onClick={endUsageEvent}
-          />
-          Stop
+          <CustomButton onClick={endUsageEvent}>
+            Stop
+            <TbClockStop size={32} style={{ marginRight: "8px" }}/>
+          </CustomButton>
           {startTimeString ? (
-            <div>
+            <div style={{ fontSize: "0.9rem", color: colors.mutedText }}>
               Started at: {startTimeString}
             </div>
           ) : null}

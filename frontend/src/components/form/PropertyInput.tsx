@@ -5,6 +5,8 @@ import HeaderDropdown from "../common/HeaderDropdown";
 //import { addProperty } from "../../services/propertyService";
 import { addProperty } from "../../supabase_services/propertiesService";
 import { PropertyForm } from "../../../types/propertyTypes";
+import CustomButton from "../button/CustomButton";
+import { LuMinus } from "react-icons/lu";
 
 /*  Property Input Component
 --------------------------------------------------------------------------------
@@ -70,6 +72,17 @@ const PropertyInput: React.FC<{
   ----------------------------------------------------------------------------*/
   return (
     <HeaderDropdown>
+      <h2>Add Property</h2>
+      <LuMinus 
+        size={40}
+        style={{ 
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          cursor: "pointer",
+        }}
+        onClick={() => setShowPropertyInput(false)}
+      />
       <form className="form" onSubmit={handleSubmit}>
         <br />
         <label className="form-label">
@@ -112,14 +125,7 @@ const PropertyInput: React.FC<{
         </label>
         <br />
         <div className="row">
-        <button type="submit">Add</button>
-          <button
-            type="button"
-            onClick={() => setShowPropertyInput(false)}
-            style={{ marginLeft: "10px" }}
-          >
-            Cancel
-          </button>
+        <CustomButton type="submit">Add</CustomButton>
         </div>
         {message && <div>{message}</div>}
       </form>

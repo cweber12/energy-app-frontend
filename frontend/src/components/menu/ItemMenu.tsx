@@ -13,6 +13,7 @@ import { FiPlus } from "react-icons/fi";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { LuInfo } from "react-icons/lu";
 import CardHeader from "../common/CardHeader";
+import CustomButton from "../button/CustomButton";
 
 
 /* ItemMenu Component
@@ -59,7 +60,7 @@ const ItemMenu: React.FC<{
                             <LuInfo
                                 style={{
                                     cursor: "pointer",
-                                    color: colors.iconTertiary,
+                                    color: colors.title,
                                     width: "24px",
                                     height: "24px",
                                     marginLeft: "0.5rem",
@@ -72,21 +73,18 @@ const ItemMenu: React.FC<{
                     </>
                 )}
                 {!showItemInput && (
-                    <button
-                        style={{backgroundColor: colors.button, color: colors.buttonText}}
-                        onClick={() => setShowItemInput(true)}
-                    >
-                    <FiPlus 
-                        style={{ 
-                            cursor: "pointer", 
-                            color: colors.buttonText,
-                            width: "32px",
-                            height: "32px",
-                            marginRight: "0.5rem",
-                        }}
-                    />
-                    Add Item
-                    </button>
+                    <CustomButton onClick={() => setShowItemInput(true)}>
+                        <FiPlus 
+                            style={{ 
+                                cursor: "pointer", 
+                                width: "32px",
+                                height: "32px",
+                            }}
+                        />
+                        <div>
+                        Add Item
+                        </div>
+                    </CustomButton>
                 )}
             </CardHeader>
             {showItemInfo && (
@@ -118,6 +116,7 @@ const ItemMenu: React.FC<{
                                 backgroundColor: colors.secondaryBackground,
                                 color: colors.tertiaryText,
                                 position: "relative",
+                                borderBottom: `1px solid ${colors.border}`,
                             }}
                         >
             
@@ -162,19 +161,13 @@ const ItemMenu: React.FC<{
                                 <div
                                     className="item-info-popup"
                                     style={{
-                                        background: colors.secondaryBackground,
+                                        background: colors.tertiaryBackground,
                                         color: colors.secondaryText,
                                         position: "relative",
                                     }}
                                 >
                                     {item.id &&  (
                                         <div className="child-row" style={{width: "100%", justifyContent: "space-between"}}>
-                                            <div style={{color: colors.secondaryText}}>
-                                                <p><strong>Category:</strong> {categories[item.category_id]}<br/>
-                                                <strong>Frequency:</strong> {usageTypes[item.usage_type_id]}<br/>
-                                                {item.rated_watts > 0 && `Rated Watts: ${item.rated_watts}W`}
-                                                </p>
-                                            </div>
                                             <LastUseReport itemId={item.id} />
                                             {showDailyEvents ? (
                                                 <FiChevronUp

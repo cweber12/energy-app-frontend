@@ -20,13 +20,14 @@ const HomeHeader = () => {
                 alignItems: "center",
                 justifyContent: "flex-start",
                 gap: "2rem",
+                height: "150px",
 
             }}
             >
             <img
                 src={`${process.env.PUBLIC_URL}/watt-watch-logo.png`}
                 alt="WattWatch Logo"
-                style={{ height: "8rem", marginRight: "1rem" }}
+                style={{ height: "120px"}}
             />
         </header>
     );

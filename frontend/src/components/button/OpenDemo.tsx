@@ -3,6 +3,8 @@ import { useTheme } from "../../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { FaRegCircleUser } from "react-icons/fa6";
+import "../../styles/Components.css";
+import CustomButton from "./CustomButton";
 
 const OpenDemo: React.FC = () => {
     const { colors } = useTheme();
@@ -35,26 +37,22 @@ const OpenDemo: React.FC = () => {
 
     return (
         <>
-            <button
-                style={{
-                    backgroundColor: colors.button,
-                    color: colors.buttonText,
-                    fontSize: "20px",
-                    borderRadius: "8px",
-                    border: "none",
-                    cursor: "pointer", 
-                    alignSelf: "center",
-                    width: "300px",
-                    height: "52px",
-                    marginTop: "1rem",
-
+            <CustomButton
+                style={{ 
+                    fontSize: "1.5rem",
+                    marginTop: "2rem",
+                    padding: "0.5rem 1rem",
+                    width: 320, 
+                    height: 80,
                 }}
                 onClick={handleDemoLogin}
                 disabled={loading}
             >
-                <FaRegCircleUser style={{ marginRight: "8px" }} />
+                <FaRegCircleUser
+                size={40} 
+                style={{ marginRight: "1rem" }} />
                 {loading ? "Logging in..." : "Open Demo Account"}
-            </button>
+            </CustomButton>
             {message && (
                 <p style={{ color: colors.warning, marginTop: "1rem", textAlign: "center" }}>
                     {message}

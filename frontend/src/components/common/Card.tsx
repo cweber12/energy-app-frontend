@@ -17,7 +17,8 @@ const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         className="card" 
         style={{ 
           color: colors.secondaryText, 
-          border: `1px solid ${colors.border}`, 
+          border: `1px solid ${colors.border}`,
+          boxShadow: `0 0 4px ${colors.primaryText}`, 
         }}
         >
         {children}

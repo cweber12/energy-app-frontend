@@ -46,9 +46,8 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
         <>
             <h3 className="graph-header">RECORDED ITEM USE</h3>
             <GraphWrapper>
-                <ResponsiveContainer width={width * 0.6} height={height * 0.3}>
+                <ResponsiveContainer width={width * 0.5} height={height * 0.25}>
                     <BarChart data={chartData}>
-                        <CartesianGrid strokeDasharray="0" />
                         <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
                         <YAxis label={{ value: "Total Time (min)", angle: -90, position: "insideLeft" }} />
                         <Tooltip

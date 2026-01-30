@@ -8,6 +8,7 @@ import "../../App.css";
 import "../../styles/Components.css";
 import AuthFormWrapper from "../common/AuthFormWrapper";
 import { NavigateFunction } from "react-router-dom";
+import CustomButton from "../button/CustomButton";
 
 /*  Login Component
 --------------------------------------------------------------------------------
@@ -26,14 +27,6 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
         formState: { errors },
     } = useForm<LoginForm>();
 
-    // Consolidate button styling
-    const buttonProps = {
-        style: {
-            backgroundColor: colors.button,
-            color: colors.buttonText,
-        }
-    };
-    
     /* Handle form submission to authenticate user
     ----------------------------------------------------------------------------
     - Sends POST request with email and password
@@ -92,9 +85,12 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
                 <span style={{ color: colors.warning }}>*Password* is mandatory</span>
                 )}
 
-                <input 
-                    type="submit" 
-                    {...buttonProps} />
+                <CustomButton 
+                    type="submit"
+                    style={{ marginTop: "1rem" }}
+                >
+                    Login</CustomButton>
+               
             </form>
             {message && (
                 <p 

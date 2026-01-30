@@ -60,6 +60,7 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
             />
             <div
                 style={{
+                    flex: 1,
                     display: "flex", 
                     flexDirection: "row", 
                     alignItems: "flex-start", 

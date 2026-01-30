@@ -41,9 +41,8 @@ const UsageGraph: React.FC<{
             <h3 className="graph-header">HOURLY METER READING</h3>
             <GraphWrapper>
                 {readings.length > 0 && (
-                    <ResponsiveContainer width={width * 0.6} height={height * 0.3}>
+                    <ResponsiveContainer width={width * 0.5} height={height * 0.32}>
                         <BarChart data={readings}>
-                            <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
                             <YAxis label={{ value: "kWh", angle: -90, position: "insideLeft" }} />
                             <Tooltip

@@ -26,8 +26,8 @@ const ItemEventsReport: React.FC<{
     const { colors } = useTheme();
 
     const thStyle = {
-        backgroundColor: colors.tertiaryBackground,
-        color: colors.tertiaryText,
+        backgroundColor: colors.secondaryBackground,
+        color: colors.title,
     };
 
     const tdStyles = {

@@ -7,6 +7,8 @@ import HeaderDropdown from "../common/HeaderDropdown";
 import "../../styles/Components.css";
 import { LuMinimize2 } from "react-icons/lu";
 import { useTheme } from "../../context/ThemeContext";
+import CustomButton from "../button/CustomButton";
+import { LuMinus } from "react-icons/lu";
 
 // Type definitions for props
 type ItemInputProps = {
@@ -97,17 +99,21 @@ const ItemInput: React.FC<ItemInputProps> = ({
     --------------------------------------------------------------------------*/
     return (
         <HeaderDropdown>
-            <div className="card-header">
-                <h3 >Add New Item</h3>
-                <LuMinimize2
+
+                <h2 >Add New Item</h2>
+                <LuMinus
                     style={{
                         cursor: "pointer",
                         width: "32px",
                         height: "32px",
+                        position: "absolute",
+                        top: 10,
+                        right: 10,
+                        color: colors.primaryText,
                     }}
                     onClick={() => setShowItemInput(false)}
                 />
-            </div>
+
             <form className="form" onSubmit={handleSubmit}>
              <label className="form-label">
                 Category:
@@ -163,10 +169,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
             </label>
             <br />
 
-            <button type="submit" style={{
-                backgroundColor: colors.tertiaryBackground,
-                color: colors.tertiaryText
-            }}>Add</button>
+            <CustomButton type="submit">Add</CustomButton>
 
             {message && <div>{message}</div>}
             </form>

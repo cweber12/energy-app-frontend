@@ -4,6 +4,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { FiUpload } from "react-icons/fi";
 import { useSaveUsageReport } from "../../hooks/useSaveUsageReport";
 import { BsUpload } from "react-icons/bs";
+import CustomButton from "../button/CustomButton";
 
 // type definition for hourly reading from usage report
 type IntervalReading = {
@@ -115,25 +116,33 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
   /* Render upload button and file input
   ----------------------------------------------------------------------------*/
   return (
-    <div 
-    className="upload-button" 
-    style={{ 
-      backgroundColor: colors.primaryBackground, 
-      color: colors.primaryText, 
-      border: `1px solid ${colors.primaryText}` 
-      }}>
-      <label htmlFor="xml-upload" className="upload-label">
-        <BsUpload size={32} style={{ color: colors.primaryText, marginRight: "0.5rem" }} />
-        <input
-          id="xml-upload"
-          type="file"
-          accept=".xml"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-          disabled={isSaving}
-        />
-        {isSaving ? "Saving..." : "Upload Usage Report"}
-      </label>
+    <div>
+      <CustomButton
+        disabled={isSaving}
+        type="button"
+        style={{width: "fit-content"}}
+      >
+        <label
+          htmlFor="xml-upload"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            cursor: isSaving ? "not-allowed" : "pointer",
+            margin: 0,
+          }}
+        >
+          <BsUpload size={32} style={{ color: colors.primaryText, marginRight: "0.5rem" }} />
+          <input
+            id="xml-upload"
+            type="file"
+            accept=".xml"
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+            disabled={isSaving}
+          />
+          {isSaving ? "Saving..." : "Upload Usage Report"}
+        </label>
+      </CustomButton>
       {saveError && <div style={{ marginTop: 8 }}>{saveError}</div>}
     </div>
   );
