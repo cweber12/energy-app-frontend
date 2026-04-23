@@ -6,9 +6,7 @@ import "../../styles/Components.css";
 import PropertyMenu from "../menu/PropertyMenu";
 import UploadUsageReport from "../button/UploadUsageReport";
 import { IntervalReading } from '../../../types/reportTypes';
-import { IoLogOutOutline } from "react-icons/io5";
-import { FaRegCircleUser } from "react-icons/fa6";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { UserIcon, LogOutIcon, ChevronDownIcon, ChevronUpIcon } from "../icons";
 
 type AccountDashboardHeaderProps = {
     setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>;
@@ -89,25 +87,25 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     color: colors.secondaryText,
                 }}>
                 <div className="user">
-                    <FaRegCircleUser
-                        style={{ 
-                            color: colors.iconSecondary,
-                            width: "24px",
-                            height: "24px",
-                            flexShrink: 0,
-                        }}
+                    <UserIcon
+                        size={22}
+                        color={colors.iconSecondary}
                     />
                     <span style={{ fontSize: "var(--font-sm)", fontWeight: "var(--font-weight-medium)" }}>
                         {username ? username : "Guest"}
                     </span>
                     {showUserMenu ? (
-                        <FaAngleUp
-                            style={{ width: "18px", height: "18px", cursor: "pointer", color: colors.iconSecondary }}
+                        <ChevronUpIcon
+                            size={16}
+                            color={colors.iconSecondary}
+                            style={{ cursor: "pointer" }}
                             onClick={() => setShowUserMenu(false)}
                         />
                     ) : (
-                        <FaAngleDown
-                            style={{ width: "18px", height: "18px", cursor: "pointer", color: colors.iconSecondary }}
+                        <ChevronDownIcon
+                            size={16}
+                            color={colors.iconSecondary}
+                            style={{ cursor: "pointer" }}
                             onClick={() => setShowUserMenu(true)}
                         />
                     )}
@@ -124,13 +122,9 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                                 }}
                                 >
                                 Logout
-                                <IoLogOutOutline
-                                    style={{ 
-                                        cursor: "pointer",
-                                        color: colors.iconSecondary,
-                                        width: "20px",
-                                        height: "20px",
-                                    }}
+                                <LogOutIcon
+                                    size={18}
+                                    color={colors.iconSecondary}
                                 />
                             </div>    
                         </div>

@@ -5,10 +5,8 @@ import { addElectricalItem } from "../../supabase_services/itemsService";
 import { ItemInputForm } from "../../../types/itemTypes";
 import HeaderDropdown from "../common/HeaderDropdown";
 import "../../styles/Components.css";
-import { LuMinimize2 } from "react-icons/lu";
 import { useTheme } from "../../context/ThemeContext";
 import CustomButton from "../button/CustomButton";
-import { LuMinus } from "react-icons/lu";
 
 // Type definitions for props
 type ItemInputProps = {
@@ -98,21 +96,8 @@ const ItemInput: React.FC<ItemInputProps> = ({
     - Displays success/error message
     --------------------------------------------------------------------------*/
     return (
-        <HeaderDropdown>
-
-                <h2 >Add New Item</h2>
-                <LuMinus
-                    style={{
-                        cursor: "pointer",
-                        width: "20px",
-                        height: "20px",
-                        position: "absolute",
-                        top: 10,
-                        right: 10,
-                        color: colors.primaryText,
-                    }}
-                    onClick={() => setShowItemInput(false)}
-                />
+        <HeaderDropdown onClose={() => setShowItemInput(false)}>
+            <h2 className="dropdown-heading">Add New Item</h2>
 
             <form className="form" onSubmit={handleSubmit}>
              <label className="form-label">

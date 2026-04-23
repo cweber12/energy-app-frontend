@@ -71,6 +71,10 @@
   /* Layout */
   --header-height:      64px;
   --home-header-height: 88px;
+
+  /* Dropdown */
+  --dropdown-panel-width: min(400px, 90vw);
+  --dropdown-backdrop-bg: rgba(0, 0, 0, 0.25);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

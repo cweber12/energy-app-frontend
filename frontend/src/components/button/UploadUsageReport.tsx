@@ -2,7 +2,7 @@
 import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { useSaveUsageReport } from "../../hooks/useSaveUsageReport";
-import { BsUpload } from "react-icons/bs";
+import { UploadIcon } from "../icons";
 import CustomButton from "../button/CustomButton";
 
 // type definition for hourly reading from usage report
@@ -131,7 +131,7 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
             margin: 0,
           }}
         >
-          <BsUpload size={16} style={{ color: colors.buttonText }} />
+          <UploadIcon size={16} color={colors.buttonText} />
           <input
             id="xml-upload"
             type="file"

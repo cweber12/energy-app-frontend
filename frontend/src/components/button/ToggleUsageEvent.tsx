@@ -6,10 +6,7 @@ import { EventStart, EventEnd } from "../../../types/eventTypes";
 import { startEvent, endEvent } from "../../supabase_services/eventsService";
 import "../../App.css";
 import "../../styles/Components.css";
-import { set } from "react-hook-form";
-import { IoPlayOutline, IoStopOutline } from "react-icons/io5";
-import { FaCirclePlay, FaCircleStop } from "react-icons/fa6";
-import { TbClock, TbClockPlay, TbClockStop } from "react-icons/tb";
+import { PlayIcon, StopIcon } from "../icons";
 import CustomButton from "../button/CustomButton";
 
 type SetUsageEventProps = {
@@ -24,30 +21,22 @@ Props:
 ------------------------------------------------------------------------------*/
 const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   const { colors } = useTheme();
-  const [startTimeString, setStartTimeString] = React.useState<string>("");
-  const [endTimeString, setEndTimeString] = React.useState<string>("");
   const [running, setRunning] = React.useState<boolean>(false);
   const [currentEventId, setCurrentEventId] = React.useState<number | null>(null);
 
   /* Fetch last event timestamps for an item when itemId changes
   ----------------------------------------------------------------------------*/
   const { startTs, endTs, eventId} = useLastEvent(itemId);
-
-  const [playHovered, setPlayHovered] = React.useState(false);
-  const [stopHovered, setStopHovered] = React.useState(false);
   
   useEffect(() => {
     if (startTs === null) {
-        setStartTimeString("");
+        // no events yet
     } else {
-      setStartTimeString(startTs.toLocaleString());
       setCurrentEventId(eventId);
       if (endTs === null) {
-          setEndTimeString("");
           setRunning(true);
       } else {
           setRunning(false);
-          setEndTimeString(endTs.toLocaleString());
       }
     }
   }, [startTs, endTs]); 
@@ -102,22 +91,27 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   return (
     <>
       {!running ? (
-        <CustomButton onClick={startUsageEvent}>
+        <CustomButton
+          onClick={startUsageEvent}
+          style={{
+            backgroundColor: colors.buttonStart,
+            color: "#FFFFFF",
+          }}
+        >
+          <PlayIcon size={16} color="#FFFFFF" />
           Start
-          <TbClockPlay size={18} />
         </CustomButton>
       ) : (
-        <div className="column" style={{ alignItems: "flex-end", gap: "var(--space-1)" }}>
-          <CustomButton onClick={endUsageEvent}>
-            Stop
-            <TbClockStop size={18} />
-          </CustomButton>
-          {startTimeString ? (
-            <div style={{ fontSize: "var(--font-xs)", color: colors.mutedText }}>
-              Started: {startTimeString}
-            </div>
-          ) : null}
-        </div>
+        <CustomButton
+          onClick={endUsageEvent}
+          style={{
+            backgroundColor: colors.buttonStop,
+            color: "#FFFFFF",
+          }}
+        >
+          <StopIcon size={16} color="#FFFFFF" />
+          Stop
+        </CustomButton>
       )}
     </>
   );

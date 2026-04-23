@@ -6,6 +6,7 @@ import { supabase } from "../../lib/supabaseClient";
 import "../../App.css";
 import "../../styles/Components.css";
 import AuthFormWrapper from "../common/AuthFormWrapper";
+import CustomButton from "../button/CustomButton";
 
 const Register: React.FC = () => {
   const { colors } = useTheme();
@@ -82,25 +83,13 @@ const Register: React.FC = () => {
           <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Password is required</span>
         )}
 
-        <button
+        <CustomButton
           type="submit"
           disabled={isSubmitting}
-          style={{
-            marginTop: "var(--space-3)",
-            width: "100%",
-            height: "44px",
-            fontSize: "var(--font-base)",
-            backgroundColor: isSubmitting ? colors.buttonDisabled : colors.button,
-            color: colors.buttonText,
-            borderRadius: "var(--radius-md)",
-            border: "none",
-            cursor: isSubmitting ? "not-allowed" : "pointer",
-            fontWeight: 500,
-            opacity: isSubmitting ? 0.55 : 1,
-          }}
+          style={{ marginTop: "var(--space-3)", width: "100%", height: "44px", fontSize: "var(--font-base)" }}
         >
           {isSubmitting ? "Creating account..." : "Create Account"}
-        </button>
+        </CustomButton>
       </form>
 
       {message && (

@@ -2,7 +2,7 @@ import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
-import { FaRegCircleUser } from "react-icons/fa6";
+import { UserIcon } from "../icons";
 import "../../styles/Components.css";
 import CustomButton from "./CustomButton";
 
@@ -48,9 +48,9 @@ const OpenDemo: React.FC = () => {
                 onClick={handleDemoLogin}
                 disabled={loading}
             >
-                <FaRegCircleUser
+                <UserIcon
                     size={20}
-                    style={{ marginRight: "var(--space-2)" }}
+                    color="#FFFFFF"
                 />
                 {loading ? "Signing in..." : "Try the Demo"}
             </CustomButton>

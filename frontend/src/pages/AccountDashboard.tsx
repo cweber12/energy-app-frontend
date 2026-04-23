@@ -12,9 +12,8 @@ import { IntervalReading } from '../../types/reportTypes';
 import { useUsageReportNavigator } from "../hooks/useUsageReportNavigator";
 import Card from '../components/common/Card';
 import { useTheme } from '../context/ThemeContext';
-import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { ChevronLeftIcon, ChevronRightIcon, InfoIcon } from '../components/icons';
 import CardHeader from '../components/common/CardHeader';
-import { LuInfo } from "react-icons/lu";
 import CustomButton from '../components/button/CustomButton';
 
 /*  Account Dashboard Page
@@ -121,14 +120,12 @@ const AccountDashboard = () => {
                             )}
                             {isLoading && <span style={{ fontSize: "var(--font-sm)", color: colors.mutedText }}>Loading…</span>}
                             {error && <span style={{ fontSize: "var(--font-sm)", color: colors.warning }}>{error}</span>}
-                            <LuInfo
+                            <InfoIcon
                                 size={16}
-                                style={{
-                                    cursor: "pointer",
-                                    color: colors.mutedText,
-                                    flexShrink: 0,
-                                }}
+                                color={colors.mutedText}
+                                style={{ cursor: "pointer", flexShrink: 0 }}
                                 onClick={() => setShowReportInfo(!showReportInfo)}
+                                title="About this report"
                             />
                         </div>
 
@@ -142,7 +139,7 @@ const AccountDashboard = () => {
                                 }}
                                 style={{ padding: "0 var(--space-3)" }}
                             >
-                                <FiChevronLeft size={16} />
+                                <ChevronLeftIcon size={16} />
                                 Prev
                             </CustomButton>
 
@@ -156,7 +153,7 @@ const AccountDashboard = () => {
                                 style={{ padding: "0 var(--space-3)" }}
                             >
                                 Next
-                                <FiChevronRight size={16} />
+                                <ChevronRightIcon size={16} />
                             </CustomButton>
                         </div>
                     </CardHeader>

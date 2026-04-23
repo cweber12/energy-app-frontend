@@ -1,30 +1,61 @@
-// src/components/common/FormWrapper.tsx
+// src/components/common/HeaderDropdown.tsx
 import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import "../../App.css";
 import "../../styles/Components.css";
+import { CloseIcon } from "../icons";
 
-/*  Header Dropdown Left Component
---------------------------------------------------------------------------------
-Description: Reusable component that wraps forms with consistent styling.
-Props: 
-    - children: React nodes to be wrapped.
-------------------------------------------------------------------------------*/
-const HeaderDropdown: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { colors } = useTheme();
-  return (
-    <div 
-        className="header-dropdown-left" 
-        style={{ 
-          backgroundColor: colors.secondaryBackground, 
-          color: colors.secondaryText, 
-          borderRight: `1px solid ${colors.border}`,
-          borderBottom: `1px solid ${colors.border}`,
-        }}
-        >
-        {children}
-    </div>
-  );
+interface HeaderDropdownProps {
+  children: React.ReactNode;
+  onClose: () => void;
 }
+
+/*  HeaderDropdown Component
+--------------------------------------------------------------------------------
+Description: Viewport-centered fixed panel that drops below the navigation bar.
+Includes a semi-transparent backdrop for click-away dismissal and a close button.
+Props:
+    - children: Form content to display inside the dropdown.
+    - onClose:  Callback to invoke when the panel is dismissed.
+------------------------------------------------------------------------------*/
+const HeaderDropdown: React.FC<HeaderDropdownProps> = ({ children, onClose }) => {
+  const { colors } = useTheme();
+
+  return (
+    <>
+      {/* Click-away backdrop */}
+      <div
+        className="header-dropdown-backdrop"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* Floating panel */}
+      <div
+        className="header-dropdown-panel"
+        style={{
+          backgroundColor: colors.secondaryBackground,
+          borderColor: colors.border,
+          color: colors.primaryText,
+        }}
+        role="dialog"
+        aria-modal="true"
+      >
+        {/* Close button */}
+        <button
+          type="button"
+          className="header-dropdown-close"
+          onClick={onClose}
+          aria-label="Close"
+          style={{ color: colors.primaryText }}
+        >
+          <CloseIcon size={16} />
+        </button>
+
+        {children}
+      </div>
+    </>
+  );
+};
 
 export default HeaderDropdown;

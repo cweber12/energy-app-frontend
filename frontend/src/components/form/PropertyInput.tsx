@@ -2,11 +2,9 @@
 import React, { useState } from "react";
 import "../../styles/Components.css";
 import HeaderDropdown from "../common/HeaderDropdown";
-//import { addProperty } from "../../services/propertyService";
 import { addProperty } from "../../supabase_services/propertiesService";
 import { PropertyForm } from "../../../types/propertyTypes";
 import CustomButton from "../button/CustomButton";
-import { LuMinus } from "react-icons/lu";
 
 /*  Property Input Component
 --------------------------------------------------------------------------------
@@ -71,18 +69,8 @@ const PropertyInput: React.FC<{
   Displays success/error message
   ----------------------------------------------------------------------------*/
   return (
-    <HeaderDropdown>
-      <h2>Add Property</h2>
-      <LuMinus 
-        size={20}
-        style={{ 
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          cursor: "pointer",
-        }}
-        onClick={() => setShowPropertyInput(false)}
-      />
+    <HeaderDropdown onClose={() => setShowPropertyInput(false)}>
+      <h2 className="dropdown-heading">Add Property</h2>
       <form className="form" onSubmit={handleSubmit}>
         <label className="form-label">
             Street:

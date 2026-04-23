@@ -1,10 +1,10 @@
-/* Components.css � WattWatch shared component styles
+/* Components.css � WattWatch shared component styles
    All colour values reference CSS custom properties from theme.css.
    Spacing, radius, and shadow tokens are also from theme.css.
    -------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------
-   LAYOUT � page scaffolding
+   LAYOUT � page scaffolding
    -------------------------------------------------------------------- */
 
 .page-wrapper {
@@ -103,22 +103,70 @@
 }
 
 /* -- Header dropdown panel (property/item forms) ------------------ */
-.header-dropdown-left {
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: var(--space-5) var(--space-6);
-  min-width: 300px;
-  max-width: 360px;
-  z-index: 50;
-  border-radius: 0 0 var(--radius-lg) 0;
-  box-shadow: var(--shadow-lg);
+
+/* Backdrop: covers entire viewport, click-away to dismiss */
+.header-dropdown-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 490;
+  background: var(--dropdown-backdrop-bg);
 }
 
-.header-dropdown-left select,
-.header-dropdown-left input {
+/* Floating panel: anchored to bottom of navbar, centred horizontally */
+.header-dropdown-panel {
+  position: fixed;
+  top: var(--header-height);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--dropdown-panel-width);
+  z-index: 500;
+  padding: var(--space-6) var(--space-6) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  box-sizing: border-box;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-dropdown-panel select,
+.header-dropdown-panel input {
   box-sizing: border-box;
   width: 100%;
+}
+
+/* Close button inside the panel */
+.header-dropdown-close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast), background-color var(--transition-fast);
+}
+
+.header-dropdown-close:hover {
+  opacity: 1;
+  background: var(--color-surface-tertiary);
+}
+
+/* Heading inside dropdown panels */
+.dropdown-heading {
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-4) 0;
+  padding-right: var(--space-8); /* avoid overlap with close button */
 }
 
 /* --------------------------------------------------------------------
@@ -139,6 +187,15 @@
   box-shadow: var(--shadow-card);
   box-sizing: border-box;
   overflow: hidden;
+}
+
+/* Card section label — used for "Items", "Usage Events", etc. */
+.card-section-label {
+  margin: 0;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.01em;
 }
 
 .card-header {
@@ -263,6 +320,75 @@
   justify-content: center;
   font-size: var(--font-sm);
   gap: var(--space-1);
+}
+
+/* Right-side group: action button + secondary metadata */
+.item-action-meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* Secondary metadata text: "Last used …", "X min total" */
+.item-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  text-align: right;
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+}
+
+/* ── Item menu wrapper — positions the events panel ──────────────── */
+.item-menu-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.item-menu-wrapper .card {
+  /* card fills the wrapper width */
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+/* ── Events panel — absolute to the right of the card ─────────────── */
+.events-panel {
+  position: absolute;
+  left: calc(100% + var(--space-3));
+  top: 0;
+  width: 380px;
+  max-height: 70vh;
+  overflow-y: auto;
+  z-index: 200;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.events-panel-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  gap: var(--space-3);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 /* --------------------------------------------------------------------
@@ -394,7 +520,7 @@
 }
 
 /* --------------------------------------------------------------------
-   RESPONSIVE � tablet (max-width: 1023px)
+   RESPONSIVE � tablet (max-width: 1023px)
    -------------------------------------------------------------------- */
 
 @media (max-width: 1023px) {
@@ -408,13 +534,33 @@
     max-width: 340px;
   }
 
+  .item-menu-wrapper {
+    min-width: 260px;
+    max-width: 340px;
+  }
+
   .list {
     max-height: 55vh;
+  }
+
+  .events-panel {
+    width: 300px;
+  }
+}
+
+/* ── Tablet portrait: events panel can't fit to the right, stack it */
+@media (max-width: 860px) {
+  .events-panel {
+    position: static;
+    width: 100%;
+    max-height: 50vh;
+    margin-top: var(--space-2);
+    border-radius: var(--radius-lg);
   }
 }
 
 /* --------------------------------------------------------------------
-   RESPONSIVE � mobile (max-width: 639px)
+   RESPONSIVE � mobile (max-width: 639px)
    -------------------------------------------------------------------- */
 
 @media (max-width: 639px) {
@@ -431,6 +577,12 @@
     width: 100%;
   }
 
+  .item-menu-wrapper {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
   .list {
     max-height: 45vh;
   }
@@ -441,10 +593,28 @@
     gap: var(--space-3);
   }
 
-  .header-dropdown-left {
+  /* On mobile the events panel stacks below the card */
+  .events-panel {
+    position: static;
+    width: 100%;
+    max-height: 50vh;
+    border-radius: var(--radius-lg);
+    margin-top: var(--space-2);
+  }
+
+  .item-action-meta {
+    gap: var(--space-2);
+  }
+
+  .item-meta {
+    display: none; /* hide metadata text on very small screens */
+  }
+
+  /* On mobile the dropdown panel expands to full width */
+  .header-dropdown-panel {
+    width: 100%;
     left: 0;
-    right: 0;
-    max-width: 100%;
+    transform: none;
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   }
 
