@@ -26,3 +26,6 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
+
+# database
+energy.db

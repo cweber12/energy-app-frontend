@@ -7,15 +7,12 @@ import {
     YAxis, 
     Tooltip, 
     ResponsiveContainer, 
-    CartesianGrid, 
     Legend 
 } from 'recharts';
 import { useTheme } from "../../context/ThemeContext";
 import { useEventsByDate } from "../../hooks/useEvent";
-import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { groupEventsByHour } from "../../utils/eventUtils";
 import GraphWrapper from "../common/GraphWrapper";
-import Card from "../common/Card";
 import "../../App.css";
 import "../../styles/Components.css";
 
@@ -28,7 +25,6 @@ Props:
 ------------------------------------------------------------------------------*/
 const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
     const { colors } = useTheme();
-    const { width, height } = useWindowDimensions();
     // Data structure for chart
     const { data } = useEventsByDate(startDate);
     const chartData = groupEventsByHour(data);
@@ -46,7 +42,7 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
         <>
             <h3 className="graph-header">RECORDED ITEM USE</h3>
             <GraphWrapper>
-                <ResponsiveContainer width={width * 0.5} height={height * 0.25}>
+                <ResponsiveContainer width="100%" height={250}>
                     <BarChart data={chartData}>
                         <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
                         <YAxis label={{ value: "Total Time (min)", angle: -90, position: "insideLeft" }} />

@@ -1,5 +1,4 @@
-import { useState, useEffect, use } from "react";
-//import { groupEventsByHour } from "../services/eventService";
+import { useState, useEffect } from "react";
 import { 
     fetchEventsByDate, 
     fetchAllEvents, 
@@ -10,13 +9,10 @@ import {
 import { 
     GroupedEvents, 
     EventSummary, 
-    HourlyTotals, 
     DailyUsage, 
-    LastEvent, 
     EventStart, 
     EventEnd
 } from "../../types/eventTypes";
-import { set } from "react-hook-form";
 
 /* Fetch Events By Date
 --------------------------------------------------------------------------------
@@ -53,7 +49,6 @@ export function useDailyTotalsByDate(itemId: number) {
                 console.error("Error fetching daily totals by date:", err);
             });
     }, [itemId]);
-    console.log("useDailyTotalsByDate data:", data);
     return { data };
 }
 
@@ -78,7 +73,6 @@ export function useAllEvents(itemId: number) {
             })
             .finally(() => setLoading(false));
     }, [itemId]);
-    console.log("useAllEvents data:", data);
     return { data, loading, error };
 }
 

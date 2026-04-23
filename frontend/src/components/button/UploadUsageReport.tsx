@@ -1,7 +1,6 @@
 // src/components/report/UploadUsageReport.tsx
 import React from "react";
 import { useTheme } from "../../context/ThemeContext";
-import { FiUpload } from "react-icons/fi";
 import { useSaveUsageReport } from "../../hooks/useSaveUsageReport";
 import { BsUpload } from "react-icons/bs";
 import CustomButton from "../button/CustomButton";

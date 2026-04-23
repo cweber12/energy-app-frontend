@@ -8,10 +8,8 @@ import ToggleUsageEvent from "../button/ToggleUsageEvent";
 import LastUseReport from "../report/LastUseReport";
 import { useAllItems } from "../../hooks/useItem";
 import ItemEventsReport from "../report/ItemEventsReport";
-import { LuMinimize2, LuMaximize2 } from "react-icons/lu";
-import { FiPlus } from "react-icons/fi";
-import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { LuInfo } from "react-icons/lu";
+import { FiPlus, FiChevronUp, FiChevronDown } from "react-icons/fi";
 import CardHeader from "../common/CardHeader";
 import CustomButton from "../button/CustomButton";
 

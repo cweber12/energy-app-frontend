@@ -7,7 +7,6 @@ import {
     YAxis, 
     Tooltip, 
     ResponsiveContainer, 
-    CartesianGrid, 
 } from 'recharts';
 import GraphWrapper from '../common/GraphWrapper';
 import Card from '../common/Card';
@@ -15,7 +14,6 @@ import "../../App.css";
 import "../../styles/Components.css";
 import { useTheme } from '../../context/ThemeContext';
 import type { IntervalReading } from '../../../types/reportTypes';
-import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 
 /* Usage Graph Component
 --------------------------------------------------------------------------------
@@ -28,7 +26,6 @@ const UsageGraph: React.FC<{
     date: string
 }> = ({ readings, date }) => {
     const { colors } = useTheme();
-    const { width, height } = useWindowDimensions();
 
     /* Render bar chart
     ----------------------------------------------------------------------------
@@ -41,7 +38,7 @@ const UsageGraph: React.FC<{
             <h3 className="graph-header">HOURLY METER READING</h3>
             <GraphWrapper>
                 {readings.length > 0 && (
-                    <ResponsiveContainer width={width * 0.5} height={height * 0.32}>
+                    <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={readings}>
                             <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
                             <YAxis label={{ value: "kWh", angle: -90, position: "insideLeft" }} />

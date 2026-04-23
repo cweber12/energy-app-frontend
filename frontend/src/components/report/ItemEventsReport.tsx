@@ -8,7 +8,6 @@ import "../../App.css";
 import "../../styles/Components.css";
 import { useAllEvents } from "../../hooks/useEvent";
 import Card from "../common/Card";
-import { IoMdAddCircleOutline, IoMdClose } from "react-icons/io";
 import { formatIsoInLA } from "../../utils/dateUtils";
 
 /* GetDailyEvents Component
