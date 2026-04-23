@@ -1,0 +1,11 @@
+{
+  "name": "wattwatch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "npm start --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "test": "npm test --prefix frontend",
+    "lint": "npm run lint --prefix frontend"
+  }
+}
