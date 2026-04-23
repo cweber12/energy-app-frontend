@@ -11,7 +11,9 @@ const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         style={{ 
             backgroundColor: colors.secondaryBackground, 
             color: colors.tertiaryText, 
-            padding: "1rem", 
+            padding: "1rem",
+            width: "100%",
+            boxSizing: "border-box" as const,
         }}
         >
         {children}
