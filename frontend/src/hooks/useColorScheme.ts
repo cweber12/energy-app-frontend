@@ -21,5 +21,13 @@ export function useColorScheme(): "light" | "dark" {
     return () => matcher.removeEventListener("change", listener);
   }, []);
 
+  // Write data-theme on <html> so the CSS [data-theme] selector overrides
+  // the @media block. This runs after every scheme change and on mount,
+  // keeping CSS and React state in sync. The @media fallback handles the
+  // initial paint before this effect executes.
+  useEffect(() => {
+    document.documentElement.dataset.theme = scheme;
+  }, [scheme]);
+
   return scheme;
 }
