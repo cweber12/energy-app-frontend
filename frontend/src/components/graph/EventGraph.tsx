@@ -40,19 +40,40 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
     --------------------------------------------------------------------------*/
     return (
         <>
-            <h3 className="graph-header">RECORDED ITEM USE</h3>
+            <h3 className="graph-header" style={{ color: colors.mutedText }}>Recorded Item Use</h3>
             <GraphWrapper>
-                <ResponsiveContainer width="100%" height={250}>
-                    <BarChart data={chartData}>
-                        <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
-                        <YAxis label={{ value: "Total Time (min)", angle: -90, position: "insideLeft" }} />
+                <ResponsiveContainer width="100%" height={240}>
+                    <BarChart data={chartData} margin={{ top: 8, right: 12, bottom: 20, left: 0 }}>
+                        <XAxis 
+                            dataKey="hour" 
+                            tick={{ fontSize: 11, fill: colors.mutedText }}
+                            label={{ value: "Hour", position: "insideBottom", offset: -8, fontSize: 11 }}
+                        />
+                        <YAxis 
+                            tick={{ fontSize: 11, fill: colors.mutedText }}
+                            label={{ value: "Time (min)", angle: -90, position: "insideLeft", fontSize: 11 }}
+                        />
                         <Tooltip
-                            contentStyle={{ background: "#fff", color: "#000", border: `1px solid #000` }}
-                            itemStyle={{ color: "#000" }}
+                            contentStyle={{
+                                background: colors.secondaryBackground,
+                                color: colors.primaryText,
+                                border: `1px solid ${colors.border}`,
+                                borderRadius: "var(--radius-md)",
+                                fontSize: "var(--font-sm)",
+                                boxShadow: "var(--shadow-md)",
+                            }}
+                            itemStyle={{ color: colors.primaryText }}
+                            labelStyle={{ color: colors.mutedText, marginBottom: "4px" }}
+                            cursor={{ fill: colors.border, opacity: 0.3 }}
                             formatter={(value, name) => [`${value} min`, name]}
                         />
                         
-                        <Legend />
+                        <Legend 
+                            wrapperStyle={{ 
+                                fontSize: "var(--font-xs)",
+                                paddingTop: "var(--space-2)",
+                            }} 
+                        />
 
                         {nicknames.map((nick, idx) => (
                             <Bar
@@ -61,6 +82,7 @@ const EventStackedGraph: React.FC<{ startDate: string }> = ({ startDate }) => {
                                 stackId="a"
                                 fill={colors.graphStacked?.[idx % colors.graphStacked.length] || colors.graph}
                                 name={nick}
+                                radius={idx === nicknames.length - 1 ? [3, 3, 0, 0] : [0, 0, 0, 0]}
                             />
                         ))}
                     </BarChart>

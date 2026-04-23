@@ -31,15 +31,61 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
     const { options, firstPropertyId } = 
         useProperties(sessionStorage.getItem("user_id") ?? "", refreshProperties, setPropertyId);
 
-    // Custom styles for react-select
+    // Custom styles for react-select — integrate with CSS theme variables
     const customStyles = {
-        option: (provided: CSSObjectWithLabel) => ({
+        control: (provided: CSSObjectWithLabel, state: { isFocused: boolean }) => ({
             ...provided,
-            color: 'black',
+            minWidth: 200,
+            maxWidth: 280,
+            height: 36,
+            minHeight: 36,
+            fontSize: 'var(--font-sm)',
+            borderColor: state.isFocused ? 'var(--color-accent)' : 'var(--color-border)',
+            backgroundColor: 'var(--color-surface-secondary)',
+            color: 'var(--color-text-primary)',
+            boxShadow: state.isFocused ? '0 0 0 2px rgba(20,86,184,0.2)' : 'none',
+            cursor: 'pointer',
+            '&:hover': {
+                borderColor: 'var(--color-accent)',
+            },
+        }),
+        menu: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            backgroundColor: 'var(--color-surface-secondary)',
+            border: '1px solid var(--color-border)',
+            boxShadow: 'var(--shadow-lg)',
+            zIndex: 300,
+        }),
+        option: (provided: CSSObjectWithLabel, state: { isFocused: boolean; isSelected: boolean }) => ({
+            ...provided,
+            fontSize: 'var(--font-sm)',
+            color: state.isSelected ? '#FFFFFF' : 'var(--color-text-primary)',
+            backgroundColor: state.isSelected
+                ? 'var(--color-accent)'
+                : state.isFocused
+                ? 'var(--color-surface-tertiary)'
+                : 'var(--color-surface-secondary)',
+            cursor: 'pointer',
         }),
         singleValue: (provided: CSSObjectWithLabel) => ({
             ...provided,
-            color: 'black',
+            color: 'var(--color-text-primary)',
+            fontSize: 'var(--font-sm)',
+        }),
+        placeholder: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            color: 'var(--color-text-muted)',
+            fontSize: 'var(--font-sm)',
+        }),
+        input: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            color: 'var(--color-text-primary)',
+        }),
+        indicatorSeparator: () => ({ display: 'none' }),
+        dropdownIndicator: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            color: 'var(--color-icon-secondary)',
+            padding: '0 6px',
         }),
     };
 

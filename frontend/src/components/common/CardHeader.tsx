@@ -16,7 +16,7 @@ const CardHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         style={{ 
           color: colors.tertiaryText, 
           backgroundColor: colors.tertiaryBackground,
-          borderBottom: `1px solid ${colors.border}`, 
+          borderBottom: `1px solid ${colors.border}`,
         }}
     >
         {children}

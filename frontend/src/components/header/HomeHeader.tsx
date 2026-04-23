@@ -13,22 +13,35 @@ const HomeHeader = () => {
   const { colors } = useTheme();
     return (
         <header 
-            className="header" 
+            className="header"
             style={{
                 backgroundColor: colors.secondaryBackground,
                 color: colors.secondaryText,
                 alignItems: "center",
                 justifyContent: "flex-start",
-                gap: "2rem",
-                height: "150px",
-
+                gap: "1rem",
+                height: "var(--home-header-height)",
             }}
             >
             <img
                 src={`${process.env.PUBLIC_URL}/watt-watch-logo.png`}
                 alt="WattWatch Logo"
-                style={{ height: "120px"}}
+                style={{ height: "56px" }}
             />
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
+                <span style={{ 
+                    fontSize: "var(--font-xl)",
+                    fontWeight: "var(--font-weight-bold)",
+                    color: colors.primaryText,
+                    letterSpacing: "-0.01em",
+                }}>WattWatch</span>
+                <span style={{ 
+                    fontSize: "var(--font-xs)",
+                    color: colors.mutedText,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                }}>Energy Monitor</span>
+            </div>
         </header>
     );
 }

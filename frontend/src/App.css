@@ -1,31 +1,26 @@
-#root {
-  font-family: 'Segoe UI', Arial, sans-serif;
+/* App.css — Global base styles for WattWatch */
+
+/* ── Reset ────────────────────────────────────────────────────────────── */
+html, body {
   margin: 0;
   padding: 0;
 }
 
-html, body {
-  margin: 0; 
+#root {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  margin: 0;
   padding: 0;
+  font-size: var(--font-base);
+  line-height: var(--line-height-base);
 }
 
-button {
-  display: flex; 
-  align-items: center;
-  justify-content: center;
-  width: 180px;
-  height: 48px; 
-  font-size: 20px;
-  text-align: center;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
+/* ── Typography reset ─────────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
 }
 
 p {
@@ -33,13 +28,58 @@ p {
   padding: 0;
 }
 
+/* ── Interactive elements ─────────────────────────────────────────────── */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 var(--space-5);
+  font-size: var(--font-base);
+  font-family: inherit;
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  gap: var(--space-2);
+  transition:
+    background-color var(--transition-base),
+    box-shadow var(--transition-base),
+    color var(--transition-base);
+  white-space: nowrap;
+}
+
+input, select {
+  font-family: inherit;
+  font-size: var(--font-base);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-secondary);
+  color: var(--color-text-primary);
+  box-sizing: border-box;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(var(--focus-ring-rgb, 20, 86, 184), 0.18);
+}
+
+input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ── Focus ring (keyboard nav) ────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ── Utility ──────────────────────────────────────────────────────────── */
 .App {
   text-align: center;
 }
- 
-input, select {
-  padding: 16px;
-  font-size: 18px;
-}
-
 

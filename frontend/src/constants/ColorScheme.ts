@@ -46,25 +46,25 @@ export const ColorScheme: { dark: ColorSchemeType; light: ColorSchemeType } = {
         ...CSS_VAR_COLORS,
         // SVG fill attributes do not resolve CSS custom properties,
         // so chart colours are kept as hardcoded hex values per theme.
-        graph: "#DFFF00",
+        graph: "#22D3EE",       /* electric cyan */
         graphStacked: [
-            "#ff2f00",
-            "#00ff2f",
-            "#0084ff",
-            "#f6ff00",
-            "#a600ff",
+            "#22D3EE",          /* cyan */
+            "#34D399",          /* emerald */
+            "#FBBF24",          /* amber */
+            "#F97316",          /* orange */
+            "#A78BFA",          /* violet */
         ],
     },
 
     light: {
         ...CSS_VAR_COLORS,
-        graph: "#06923E",
+        graph: "#1456B8",       /* utility blue */
         graphStacked: [
-            "#ED3F27",
-            "#41A67E",
-            "#134686",
-            "#FEB21A",
-            "#5C3E94",
+            "#1456B8",          /* blue */
+            "#059669",          /* emerald */
+            "#D97706",          /* amber */
+            "#DC4E1F",          /* red-orange */
+            "#7C3AED",          /* violet */
         ],
     },
 

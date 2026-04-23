@@ -46,10 +46,13 @@ const Register: React.FC = () => {
 
   return (
     <AuthFormWrapper>
-      <h2>Register</h2>
+      <h2 style={{
+        marginBottom: "var(--space-4)",
+        fontSize: "var(--font-xl)",
+        color: colors.primaryText,
+      }}>Create Account</h2>
       <form
         className="form auth-form"
-        style={{ width: "300px" }}
         onSubmit={handleSubmit(onSubmit)}
       >
         <input
@@ -58,16 +61,16 @@ const Register: React.FC = () => {
           placeholder="Username"
         />
         {errors.username && (
-          <span style={{ color: colors.warning }}>*Username* is mandatory</span>
+          <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Username is required</span>
         )}
 
         <input
           type="email"
           {...register("email", { required: true })}
-          placeholder="Email"
+          placeholder="Email address"
         />
         {errors.email && (
-          <span style={{ color: colors.warning }}>*Email* is mandatory</span>
+          <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Email is required</span>
         )}
 
         <input
@@ -76,19 +79,32 @@ const Register: React.FC = () => {
           placeholder="Password"
         />
         {errors.password && (
-          <span style={{ color: colors.warning }}>*Password* is mandatory</span>
+          <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Password is required</span>
         )}
 
-        <input
+        <button
           type="submit"
-          value={isSubmitting ? "Registering..." : "Register"}
           disabled={isSubmitting}
-          style={{ backgroundColor: colors.button, color: colors.buttonText }}
-        />
+          style={{
+            marginTop: "var(--space-3)",
+            width: "100%",
+            height: "44px",
+            fontSize: "var(--font-base)",
+            backgroundColor: isSubmitting ? colors.buttonDisabled : colors.button,
+            color: colors.buttonText,
+            borderRadius: "var(--radius-md)",
+            border: "none",
+            cursor: isSubmitting ? "not-allowed" : "pointer",
+            fontWeight: 500,
+            opacity: isSubmitting ? 0.55 : 1,
+          }}
+        >
+          {isSubmitting ? "Creating account..." : "Create Account"}
+        </button>
       </form>
 
       {message && (
-        <p style={{ color: colors.warning, marginTop: "1rem" }}>{message}</p>
+        <p style={{ color: colors.warning, marginTop: "var(--space-3)", fontSize: "var(--font-sm)" }}>{message}</p>
       )}
     </AuthFormWrapper>
   );

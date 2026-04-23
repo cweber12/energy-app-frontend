@@ -7,6 +7,7 @@ import Register from '../components/form/Register';
 import HomeHeader from '../components/header/HomeHeader';
 import HomeWrapper from '../components/common/HomeWrapper';
 import OpenDemo from '../components/button/OpenDemo';
+import { useTheme } from '../context/ThemeContext';
 
 /*  Home Page
 --------------------------------------------------------------------------------
@@ -17,6 +18,7 @@ function Home() {
     const [showLogin, setShowLogin] = React.useState<boolean>(true);
     const [showRegister, setShowRegister] = React.useState<boolean>(false);
     const userId = sessionStorage.getItem("user_id");
+    const { colors } = useTheme();
 
     useEffect(() => {
         if (userId) {
@@ -39,9 +41,11 @@ function Home() {
                     <span 
                         style={{ 
                             cursor: "pointer",
+                            color: colors.title,
+                            fontSize: "var(--font-sm)",
+                            marginTop: "var(--space-4)",
                             textDecoration: "underline",
-                            marginTop: "1rem",
-                            fontSize: "1.2rem",
+                            textUnderlineOffset: "3px",
                         }}
                         onClick={() => {
                             setShowLogin(!showLogin);

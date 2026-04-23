@@ -91,9 +91,6 @@ const ItemMenu: React.FC<{
                     style={{
                         background: colors.secondaryBackground,
                         color: colors.secondaryText,
-                        maxWidth: "30vw",
-                        padding: "0.5rem",
-                        fontSize: "1.1rem",
                     }}
                 >
                     <p>This section lists all electrical items associated with the selected property. </p>
@@ -113,7 +110,6 @@ const ItemMenu: React.FC<{
                             style={{
                                 backgroundColor: colors.secondaryBackground,
                                 color: colors.tertiaryText,
-                                position: "relative",
                                 borderBottom: `1px solid ${colors.border}`,
                             }}
                         >
@@ -121,10 +117,11 @@ const ItemMenu: React.FC<{
                             <div className="child-row">
                                 {infoOpenIndex === idx ? (
                                     <FiChevronUp
-                                        size={32}
+                                        size={20}
                                         style={{ 
                                             cursor: "pointer", 
-                                            color: colors.iconTertiary, 
+                                            color: colors.iconTertiary,
+                                            flexShrink: 0,
                                         }}
                                         onClick={() => (
                                             setInfoOpenIndex(null),
@@ -134,8 +131,8 @@ const ItemMenu: React.FC<{
                                     />
                                 ) : ( 
                                     <FiChevronDown
-                                        size={32}
-                                        style={{ cursor: "pointer", color: colors.iconTertiary}}
+                                        size={20}
+                                        style={{ cursor: "pointer", color: colors.iconTertiary, flexShrink: 0 }}
                                         onClick={() => setInfoOpenIndex(idx)}
                                     />
                                 )}
@@ -172,8 +169,9 @@ const ItemMenu: React.FC<{
                                                     style={{
                                                         cursor: "pointer",
                                                         color: colors.iconSecondary,
-                                                        width: "32px",
-                                                        height: "32px",
+                                                        width: "20px",
+                                                        height: "20px",
+                                                        flexShrink: 0,
                                                     }}
                                                     onClick={() => {
                                                         setShowDailyEvents(prev => !prev);
@@ -184,8 +182,9 @@ const ItemMenu: React.FC<{
                                                     style={{
                                                         cursor: "pointer",
                                                         color: colors.iconSecondary,
-                                                        width: "32px",
-                                                        height: "32px",
+                                                        width: "20px",
+                                                        height: "20px",
+                                                        flexShrink: 0,
                                                     }}
                                                     onClick={() => {
                                                         setShowDailyEvents(prev => !prev);

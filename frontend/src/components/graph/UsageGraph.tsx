@@ -35,18 +35,34 @@ const UsageGraph: React.FC<{
     --------------------------------------------------------------------------*/
     return (
         <>
-            <h3 className="graph-header">HOURLY METER READING</h3>
+            <h3 className="graph-header" style={{ color: colors.mutedText }}>Hourly Meter Reading</h3>
             <GraphWrapper>
                 {readings.length > 0 && (
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={readings}>
-                            <XAxis dataKey="hour" label={{ value: "Hour", position: "insideBottom", offset: -5 }} />
-                            <YAxis label={{ value: "kWh", angle: -90, position: "insideLeft" }} />
-                            <Tooltip
-                                contentStyle={{ background: "#fff", color: "#000", border: `1px solid #000` }}
-                                itemStyle={{ color: "#000" }}
+                    <ResponsiveContainer width="100%" height={280}>
+                        <BarChart data={readings} margin={{ top: 8, right: 12, bottom: 20, left: 0 }}>
+                            <XAxis 
+                                dataKey="hour" 
+                                tick={{ fontSize: 11, fill: colors.mutedText }}
+                                label={{ value: "Hour", position: "insideBottom", offset: -8, fontSize: 11 }}
                             />
-                            <Bar dataKey="kWh" fill={colors.graph} name="kWh" />
+                            <YAxis 
+                                tick={{ fontSize: 11, fill: colors.mutedText }}
+                                label={{ value: "kWh", angle: -90, position: "insideLeft", fontSize: 11 }}
+                            />
+                            <Tooltip
+                                contentStyle={{
+                                    background: colors.secondaryBackground,
+                                    color: colors.primaryText,
+                                    border: `1px solid ${colors.border}`,
+                                    borderRadius: "var(--radius-md)",
+                                    fontSize: "var(--font-sm)",
+                                    boxShadow: "var(--shadow-md)",
+                                }}
+                                itemStyle={{ color: colors.primaryText }}
+                                labelStyle={{ color: colors.mutedText, marginBottom: "4px" }}
+                                cursor={{ fill: colors.border, opacity: 0.3 }}
+                            />
+                            <Bar dataKey="kWh" fill={colors.graph} name="kWh" radius={[3, 3, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 )}

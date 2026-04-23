@@ -24,11 +24,6 @@ const ItemEventsReport: React.FC<{
 }> = ({ itemId }) => {
     const { colors } = useTheme();
 
-    const thStyle = {
-        backgroundColor: colors.secondaryBackground,
-        color: colors.title,
-    };
-
     const tdStyles = {
         backgroundColor: colors.secondaryBackground,
         color: colors.secondaryText,
@@ -72,10 +67,10 @@ const ItemEventsReport: React.FC<{
                     <table className="usage-events-table">
                         <thead>
                             <tr>
-                                <th style={thStyle}>Date</th>
-                                <th style={thStyle}>Start Time</th>
-                                <th style={thStyle}>End Time</th>
-                                <th style={thStyle}>Elapsed</th>
+                                <th>Date</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Elapsed</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -1,343 +1,475 @@
-/* Components.css */
+/* Components.css — WattWatch shared component styles
+   All colour values reference CSS custom properties from theme.css.
+   Spacing, radius, and shadow tokens are also from theme.css.
+   -------------------------------------------------------------------- */
 
-/* Page Styles */
+/* --------------------------------------------------------------------
+   LAYOUT — page scaffolding
+   -------------------------------------------------------------------- */
+
 .page-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    min-height: 100vh;
-    position: relative;
-    margin-top: 100px;
-    padding: 2.5rem;
-    gap: 2.5rem
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 100vh;
+  margin-top: var(--header-height);
+  padding: var(--space-6);
+  gap: var(--space-6);
+  box-sizing: border-box;
 }
 
 .home-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    width: 100%;
-    position: relative;
-    padding-top: 5rem; 
-    margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100%;
+  margin-top: var(--home-header-height);
+  padding: var(--space-10) var(--space-6) var(--space-12);
+  box-sizing: border-box;
 }
 
-/* Header Styles */
+/* --------------------------------------------------------------------
+   HEADER
+   -------------------------------------------------------------------- */
+
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 5;
-    display: flex; 
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    height: 100px; 
-    padding: 20px;
-    text-align: left;
-    color: white;
-    font-size: 24px;
-    margin: 0; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  height: var(--header-height);
+  padding: 0 var(--space-5);
+  gap: var(--space-4);
+  box-shadow: var(--shadow-header);
 }
 
-.header select, 
+.header select,
 .header input {
-    box-sizing: border-box;
-    width: 200px;
-    padding: 8px;
-    font-size: 16px;
+  box-sizing: border-box;
+  min-width: 160px;
+  max-width: 240px;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-sm);
 }
 
-.header-dropdown-left {
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: 1rem 1.5rem;
-    width: 300px;
-    z-index: 2; 
-}
-
-.header-dropdown-left select, 
-.header-dropdown-left input {
-    box-sizing: border-box;
-    width: 50%;
-}
-
-/* Content Styles */
-.card {
-    flex: 1;
-    display: flex; 
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    position: relative; 
-    min-width: 300px;
-    border-radius: 8px;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.card-header {
-    display: flex; 
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 1rem; 
-}
-
-.graph-header { 
-    display: flex; 
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 0.5rem; 
-}
-
-.item-info-popup {
-    display: flex; 
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.2rem;
-    gap: 8px;
-
-}
-
-.list {
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    max-height: 78vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
-
-.list-item {
-    display: flex; 
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 1.4rem; 
-    padding: 16px;
-    gap: 24px;
-    width: 100%;
-    box-sizing: border-box;
-
-}
-
-.item-usage-event {
-    display: flex; 
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    font-size: 1.2rem;
-}
-
+/* -- User menu ---------------------------------------------------- */
 .user {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem; 
-    margin-right: 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
 }
+
 .user-menu-dropdown {
-    position: absolute;
-    top: 60px; 
-    right: 0px; 
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    width: "100%";
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  min-width: 160px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+  overflow: hidden;
 }
 
 .dropdown-item {
-    height: 48px;
-    cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 1rem; 
-    padding: 0 1.5rem;
-}
-
-/* Button Styles */
-.button-group {
-    display: flex; 
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start; 
-    gap: 10px;
-}
-
-.button {
-  display: flex; 
-  align-items: center;
-  justify-content: center;
-  width: 180px;
-  height: 48px; 
-  font-size: 20px;
-  text-align: center;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  height: 44px;
   cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: 0 var(--space-4);
+  font-size: var(--font-base);
+  transition: background-color var(--transition-fast);
 }
 
-.auth-button {
-  display: flex; 
+.dropdown-item:hover {
+  filter: brightness(1.08);
+}
+
+/* -- Header dropdown panel (property/item forms) ------------------ */
+.header-dropdown-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: var(--space-5) var(--space-6);
+  min-width: 300px;
+  max-width: 360px;
+  z-index: 50;
+  border-radius: 0 0 var(--radius-lg) 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.header-dropdown-left select,
+.header-dropdown-left input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------
+   CARDS AND PANELS
+   -------------------------------------------------------------------- */
+
+.card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  min-width: 300px;
+  max-width: 400px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--space-3) var(--space-4);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.graph-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--space-3) var(--space-4);
+}
+
+.graph-header {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 180px;
-  height: 48px; 
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
+  width: 100%;
+  padding: var(--space-3) var(--space-4) var(--space-1);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
 }
 
-.upload-button {
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    padding: 0 1.5rem;
-    height: 48px; 
-    font-size: 20px;
-    text-align: center;
-    border-radius: 8px;
-    border: none;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+.info-popup {
+  font-size: var(--font-sm);
+  line-height: var(--line-height-relaxed);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.upload-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    gap: 8px;
-    cursor: pointer;
+.info-popup p {
+  margin-bottom: var(--space-2);
 }
 
-/* Form Styles */
+.info-popup ul {
+  padding-left: var(--space-5);
+  margin: 0;
+}
+
+.info-popup li {
+  margin-bottom: var(--space-1);
+}
+
+.item-info-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-base);
+  gap: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* --------------------------------------------------------------------
+   LIST AND LIST ITEMS
+   -------------------------------------------------------------------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-height: 66vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+.list-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-base);
+  padding: var(--space-3) var(--space-4);
+  gap: var(--space-4);
+  width: 100%;
+  box-sizing: border-box;
+  transition: background-color var(--transition-fast);
+}
+
+.item-usage-event {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: var(--font-sm);
+  gap: var(--space-1);
+}
+
+/* --------------------------------------------------------------------
+   BUTTONS
+   -------------------------------------------------------------------- */
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------
+   FORMS
+   -------------------------------------------------------------------- */
+
 .form-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; 
-  gap: 4px;
-  margin: 20px auto;
+  align-items: stretch;
+  gap: var(--space-2);
+  width: 100%;
 }
 
 .form-label {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
-    justify-content: flex-start;
-    gap: 4px; 
-    box-sizing: border-box;
-    width: 100%;
-    font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--space-1);
+  box-sizing: border-box;
+  width: 100%;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
 }
 
-.form-label input, 
+.form-label input,
 .form-label select {
-    padding: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-    width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-base);
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: var(--space-1);
 }
 
 .auth-form {
-    box-sizing: border-box;
-    display: flex;
-    width: 100%; 
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--space-2);
 }
 
 .auth-form input {
-    box-sizing: border-box;
-    width: 100%;
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  padding: var(--space-2) var(--space-3);
 }
 
-/* Generic Styles */
+/* --------------------------------------------------------------------
+   GENERIC LAYOUT UTILITIES
+   -------------------------------------------------------------------- */
 
 .row {
-    display: flex; 
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
 .child-row {
-    display: flex; 
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
 }
 
 .column {
-    display: flex; 
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--space-3);
 }
 
+/* --------------------------------------------------------------------
+   TABLES
+   -------------------------------------------------------------------- */
 
 .usage-events-table {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-collapse: collapse;
+  font-size: var(--font-sm);
+}
+
+.usage-events-table th,
+.usage-events-table td {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface-secondary);
+  color: var(--color-text-primary);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+}
+
+.usage-events-table th {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background-color: var(--color-surface-tertiary);
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------
+   RESPONSIVE — tablet (max-width: 1023px)
+   -------------------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .page-wrapper {
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .card {
+    min-width: 260px;
+    max-width: 340px;
+  }
+
+  .list {
+    max-height: 55vh;
+  }
+}
+
+/* --------------------------------------------------------------------
+   RESPONSIVE — mobile (max-width: 639px)
+   -------------------------------------------------------------------- */
+
+@media (max-width: 639px) {
+  .page-wrapper {
+    flex-direction: column;
+    padding: var(--space-3);
+    gap: var(--space-4);
+    margin-top: var(--header-height);
+  }
+
+  .card {
+    min-width: 0;
+    max-width: 100%;
     width: 100%;
-    border: 1px solid #525252;
-    border-collapse: collapse;
+  }
+
+  .list {
+    max-height: 45vh;
+  }
+
+  .list-item {
+    font-size: var(--font-sm);
+    padding: var(--space-2) var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .header-dropdown-left {
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+
+  .card-header {
+    padding: var(--space-2) var(--space-3);
+    gap: var(--space-2);
+  }
+
+  .button-group {
+    gap: var(--space-2);
+  }
+
+  .home-wrapper {
+    padding-top: var(--space-6);
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .info-popup {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .usage-events-table th,
+  .usage-events-table td {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-xs);
+  }
 }
-
-.usage-events-table th,
-.usage-events-table td {
-    border: 1px solid #525252;
-    border-collapse: collapse;
-    background-color: white;
-    color: black;
-}
-
-.usage-events-table th,
-.usage-events-table td {
-    padding: 16px;
-    text-align: left;
-    font-size: 20px;
-}
-
-
-
-

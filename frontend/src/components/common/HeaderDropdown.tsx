@@ -18,7 +18,8 @@ const HeaderDropdown: React.FC<{ children: React.ReactNode }> = ({ children }) =
         style={{ 
           backgroundColor: colors.secondaryBackground, 
           color: colors.secondaryText, 
-          border: `1px solid ${colors.border}` 
+          borderRight: `1px solid ${colors.border}`,
+          borderBottom: `1px solid ${colors.border}`,
         }}
         >
         {children}

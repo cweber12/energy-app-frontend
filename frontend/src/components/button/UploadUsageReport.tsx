@@ -119,18 +119,19 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
       <CustomButton
         disabled={isSaving}
         type="button"
-        style={{width: "fit-content"}}
+        style={{ width: "auto" }}
       >
         <label
           htmlFor="xml-upload"
           style={{
             display: "flex",
             alignItems: "center",
+            gap: "var(--space-2)",
             cursor: isSaving ? "not-allowed" : "pointer",
             margin: 0,
           }}
         >
-          <BsUpload size={32} style={{ color: colors.primaryText, marginRight: "0.5rem" }} />
+          <BsUpload size={16} style={{ color: colors.buttonText }} />
           <input
             id="xml-upload"
             type="file"
@@ -139,10 +140,10 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
             style={{ display: "none" }}
             disabled={isSaving}
           />
-          {isSaving ? "Saving..." : "Upload Usage Report"}
+          {isSaving ? "Saving..." : "Upload Report"}
         </label>
       </CustomButton>
-      {saveError && <div style={{ marginTop: 8 }}>{saveError}</div>}
+      {saveError && <div style={{ marginTop: 6, fontSize: "var(--font-xs)", color: colors.warning }}>{saveError}</div>}
     </div>
   );
 };

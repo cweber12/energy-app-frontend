@@ -74,7 +74,7 @@ const PropertyInput: React.FC<{
     <HeaderDropdown>
       <h2>Add Property</h2>
       <LuMinus 
-        size={40}
+        size={20}
         style={{ 
           position: "absolute",
           top: "10px",
@@ -84,7 +84,6 @@ const PropertyInput: React.FC<{
         onClick={() => setShowPropertyInput(false)}
       />
       <form className="form" onSubmit={handleSubmit}>
-        <br />
         <label className="form-label">
             Street:
             <input
@@ -94,7 +93,6 @@ const PropertyInput: React.FC<{
             required
             />
         </label>
-        <br />
         <label className="form-label">
             City:
             <input
@@ -104,7 +102,6 @@ const PropertyInput: React.FC<{
             required
             />
         </label>
-        <br />
         <label className="form-label">
             State:
             <input
@@ -114,7 +111,6 @@ const PropertyInput: React.FC<{
             required
             />
         </label>
-        <br />
         <label className="form-label">
             Zip:
             <input
@@ -123,11 +119,10 @@ const PropertyInput: React.FC<{
             onChange={handleChange}
             />
         </label>
-        <br />
         <div className="row">
         <CustomButton type="submit">Add</CustomButton>
         </div>
-        {message && <div>{message}</div>}
+        {message && <div style={{ fontSize: "var(--font-sm)" }}>{message}</div>}
       </form>
     </HeaderDropdown>
   );

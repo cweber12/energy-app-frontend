@@ -39,22 +39,23 @@ const OpenDemo: React.FC = () => {
         <>
             <CustomButton
                 style={{ 
-                    fontSize: "1.5rem",
-                    marginTop: "2rem",
-                    padding: "0.5rem 1rem",
-                    width: 320, 
-                    height: 80,
+                    fontSize: "var(--font-base)",
+                    marginTop: "var(--space-8)",
+                    padding: "0 var(--space-6)",
+                    height: "48px",
+                    width: "auto",
                 }}
                 onClick={handleDemoLogin}
                 disabled={loading}
             >
                 <FaRegCircleUser
-                size={40} 
-                style={{ marginRight: "1rem" }} />
-                {loading ? "Logging in..." : "Open Demo Account"}
+                    size={20}
+                    style={{ marginRight: "var(--space-2)" }}
+                />
+                {loading ? "Signing in..." : "Try the Demo"}
             </CustomButton>
             {message && (
-                <p style={{ color: colors.warning, marginTop: "1rem", textAlign: "center" }}>
+                <p style={{ color: colors.warning, marginTop: "var(--space-3)", textAlign: "center", fontSize: "var(--font-sm)" }}>
                     {message}
                 </p>
             )}

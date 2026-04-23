@@ -50,21 +50,22 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     return (
         <header 
             className="header"
-            style={{ 
-                backgroundColor: colors.secondaryBackground }}
+            style={{ backgroundColor: colors.secondaryBackground }}
             >
             <img
                 src={`${process.env.PUBLIC_URL}/watt-watch-logo.png`}
                 alt="WattWatch Logo"
-                style={{ height: "80px", marginRight: "1rem", padding: "10px" }}
+                style={{ height: "44px", flexShrink: 0 }}
             />
             <div
                 style={{
                     flex: 1,
-                    display: "flex", 
-                    flexDirection: "row", 
-                    alignItems: "flex-start", 
-                    gap: "10px"
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    minWidth: 0,
+                    flexWrap: "wrap",
                 }}>
                 <PropertyMenu 
                     setShowPropertyInput={setShowPropertyInput} 
@@ -80,31 +81,33 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                 
             <div 
                 style={{
-                    display: "flex", 
-                    flexDirection: "column", 
-                    alignItems: "flex-end", 
-                    gap: "10px",
-                    color: colors.secondaryText
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    flexShrink: 0,
+                    color: colors.secondaryText,
                 }}>
                 <div className="user">
                     <FaRegCircleUser
                         style={{ 
                             color: colors.iconSecondary,
-                            backgroundColor: colors.border,
-                            width: "32px", 
-                            height: "32px", 
-                            borderRadius: "50%",
+                            width: "24px",
+                            height: "24px",
+                            flexShrink: 0,
                         }}
-                    /> 
-                    <h3>{username ? username : "Guest"}</h3>
+                    />
+                    <span style={{ fontSize: "var(--font-sm)", fontWeight: "var(--font-weight-medium)" }}>
+                        {username ? username : "Guest"}
+                    </span>
                     {showUserMenu ? (
                         <FaAngleUp
-                            style={{ width: "32px", height: "32px", cursor: "pointer", color: colors.iconSecondary }}
+                            style={{ width: "18px", height: "18px", cursor: "pointer", color: colors.iconSecondary }}
                             onClick={() => setShowUserMenu(false)}
                         />
                     ) : (
                         <FaAngleDown
-                            style={{ width: "32px", height: "32px", cursor: "pointer", color: colors.iconSecondary }}
+                            style={{ width: "18px", height: "18px", cursor: "pointer", color: colors.iconSecondary }}
                             onClick={() => setShowUserMenu(true)}
                         />
                     )}
@@ -116,25 +119,23 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                             <div 
                                 className="dropdown-item"
                                 onClick={() => {
-                                        // Clear session storage and redirect to home page
                                         sessionStorage.clear();
                                         window.location.href = "/";
                                 }}
                                 >
-                                Logout 
+                                Logout
                                 <IoLogOutOutline
                                     style={{ 
-                                        cursor: "pointer", 
+                                        cursor: "pointer",
                                         color: colors.iconSecondary,
-                                        width: "32px",
-                                        height: "32px",
+                                        width: "20px",
+                                        height: "20px",
                                     }}
                                 />
                             </div>    
                         </div>
                     )}
                 </div>
-                
             </div>
             
         </header>

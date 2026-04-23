@@ -60,20 +60,24 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
     --------------------------------------------------------------------------*/
     return (
         <AuthFormWrapper>
-            <h2>Login</h2>
+            <h2 style={{ 
+                marginBottom: "var(--space-4)",
+                fontSize: "var(--font-xl)",
+                color: colors.primaryText,
+            }}>Sign In</h2>
             <form 
-            className="form auth-form" 
-            style={{width: "300px"}}
-            onSubmit={handleSubmit(onSubmit)}
+                className="form auth-form" 
+                onSubmit={handleSubmit(onSubmit)}
             >
                 <input
                     type="email"
                     {...register("email", { required: true })}
-                    placeholder="Email"
+                    placeholder="Email address"
                 />
                 {errors.email && (
-                <span style={{ color: colors.warning }}>
-                    *Email* is mandatory</span>
+                    <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>
+                        Email is required
+                    </span>
                 )}
 
                 <input
@@ -82,22 +86,23 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
                     placeholder="Password"
                 />
                 {errors.password && (
-                <span style={{ color: colors.warning }}>*Password* is mandatory</span>
+                    <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>
+                        Password is required
+                    </span>
                 )}
 
                 <CustomButton 
                     type="submit"
-                    style={{ marginTop: "1rem" }}
+                    style={{ marginTop: "var(--space-3)", width: "100%", height: "44px", fontSize: "var(--font-base)" }}
                 >
-                    Login</CustomButton>
-               
+                    Sign In
+                </CustomButton>
             </form>
             {message && (
-                <p 
-                style={{ 
+                <p style={{ 
                     color: colors.warning, 
-                    marginTop: "10px", 
-                    width: "300px" 
+                    marginTop: "var(--space-3)",
+                    fontSize: "var(--font-sm)",
                 }}>
                     {message}
                 </p>

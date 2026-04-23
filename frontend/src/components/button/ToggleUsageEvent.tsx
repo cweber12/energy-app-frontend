@@ -104,17 +104,17 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
       {!running ? (
         <CustomButton onClick={startUsageEvent}>
           Start
-          <TbClockPlay size={32} style={{ marginRight: "8px" }}/>
+          <TbClockPlay size={18} />
         </CustomButton>
       ) : (
-        <div className="column" style={{ alignItems: "flex-end" }}>
+        <div className="column" style={{ alignItems: "flex-end", gap: "var(--space-1)" }}>
           <CustomButton onClick={endUsageEvent}>
             Stop
-            <TbClockStop size={32} style={{ marginRight: "8px" }}/>
+            <TbClockStop size={18} />
           </CustomButton>
           {startTimeString ? (
-            <div style={{ fontSize: "0.9rem", color: colors.mutedText }}>
-              Started at: {startTimeString}
+            <div style={{ fontSize: "var(--font-xs)", color: colors.mutedText }}>
+              Started: {startTimeString}
             </div>
           ) : null}
         </div>

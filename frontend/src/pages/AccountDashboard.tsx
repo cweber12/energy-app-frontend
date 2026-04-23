@@ -102,25 +102,31 @@ const AccountDashboard = () => {
                 <div 
                     className="column"
                     style={{ 
-                        gap: "1rem", 
-                        alignItems: "flex-start", 
+                        flex: 1,
+                        gap: "0", 
+                        alignItems: "stretch", 
                         border: `1px solid ${colors.border}`,
-                        boxShadow: `0 0 4px ${colors.primaryText}`, 
-                        borderRadius: "8px",
+                        boxShadow: "var(--shadow-card)",
+                        borderRadius: "var(--radius-lg)",
+                        overflow: "hidden",
+                        minWidth: 0,
                     }}
                 >
                     <CardHeader>
-                        <div className="row">
+                        <div className="row" style={{ gap: "var(--space-2)", alignItems: "center" }}>
                             {!isLoading && !error && (
-                            <h3 style={{ color: colors.primaryText }}>REPORT FOR {displayDate}</h3>)}
-                            {isLoading && <span>Loading…</span>}
-                            {error && <span>{error}</span>}
+                                <h3 style={{ color: colors.primaryText, fontSize: "var(--font-base)", fontWeight: 600 }}>
+                                    {displayDate}
+                                </h3>
+                            )}
+                            {isLoading && <span style={{ fontSize: "var(--font-sm)", color: colors.mutedText }}>Loading…</span>}
+                            {error && <span style={{ fontSize: "var(--font-sm)", color: colors.warning }}>{error}</span>}
                             <LuInfo
-                                size={24}
+                                size={16}
                                 style={{
-                                    marginLeft: "0.5rem",
                                     cursor: "pointer",
-                                    color: colors.title,
+                                    color: colors.mutedText,
+                                    flexShrink: 0,
                                 }}
                                 onClick={() => setShowReportInfo(!showReportInfo)}
                             />
@@ -130,33 +136,27 @@ const AccountDashboard = () => {
                             <CustomButton
                                 disabled={!canPrev}
                                 onClick={async () => {
-                                setReadings([]);
-                                setDate("");
-                                await goPrev();
+                                    setReadings([]);
+                                    setDate("");
+                                    await goPrev();
                                 }}
+                                style={{ padding: "0 var(--space-3)" }}
                             >
-                                <FiChevronLeft 
-                                    size={32} 
-                                    color={colors.buttonText} 
-                                    style={{ marginRight: "0.5rem" }} 
-                                />
+                                <FiChevronLeft size={16} />
                                 Prev
                             </CustomButton>
 
                             <CustomButton
                                 disabled={!canNext}
                                 onClick={async () => {
-                                setReadings([]);
-                                setDate("");
-                                await goNext();
+                                    setReadings([]);
+                                    setDate("");
+                                    await goNext();
                                 }}
+                                style={{ padding: "0 var(--space-3)" }}
                             >
                                 Next
-                                <FiChevronRight 
-                                    size={32} 
-                                    color={colors.buttonText}
-                                    style={{ marginLeft: "0.5rem" }} 
-                                />
+                                <FiChevronRight size={16} />
                             </CustomButton>
                         </div>
                     </CardHeader>
@@ -166,9 +166,6 @@ const AccountDashboard = () => {
                             style={{
                                 background: colors.secondaryBackground,
                                 color: colors.secondaryText,
-                                maxWidth: "30vw",
-                                padding: "1rem",
-                                fontSize: "1.1rem",
                             }}
                         >
                             <p>

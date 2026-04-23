@@ -32,13 +32,16 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           ? colors.buttonHover
           : colors.button,
         color: hovered ? colors.title : colors.buttonText,
-        boxShadow: hovered ? `0 0px 4px ${colors.primaryText}` :  `0 0px 2px ${colors.primaryText}`,
+        boxShadow: hovered ? `var(--shadow-md)` : `var(--shadow-sm)`,
         cursor: disabled ? "not-allowed" : "pointer",
-        opacity: disabled ? 0.6 : 1,
-        transition: "background-color 0.2s",
+        opacity: disabled ? 0.55 : 1,
+        transition: "background-color var(--transition-base), box-shadow var(--transition-base), color var(--transition-base)",
         fontWeight: 500,
-        gap: "1rem",
-        padding: "0 1.5rem",
+        fontSize: "var(--font-sm)",
+        gap: "var(--space-2)",
+        padding: "0 var(--space-4)",
+        height: "36px",
+        borderRadius: "var(--radius-md)",
         ...style,
       }}
       disabled={disabled}

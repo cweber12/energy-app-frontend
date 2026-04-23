@@ -18,6 +18,8 @@ const FormWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         style={{ 
           backgroundColor: colors.tertiaryBackground, 
           color: colors.tertiaryText,
+          borderRadius: 'var(--radius-md)',
+          padding: 'var(--space-4)',
         }}
         >
         {children}

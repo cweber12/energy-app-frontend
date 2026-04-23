@@ -104,8 +104,8 @@ const ItemInput: React.FC<ItemInputProps> = ({
                 <LuMinus
                     style={{
                         cursor: "pointer",
-                        width: "32px",
-                        height: "32px",
+                        width: "20px",
+                        height: "20px",
                         position: "absolute",
                         top: 10,
                         right: 10,
@@ -131,7 +131,6 @@ const ItemInput: React.FC<ItemInputProps> = ({
                     ))}
                 </select>
             </label>
-            <br />
             <label className="form-label">
                 Usage Type:
                 <select
@@ -148,7 +147,6 @@ const ItemInput: React.FC<ItemInputProps> = ({
                     ))}
                 </select>
             </label>
-            <br />
             <label className="form-label">
                 Nickname:
                 <input
@@ -158,7 +156,6 @@ const ItemInput: React.FC<ItemInputProps> = ({
                 required
                 />
             </label>
-            <br />
             <label className="form-label">
                 Rated Watts:
                 <input
@@ -167,11 +164,10 @@ const ItemInput: React.FC<ItemInputProps> = ({
                 onChange={handleChange}
                 />
             </label>
-            <br />
 
             <CustomButton type="submit">Add</CustomButton>
 
-            {message && <div>{message}</div>}
+            {message && <div style={{ fontSize: "var(--font-sm)", color: colors.warning }}>{message}</div>}
             </form>
         </HeaderDropdown>
     );
