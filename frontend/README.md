@@ -1,102 +1,112 @@
-# Getting Started with Create React App
+# Frontend — WattWatch React Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This directory contains the React single-page application (SPA) that makes up the WattWatch client. It is bootstrapped with Create React App and written in TypeScript.
 
 ## Available Scripts
 
-In the project directory, you can run:
+Run from the `frontend/` directory:
 
-### `npm start`
+| Command | Description |
+|---|---|
+| `npm start` | Starts the development server at [http://localhost:3000](http://localhost:3000) with hot-reload |
+| `npm test` | Runs the Jest test suite in interactive watch mode |
+| `npm run build` | Creates an optimised production bundle in `frontend/build/` |
+| `npm run lint` | Runs ESLint across all source files |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Source Layout
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+frontend/
+├── public/                  # Static assets and index.html template
+├── src/
+│   ├── App.tsx              # Root component — router setup and ThemeProvider
+│   ├── index.tsx            # React DOM entry point
+│   ├── components/          # All UI components (see components/README.md)
+│   ├── config/
+│   │   └── supabase.ts      # Reads REACT_APP_SUPABASE_* env vars; throws if missing
+│   ├── constants/
+│   │   ├── ColorScheme.ts   # Dark and light color palette definitions
+│   │   └── Sizes.ts         # Shared size constants
+│   ├── context/
+│   │   └── ThemeContext.tsx  # ThemeProvider — provides current color scheme app-wide
+│   ├── hooks/               # Custom React hooks (data-fetching, UI state)
+│   ├── lib/
+│   │   └── supabaseClient.ts # Initialised Supabase JS client (singleton)
+│   ├── pages/
+│   │   ├── Home.tsx          # Landing page — login / register / demo
+│   │   └── AccountDashboard.tsx  # Main authenticated dashboard
+│   ├── styles/
+│   │   └── Components.css   # Shared component styles
+│   ├── supabase_services/   # Functions that call Supabase Edge Function HTTP endpoints
+│   └── utils/
+│       ├── dateUtils.ts     # Date formatting and timezone helpers (LA timezone)
+│       └── eventUtils.ts    # Event data transformation helpers
+└── types/                   # Shared TypeScript type definitions
+    ├── authTypes.ts
+    ├── eventTypes.ts
+    ├── itemTypes.ts
+    ├── propertyTypes.ts
+    ├── reportTypes.ts
+    ├── themeTypes.ts
+    └── userTypes.ts
+```
 
-### `npm test`
+## Pages
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `Home`
+Landing page. Displays the login form by default with a toggle to switch to the registration form. Redirects authenticated users (detected via `sessionStorage`) to `/account`. Includes an **Open Demo** button for quick access without registering.
 
-### `npm run build`
+### `AccountDashboard`
+The main authenticated view. Allows users to:
+- Select and manage properties via a dropdown
+- Add/edit electrical items within a property
+- Start/stop usage events for each item
+- Browse saved daily energy reports (previous/next navigation)
+- Upload a new SDGE interval CSV report
+- View a Recharts bar chart of hourly kWh readings alongside item event data
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Key Hooks
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Hook | Purpose |
+|---|---|
+| `useProperties` | Fetches all properties for the current user |
+| `useAllItems` | Fetches items, categories, and usage types for a property |
+| `useEventsByDate` | Fetches item events grouped by a given date |
+| `useDailyTotalsByDate` | Fetches daily kWh totals per item |
+| `useUsageReportNavigator` | Manages loading and navigation between saved usage reports |
+| `useSaveUsageReport` | Handles uploading a parsed CSV report to the backend |
+| `useLatestUsageReport` | Fetches the most recent usage report for a property |
+| `useColorScheme` | Detects OS dark/light preference via `prefers-color-scheme` |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Supabase Services
 
-### `npm run eject`
+Files in `src/supabase_services/` handle all HTTP calls to the Supabase Edge Functions. They attach a Supabase Auth JWT to every request.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| File | Edge Function(s) called |
+|---|---|
+| `eventsService.ts` | `events` |
+| `itemsService.ts` | `items` |
+| `propertiesService.ts` | `properties` |
+| `usageReportService.ts` | `meter`, `usage_report`, `usage_interval` |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Environment Variables
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Create `frontend/.env.local` (excluded from source control) with:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```env
+REACT_APP_SUPABASE_URL=https://<your-project-ref>.supabase.co
+REACT_APP_SUPABASE_ANON_KEY=<your-anon-key>
+```
 
-## Learn More
+The app will throw an error on startup if either value is missing.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Linting
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+ESLint is configured via `eslint.config.js` (ESLint v8 flat config) and includes React, TypeScript, and hooks rules. Run:
 
-### Code Splitting
+```sh
+npm run lint
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-### Components Folder
-
-A Component is one of the core building blocks of React. They have the same purpose as JavaScript functions and return HTML. Components make the task of building UI much easier. A UI is broken down into multiple individual pieces called components. You can work on components independently and then merge them all into a parent component which will be your final UI. 
-
-### Contexts Folder
-
-This directory contains files related to managing global state using the React Context API. Contexts are used to share state across multiple components without having to pass props manually through each level of the component tree.
-
-### Hooks Folder
-
-Hooks provide access to states for functional components while creating a React application. It allows you to use state and other React features without writing a class. Placing them in a dedicated directory allows for easy access and reuse across components throughout your application.
-
-### Services Folder
-
-In this directory, you'll find files responsible for handling API calls and other services. Services keeps the implementation details of interacting with external resources, provides separation of concerns and code maintainability.
-
-### Utils Folder
-
-Utility functions, such as date formatting or string manipulation, are stored in this directory. These functions are typically used across multiple components or modules and serve to centralize commonly used logic.
-
-### Assets Folder
-
-Static assets like images, icons, fonts, and other media files are stored in the assets folder. Organizing assets in a dedicated directory keeps your project clean and makes it easy to locate and manage these files.
-
-### Config Folder
-
-This folder contains of a configuration file where we store environment variables in config.js. We will use this file to set up multi-environment configurations in your application. Ex- Environment Configuration, WebPack Configuration, Babel Configuration, etc.
-
-### Styles Folder
 
 This directory contains CSS or other styling files used to define the visual appearance of your application. In this folder styles of different components are stored here.

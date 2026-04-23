@@ -1,53 +1,75 @@
 # Components Directory
 
-This folder contains all reusable and page-specific React components for the frontend application.
+This folder contains all reusable and page-specific React components for the WattWatch frontend.
 
 ## Structure Overview
 
-- **button/**
-	- `OpenDemo.tsx`: Button to login to demo account
-	- `ToggleUsageEvent.tsx`: Button to start and stop item usage events.
-	- `UploadUsageReport.tsx`: Button for uploading usage reports from SDGE.
+### `button/`
 
-- **common/**
-	- `Card.tsx`: Generic card container component.
-	- `CardHeader.tsx`: Header for card components.
-	- `FormWrapper.tsx`: Wrapper for form layouts and styling.
-	- `GraphWrapper.tsx`: Wrapper for graph/chart components.
-	- `HeaderDropdown.tsx`: Dropdown menu for headers.
-	- `HomeWrapper.tsx`: Wrapper for home page layout.
-	- `PageWrapper.tsx`: Wrapper for page-level layout and styling.
+| File | Description |
+|---|---|
+| `CustomButton.tsx` | Themed button primitive used throughout the app; supports disabled, hover, and submit states |
+| `OpenDemo.tsx` | One-click button that logs into a shared demo account |
+| `ToggleUsageEvent.tsx` | Start/stop button for recording an item usage event |
+| `UploadUsageReport.tsx` | Triggers parsing and uploading of an SDGE interval CSV file |
 
-- **form/**
-	- `ItemInput.tsx`: Input field for item data entry.
-	- `Login.tsx`: User login form.
-	- `PropertyInput.tsx`: Input field for property data entry.
-	- `Register.tsx`: User registration form.
+### `common/`
 
-- **graph/**
-	- `EventGraph.tsx`: Visualization of event data.
-	- `UsageGraph.tsx`: Visualization of usage data.
+Shared layout and UI primitives used across multiple pages.
 
-- **header/**
-	- `AccountDashboardHeader.tsx`: Header for the account dashboard page.
-	- `HomeHeader.tsx`: Header for the home page.
+| File | Description |
+|---|---|
+| `AuthFormWrapper.tsx` | Styled wrapper for authentication forms (login / register) |
+| `Card.tsx` | Generic themed card container |
+| `CardHeader.tsx` | Titled header bar for `Card` components |
+| `FormWrapper.tsx` | Wrapper that applies consistent padding and colour to any form |
+| `GraphWrapper.tsx` | Wrapper that provides consistent layout for chart components |
+| `HeaderDropdown.tsx` | Dropdown select component styled to match the app theme |
+| `HomeWrapper.tsx` | Centred layout wrapper for the Home page |
+| `PageWrapper.tsx` | Full-page layout wrapper for the Account Dashboard |
 
-- **menu/**
-	- `ItemMenu.tsx`: Menu for item-related actions.
-	- `PropertyMenu.tsx`: Menu for property-related actions.
+### `form/`
 
-- **report/**
-	- `EventReport.tsx`: Report component for events.
-	- `ItemEventsReport.tsx`: Report for item events.
-	- `LastUseReport.tsx`: Report showing last usage information.
-	- `UsageReport.tsx`: Main usage report component.
+| File | Description |
+|---|---|
+| `ItemInput.tsx` | Form for adding a new electrical item (category, usage type, nickname, wattage) |
+| `Login.tsx` | Email/password login form using React Hook Form |
+| `PropertyInput.tsx` | Form for adding a new property (address fields) |
+| `Register.tsx` | New-user registration form using React Hook Form |
+
+### `graph/`
+
+| File | Description |
+|---|---|
+| `EventGraph.tsx` | Recharts bar chart displaying item events over a time period |
+| `UsageGraph.tsx` | Recharts bar chart displaying hourly kWh interval readings |
+
+### `header/`
+
+| File | Description |
+|---|---|
+| `AccountDashboardHeader.tsx` | Header for the authenticated dashboard; includes property selector and logout |
+| `HomeHeader.tsx` | Header for the landing/home page |
+
+### `menu/`
+
+| File | Description |
+|---|---|
+| `ItemMenu.tsx` | Lists electrical items for a property; supports selecting an active item |
+| `PropertyMenu.tsx` | Dropdown-based menu for selecting or adding a property |
+
+### `report/`
+
+| File | Description |
+|---|---|
+| `EventReport.tsx` | Displays a summary report of usage events |
+| `ItemEventsReport.tsx` | Shows event history for a specific item |
+| `LastUseReport.tsx` | Shows the most recent start/stop event for each item |
+| `UsageReport.tsx` | Main usage report card; combines kWh readings with navigation controls |
 
 ## Notes
 
-- Each subfolder groups related components by feature or UI type.
-- Components are written in TypeScript (`.tsx`) and use functional React patterns.
-- Shared layout and UI primitives are in the `common/` folder.
-- Feature-specific components are grouped by their domain (e.g., `form/`, `graph/`, `report/`).
-
-For more details on each component, refer to the source files and their inline documentation.
+- All components are written in TypeScript (`.tsx`) and use functional React patterns with hooks.
+- Theme colours are consumed via the `useTheme()` hook from `src/context/ThemeContext.tsx`.
+- Shared layout primitives (`common/`) are intentionally kept generic so they can be reused across different feature areas.
 
