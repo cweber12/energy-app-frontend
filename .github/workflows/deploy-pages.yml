@@ -34,12 +34,15 @@ jobs:
 
       - name: Lint
         working-directory: frontend
-        run: npm run lint
+        run: npm run lint -- --max-warnings 0
+
+      - name: Test
+        working-directory: frontend
+        run: npm test -- --watchAll=false --ci
 
       - name: Build
         working-directory: frontend
         env:
-          CI: false
           REACT_APP_SUPABASE_URL: ${{ secrets.REACT_APP_SUPABASE_URL }}
           REACT_APP_SUPABASE_ANON_KEY: ${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}
         run: npm run build

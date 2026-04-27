@@ -96,9 +96,9 @@ Returns | startTs: Date | null of last event start timestamp.
         | eventId: number | null ID of the ongoing event if not ended.
 ------------------------------------------------------------------------------*/
 export function useLastEvent(itemId: number) {
-    const [lastStart, setLastStart] = useState<EventStart | null>(null);
+    const [, setLastStart] = useState<EventStart | null>(null);
     const [startTs, setStartTs] = useState<Date | null>(null);
-    const [lastEnd, setLastEnd] = useState<EventEnd | null>(null);
+    const [, setLastEnd] = useState<EventEnd | null>(null);
     const [endTs, setEndTs] = useState<Date | null>(null);
     const [eventId, setEventId] = useState<number | null>(null);
 

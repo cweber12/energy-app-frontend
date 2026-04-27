@@ -1,5 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { useLatestUsageReport } from './useLatestUsageReport';
+import { fetchMostRecentUsageReportForProperty } from '../supabase_services/usageReportService';
 
 // ---------------------------------------------------------------------------
 // Mock the service layer so no real network calls are made.
@@ -7,8 +8,6 @@ import { useLatestUsageReport } from './useLatestUsageReport';
 jest.mock('../supabase_services/usageReportService', () => ({
   fetchMostRecentUsageReportForProperty: jest.fn(),
 }));
-
-import { fetchMostRecentUsageReportForProperty } from '../supabase_services/usageReportService';
 
 const mockFetch = fetchMostRecentUsageReportForProperty as jest.Mock;
 

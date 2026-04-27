@@ -48,22 +48,21 @@ describe("ToggleUsageEvent", () => {
   it("switches to Stop button after starting an event", async () => {
     render(<ToggleUsageEvent itemId={1} />);
     fireEvent.click(screen.getByText("Start"));
-    await waitFor(() => expect(screen.getByText("Stop")).toBeInTheDocument());
+    await screen.findByText("Stop");
     expect(screen.queryByText("Start")).not.toBeInTheDocument();
   });
 
   it("shows Stop button when useLastEvent reports a running event", async () => {
     mockUseLastEvent.mockReturnValue({ startTs: new Date(), endTs: null, eventId: 99 });
     render(<ToggleUsageEvent itemId={2} />);
-    await waitFor(() => expect(screen.getByText("Stop")).toBeInTheDocument());
+    await screen.findByText("Stop");
     expect(screen.queryByText("Start")).not.toBeInTheDocument();
   });
 
   it("calls endEvent with the current event ID when Stop is clicked", async () => {
     mockUseLastEvent.mockReturnValue({ startTs: new Date(), endTs: null, eventId: 99 });
     render(<ToggleUsageEvent itemId={2} />);
-    await waitFor(() => expect(screen.getByText("Stop")).toBeInTheDocument());
-    fireEvent.click(screen.getByText("Stop"));
+    fireEvent.click(await screen.findByText("Stop"));
     await waitFor(() =>
       expect(mockEndEvent).toHaveBeenCalledWith(99, expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/)),
     );
@@ -72,9 +71,8 @@ describe("ToggleUsageEvent", () => {
   it("switches back to Start button after stopping an event", async () => {
     mockUseLastEvent.mockReturnValue({ startTs: new Date(), endTs: null, eventId: 99 });
     render(<ToggleUsageEvent itemId={2} />);
-    await waitFor(() => expect(screen.getByText("Stop")).toBeInTheDocument());
-    fireEvent.click(screen.getByText("Stop"));
-    await waitFor(() => expect(screen.getByText("Start")).toBeInTheDocument());
+    fireEvent.click(await screen.findByText("Stop"));
+    await screen.findByText("Start");
     expect(screen.queryByText("Stop")).not.toBeInTheDocument();
   });
 });

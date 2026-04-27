@@ -10,7 +10,6 @@ import UsageGraph from '../components/graph/UsageGraph';
 import EventGraph from '../components/graph/EventGraph';
 import { IntervalReading } from '../../types/reportTypes';
 import { useUsageReportNavigator } from "../hooks/useUsageReportNavigator";
-import Card from '../components/common/Card';
 import { ErrorBoundary } from '../components/common/ErrorBoundary';
 import { useTheme } from '../context/ThemeContext';
 import { DEFAULT_UTILITY } from '../constants/utilities';

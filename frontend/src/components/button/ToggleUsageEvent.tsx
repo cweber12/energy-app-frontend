@@ -40,7 +40,7 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
           setRunning(false);
       }
     }
-  }, [startTs, endTs]); 
+  }, [startTs, endTs, eventId]); 
 
   /* Start a new usage event
   ------------------------------------------------------------------------------

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
+import App from './App';
 
 // ---------------------------------------------------------------------------
 // Module mocks
@@ -71,8 +72,6 @@ jest.mock('./pages/AccountDashboard', () => {
   );
   return { __esModule: true, default: MockDashboard };
 });
-
-import App from './App';
 
 // ---------------------------------------------------------------------------
 // Helper

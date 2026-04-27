@@ -9,7 +9,6 @@ import {
     ResponsiveContainer, 
 } from 'recharts';
 import GraphWrapper from '../common/GraphWrapper';
-import Card from '../common/Card';
 import "../../App.css";
 import "../../styles/Components.css";
 import { useTheme } from '../../context/ThemeContext';

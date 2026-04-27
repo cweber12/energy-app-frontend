@@ -4,11 +4,6 @@ import "../../App.css";
 import "../../styles/Components.css";
 import { formatLocalYmdAsMDY } from "../../utils/dateUtils";
 
-type DailyUsage = {
-  usage_date: string;
-  total_usage_minutes: number;
-};
-
 const LastUseReport: React.FC<{ itemId: number }> = ({ itemId }) => {
     const { data: dailyUsage } = useDailyTotalsByDate(itemId);
     const latestUsage =

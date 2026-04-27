@@ -3,7 +3,6 @@ import React from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../../styles/Components.css";
-import Home from "../../pages/Home";
 
 /*  HomeWrapper Component
 --------------------------------------------------------------------------------

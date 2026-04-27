@@ -1,5 +1,5 @@
 // src/components/report/EventReport.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useEventsByDate } from "../../hooks/useEvent";
 import "../../styles/Components.css";
 import Card from "../common/Card";
@@ -11,14 +11,11 @@ import { formatIsoInLA } from "../../utils/dateUtils";
 Generates a table of usage events for all items on a given date.
 ------------------------------------------------------------------------------*/
 const EventReport: React.FC<{ startDate: string }> = ({ startDate }) => {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
     /* Fetch event data when startDate changes
     --------------------------------------------------------------------------*/
-    const { data } = useEventsByDate(startDate);
+    const { data, isLoading, error } = useEventsByDate(startDate);
 
-    if (loading) return <div>Loading...</div>;
+    if (isLoading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
 
     /* Render event report table

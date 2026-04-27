@@ -1,13 +1,10 @@
 // src/components/items/GetDailyEvents.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../../styles/Components.css";
 import { useTheme } from "../../context/ThemeContext";
 import { groupEventsByDate, formatElapsed } from "../../utils/eventUtils";
-import { EventSummary } from "../../../types/eventTypes";
 import "../../App.css";
-import "../../styles/Components.css";
 import { useAllEvents } from "../../hooks/useEvent";
-import Card from "../common/Card";
 import { formatIsoInLA } from "../../utils/dateUtils";
 
 /* GetDailyEvents Component

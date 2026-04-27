@@ -1,5 +1,5 @@
 // frontend/src/supabase_services/itemsService.ts
-import type { Category, UsageType, Item, ElectricalItemForm } from "../../types/itemTypes";
+import type { Item, ElectricalItemForm } from "../../types/itemTypes";
 import { supabase } from "../lib/supabaseClient";
 import { SUPABASE_URL } from "../config/supabase";
 import { authedFetch } from "../lib/apiFetch";

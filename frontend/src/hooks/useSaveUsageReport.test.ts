@@ -1,5 +1,6 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { useSaveUsageReport } from './useSaveUsageReport';
+import { uploadUsageReport } from '../supabase_services/usageReportService';
 
 // ---------------------------------------------------------------------------
 // Mock the service layer — no real network calls in unit tests.
@@ -7,8 +8,6 @@ import { useSaveUsageReport } from './useSaveUsageReport';
 jest.mock('../supabase_services/usageReportService', () => ({
   uploadUsageReport: jest.fn(),
 }));
-
-import { uploadUsageReport } from '../supabase_services/usageReportService';
 
 const mockUpload = uploadUsageReport as jest.Mock;
 
