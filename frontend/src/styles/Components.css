@@ -17,6 +17,8 @@
   padding: var(--space-6);
   gap: var(--space-6);
   box-sizing: border-box;
+  max-width: 1600px;
+  margin-inline: auto;
 }
 
 .home-wrapper {
@@ -336,10 +338,10 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: var(--font-xs);
+  font-size: var(--font-sm);
   color: var(--color-text-muted);
   text-align: right;
-  line-height: var(--line-height-tight);
+  line-height: var(--line-height-base);
   white-space: nowrap;
 }
 
@@ -478,7 +480,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-3);
 }
 
@@ -522,7 +524,9 @@
 /* --------------------------------------------------------------------
    RESPONSIVE � tablet (max-width: 1023px)
    -------------------------------------------------------------------- */
-
+@media (max-width: 900px) {
+  .upload-btn-label { display: none; }
+}
 @media (max-width: 1023px) {
   .page-wrapper {
     padding: var(--space-4);

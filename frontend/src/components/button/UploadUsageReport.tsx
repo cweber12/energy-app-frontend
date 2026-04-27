@@ -43,13 +43,10 @@ function parseXml(
     if (startNode && valueNode) {
       const startEpoch = parseInt(startNode.textContent || "0", 10);
       const currentDate = new Date(startEpoch * 1000);
-      console.log("Parsed date:", currentDate);
 
       if (!isNaN(currentDate.getTime())) {
         const localDate = currentDate.toLocaleDateString("en-CA"); // "YYYY-MM-DD"
-        console.log("Local Date:", localDate);
         setDate(localDate);
-        console.log("Report date set to:", localDate);
       }
 
       const hour = currentDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -117,7 +114,8 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
   return (
     <div>
       <CustomButton
-        disabled={isSaving}
+        disabled={!propertyId || isSaving}
+        title={!propertyId ? "Select a property first" : undefined}
         type="button"
         style={{ width: "auto" }}
       >
@@ -127,7 +125,7 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
             display: "flex",
             alignItems: "center",
             gap: "var(--space-2)",
-            cursor: isSaving ? "not-allowed" : "pointer",
+            cursor: (!propertyId || isSaving) ? "not-allowed" : "pointer",
             margin: 0,
           }}
         >
@@ -138,9 +136,9 @@ const UploadUsageReport: React.FC<UploadUsageReportProps> = ({
             accept=".xml"
             onChange={handleFileChange}
             style={{ display: "none" }}
-            disabled={isSaving}
+            disabled={!propertyId || isSaving}
           />
-          {isSaving ? "Saving..." : "Upload Report"}
+          <span className="upload-btn-label">{isSaving ? "Saving..." : "Upload Report"}</span>
         </label>
       </CustomButton>
       {saveError && <div style={{ marginTop: 6, fontSize: "var(--font-xs)", color: colors.warning }}>{saveError}</div>}

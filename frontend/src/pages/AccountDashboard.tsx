@@ -11,7 +11,9 @@ import EventGraph from '../components/graph/EventGraph';
 import { IntervalReading } from '../../types/reportTypes';
 import { useUsageReportNavigator } from "../hooks/useUsageReportNavigator";
 import Card from '../components/common/Card';
+import { ErrorBoundary } from '../components/common/ErrorBoundary';
 import { useTheme } from '../context/ThemeContext';
+import { DEFAULT_UTILITY } from '../constants/utilities';
 import { ChevronLeftIcon, ChevronRightIcon, InfoIcon } from '../components/icons';
 import CardHeader from '../components/common/CardHeader';
 import CustomButton from '../components/button/CustomButton';
@@ -52,7 +54,7 @@ const AccountDashboard = () => {
     } = useUsageReportNavigator(
         propertyIdNum, 
         refreshProperties, 
-        { utility: "SDGE", meterName: null }
+        { utility: DEFAULT_UTILITY, meterName: null }
     );
 
     // uploaded override (existing state)
@@ -72,23 +74,35 @@ const AccountDashboard = () => {
             refreshProperties={refreshProperties}
          />
         <PageWrapper>
+        <ErrorBoundary>
+            {!propertyId && (
+                <p style={{
+                    width: "100%",
+                    textAlign: "center",
+                    color: colors.mutedText,
+                    fontSize: "var(--font-base)",
+                    margin: "var(--space-8) 0",
+                }}>
+                    Select a property to get started, or add one using the dropdown above.
+                </p>
+            )}
             {showPropertyInput && (
-                <PropertyInput 
-                    userId={userId} 
-                    setShowPropertyInput={setShowPropertyInput} 
+                <PropertyInput
+                    userId={userId}
+                    setShowPropertyInput={setShowPropertyInput}
                     setRefreshProperties={setRefreshProperties}
                 />
-                
+
             )}
             {showItemInput && (
-                <ItemInput 
+                <ItemInput
                     propertyId={propertyId}
                     setShowItemInput={setShowItemInput}
                     onItemAdded={() => setRefreshItems(x => x + 1)}
                 />
             )}
             {propertyId && (
-                    <ItemMenu 
+                    <ItemMenu
                         propertyId={propertyId}
                         refreshItems={refreshItems}
                         setShowItemInput={setShowItemInput}
@@ -182,6 +196,7 @@ const AccountDashboard = () => {
                     <EventGraph startDate={displayDate} />
                 </div>
             )}
+        </ErrorBoundary>
         </PageWrapper>
         </>
     );

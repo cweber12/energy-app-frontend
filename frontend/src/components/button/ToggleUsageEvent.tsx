@@ -23,6 +23,7 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   const { colors } = useTheme();
   const [running, setRunning] = React.useState<boolean>(false);
   const [currentEventId, setCurrentEventId] = React.useState<number | null>(null);
+  const [pending, setPending] = React.useState<boolean>(false);
 
   /* Fetch last event timestamps for an item when itemId changes
   ----------------------------------------------------------------------------*/
@@ -46,16 +47,16 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
   - Sends POST request to start a new usage event for the item
   ----------------------------------------------------------------------------*/
   const startUsageEvent = () => {
+      setPending(true);
       startEvent(itemId, new Date().toISOString())
         .then((data: EventStart) => {
           setRunning(true);
-          const start = new Date(data.start_ts);
-          setStartTimeString(start.toLocaleString());
-          setCurrentEventId(data.event_id); 
-          console.log(data);
+          setCurrentEventId(data.event_id);
+          setPending(false);
         })
         .catch(error => {
           console.error('Error creating usage event:', error);
+          setPending(false);
         });
   };
 
@@ -69,16 +70,16 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
           console.error('No ongoing event to end.');
           return;
       }
+      setPending(true);
       endEvent(currentEventId, new Date().toISOString())
         .then((data: EventEnd) => {
-          const end = new Date(data.end_ts);
-          setEndTimeString(end.toLocaleString());
           setRunning(false);
           setCurrentEventId(null);
-          console.log(data);
+          setPending(false);
         })
         .catch(error => {
           console.error('Error ending usage event:', error);
+          setPending(false);
         });
   };
 
@@ -93,6 +94,7 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
       {!running ? (
         <CustomButton
           onClick={startUsageEvent}
+          disabled={pending}
           style={{
             backgroundColor: colors.buttonStart,
             color: "#FFFFFF",
@@ -104,6 +106,7 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
       ) : (
         <CustomButton
           onClick={endUsageEvent}
+          disabled={pending}
           style={{
             backgroundColor: colors.buttonStop,
             color: "#FFFFFF",

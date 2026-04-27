@@ -56,32 +56,41 @@ const Register: React.FC = () => {
         className="form auth-form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <input
-          type="text"
-          {...register("username", { required: true })}
-          placeholder="Username"
-        />
-        {errors.username && (
-          <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Username is required</span>
-        )}
+        <label className="form-label">
+          Username
+          <input
+            type="text"
+            {...register("username", { required: true })}
+            placeholder="Username"
+          />
+          {errors.username && (
+            <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Username is required</span>
+          )}
+        </label>
 
-        <input
-          type="email"
-          {...register("email", { required: true })}
-          placeholder="Email address"
-        />
-        {errors.email && (
-          <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Email is required</span>
-        )}
+        <label className="form-label">
+          Email
+          <input
+            type="email"
+            {...register("email", { required: true })}
+            placeholder="Email address"
+          />
+          {errors.email && (
+            <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Email is required</span>
+          )}
+        </label>
 
-        <input
-          type="password"
-          {...register("password", { required: true })}
-          placeholder="Password"
-        />
-        {errors.password && (
-          <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Password is required</span>
-        )}
+        <label className="form-label">
+          Password
+          <input
+            type="password"
+            {...register("password", { required: true })}
+            placeholder="Password"
+          />
+          {errors.password && (
+            <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>Password is required</span>
+          )}
+        </label>
 
         <CustomButton
           type="submit"

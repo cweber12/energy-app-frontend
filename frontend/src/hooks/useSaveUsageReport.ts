@@ -1,6 +1,7 @@
 // frontend/src/hooks/useSaveUsageReport.ts
 import { useCallback, useState } from "react";
 import { uploadUsageReport } from "../supabase_services/usageReportService";
+import { DEFAULT_UTILITY } from "../constants/utilities";
 
 type IntervalReading = { 
   hour: string; 
@@ -35,7 +36,7 @@ export function useSaveUsageReport() {
           report_date: args.report_date,
           readings: args.readings,
           interval_minutes: args.interval_minutes ?? 60,
-          utility: args.utility ?? "SDGE",
+          utility: args.utility ?? DEFAULT_UTILITY,
           meter_name: args.meter_name ?? null,
           source_filename: args.source_filename ?? null,
         });

@@ -22,16 +22,27 @@ Returns | data: GroupedEvents[] array of events grouped by date.
 ------------------------------------------------------------------------------*/
 export function useEventsByDate(startDate: string) {
     const [data, setData] = useState<GroupedEvents[]>([]);
-    
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
+        if (!startDate) return;
+        let cancelled = false;
+        setIsLoading(true);
+        setError(null);
         fetchEventsByDate(startDate)
-            .then(setData)
+            .then((result) => { if (!cancelled) setData(result); })
             .catch((err) => {
-                console.error("Error fetching events by date:", err);
-            });
+                if (!cancelled) {
+                    console.error("Error fetching events by date:", err);
+                    setError(err instanceof Error ? err.message : "Failed to fetch events");
+                }
+            })
+            .finally(() => { if (!cancelled) setIsLoading(false); });
+        return () => { cancelled = true; };
     }, [startDate]);
 
-    return { data };
+    return { data, isLoading, error };
 }
 
 /* Fetch Daily Totals By Date
@@ -91,42 +102,33 @@ export function useLastEvent(itemId: number) {
     const [endTs, setEndTs] = useState<Date | null>(null);
     const [eventId, setEventId] = useState<number | null>(null);
 
-    // get last start event and set startTs and eventId
     useEffect(() => {
         if (!itemId) return;
-        console.log("Fetching last start for itemId:", itemId);
-        fetchLastStart(itemId)
-            .then(setLastStart)
-            .then(() => {
-                if (lastStart) {
-                    setEventId(lastStart.event_id);
-                    setStartTs(new Date(lastStart.start_ts));
-                } 
-            })
-            .catch((err) => {
-                console.error("Error fetching last start:", err);
-            });
-        
-    }, [itemId]);
 
-    // Listen for eventId from lastStart and fetch last end event
-    useEffect(() => {
-        if (eventId === null) return; 
-        console.log("Fetching last end for eventId:", eventId);  
-        fetchLastEnd(eventId)
-        .then(setLastEnd)
-        .then(() => {
-            if (lastEnd) {
-                setEndTs(new Date(lastEnd.end_ts));
-                setEventId(null); // Reset eventId to indicate event has ended
+        (async () => {
+            try {
+                const start = await fetchLastStart(itemId);
+                setLastStart(start);
+                setStartTs(new Date(start.start_ts));
+                setEventId(start.event_id);
+
+                try {
+                    // fetchLastEnd takes item_id — it finds the end for the
+                    // most recent start internally via the Edge Function.
+                    const end = await fetchLastEnd(itemId);
+                    setLastEnd(end);
+                    setEndTs(new Date(end.end_ts));
+                    setEventId(null); // event has ended; no ongoing event_id
+                } catch {
+                    // 404 means the latest start has no end → still running
+                    setLastEnd(null);
+                    setEndTs(null);
+                }
+            } catch (err) {
+                console.error("Error fetching last event:", err);
             }
-        })
-        .catch((err) => {
-            console.log("Process still running:", err);
-            setLastEnd(null);
-        });
-
-    }, [eventId]);
+        })();
+    }, [itemId]);
 
     return { startTs, endTs, eventId };
 }

@@ -34,7 +34,8 @@ const ItemInput: React.FC<ItemInputProps> = ({
         nickname: "", 
         rated_watts: "", 
     });
-    const [message, setMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const { categories , usageTypes } = useAllItems(propertyId);
     const { colors } = useTheme();
     
@@ -63,7 +64,8 @@ const ItemInput: React.FC<ItemInputProps> = ({
     --------------------------------------------------------------------------*/
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setMessage("");
+        setSuccessMessage("");
+        setErrorMessage("");
         try {
             const response = await addElectricalItem(propertyId, {
                 category_id: Number(form.category_id),
@@ -72,7 +74,7 @@ const ItemInput: React.FC<ItemInputProps> = ({
                 rated_watts: Number(form.rated_watts),
             });
             if (response.item_id) {
-                setMessage("Item added successfully!");
+                setSuccessMessage("Item added successfully!");
                 setForm({
                     category_id: "",
                     usage_type_id: "",
@@ -82,10 +84,10 @@ const ItemInput: React.FC<ItemInputProps> = ({
                 setShowItemInput(false);
                 onItemAdded();
             } else {
-                setMessage("Failed to add item.");
+                setErrorMessage("Failed to add item.");
             }
         } catch (err) {
-            setMessage("Error adding item: " + (err as Error).message);
+            setErrorMessage("Error adding item: " + (err as Error).message);
         }
     };
 
@@ -96,8 +98,8 @@ const ItemInput: React.FC<ItemInputProps> = ({
     - Displays success/error message
     --------------------------------------------------------------------------*/
     return (
-        <HeaderDropdown onClose={() => setShowItemInput(false)}>
-            <h2 className="dropdown-heading">Add New Item</h2>
+        <HeaderDropdown onClose={() => setShowItemInput(false)} id="item-input">
+            <h2 id="item-input-title" className="dropdown-heading">Add New Item</h2>
 
             <form className="form" onSubmit={handleSubmit}>
              <label className="form-label">
@@ -152,7 +154,8 @@ const ItemInput: React.FC<ItemInputProps> = ({
 
             <CustomButton type="submit">Add</CustomButton>
 
-            {message && <div style={{ fontSize: "var(--font-sm)", color: colors.warning }}>{message}</div>}
+            {successMessage && <div style={{ fontSize: "var(--font-sm)", color: "var(--color-btn-start)" }}>{successMessage}</div>}
+            {errorMessage && <div style={{ fontSize: "var(--font-sm)", color: colors.warning }}>{errorMessage}</div>}
             </form>
         </HeaderDropdown>
     );

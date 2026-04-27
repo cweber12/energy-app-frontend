@@ -1,5 +1,5 @@
 // src/components/headers/AccountDashboardHeader.tsx
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../../styles/Components.css";
@@ -38,6 +38,18 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
     const { colors } = useTheme();
     const username = sessionStorage.getItem("username") || "Guest";
     const [showUserMenu, setShowUserMenu] = React.useState<boolean>(false);
+    const userDivRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!showUserMenu) return;
+        const handleMouseDown = (e: MouseEvent) => {
+            if (userDivRef.current && !userDivRef.current.contains(e.target as Node)) {
+                setShowUserMenu(false);
+            }
+        };
+        document.addEventListener("mousedown", handleMouseDown);
+        return () => document.removeEventListener("mousedown", handleMouseDown);
+    }, [showUserMenu]);
 
     /* Render Account Dashboard Header
     ----------------------------------------------------------------------------
@@ -63,7 +75,6 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     alignItems: "center",
                     gap: "0.5rem",
                     minWidth: 0,
-                    flexWrap: "wrap",
                 }}>
                 <PropertyMenu 
                     setShowPropertyInput={setShowPropertyInput} 
@@ -86,7 +97,7 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     flexShrink: 0,
                     color: colors.secondaryText,
                 }}>
-                <div className="user">
+                <div className="user" ref={userDivRef}>
                     <UserIcon
                         size={22}
                         color={colors.iconSecondary}
@@ -94,21 +105,19 @@ const AccountDashboardHeader: React.FC<AccountDashboardHeaderProps> = ({
                     <span style={{ fontSize: "var(--font-sm)", fontWeight: "var(--font-weight-medium)" }}>
                         {username ? username : "Guest"}
                     </span>
-                    {showUserMenu ? (
-                        <ChevronUpIcon
-                            size={16}
-                            color={colors.iconSecondary}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => setShowUserMenu(false)}
-                        />
-                    ) : (
-                        <ChevronDownIcon
-                            size={16}
-                            color={colors.iconSecondary}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => setShowUserMenu(true)}
-                        />
-                    )}
+                    <button
+                        type="button"
+                        aria-label="Open account menu"
+                        aria-expanded={showUserMenu}
+                        onClick={() => setShowUserMenu(prev => !prev)}
+                        style={{ background: "none", border: "none", padding: "2px", cursor: "pointer", display: "flex", alignItems: "center" }}
+                    >
+                        {showUserMenu ? (
+                            <ChevronUpIcon size={16} color={colors.iconSecondary} />
+                        ) : (
+                            <ChevronDownIcon size={16} color={colors.iconSecondary} />
+                        )}
+                    </button>
                     {showUserMenu && (
                         <div 
                             className="user-menu-dropdown"

@@ -115,22 +115,34 @@ const ItemMenu: React.FC<{
                                 {/* Left: expand chevron + item name */}
                                 <div className="child-row" style={{ minWidth: 0, flex: 1 }}>
                                     {infoOpenIndex === idx ? (
-                                        <ChevronUpIcon
-                                            size={18}
-                                            color={colors.iconTertiary}
-                                            style={{ cursor: "pointer", flexShrink: 0 }}
+                                        <button
+                                            type="button"
+                                            aria-label="Collapse item details"
+                                            aria-expanded={true}
                                             onClick={() => {
                                                 setInfoOpenIndex(null);
                                                 setShowDailyEvents(false);
                                             }}
-                                        />
+                                            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center" }}
+                                        >
+                                            <ChevronUpIcon
+                                                size={18}
+                                                color={colors.iconTertiary}
+                                            />
+                                        </button>
                                     ) : (
-                                        <ChevronDownIcon
-                                            size={18}
-                                            color={colors.iconTertiary}
-                                            style={{ cursor: "pointer", flexShrink: 0 }}
+                                        <button
+                                            type="button"
+                                            aria-label="Expand item details"
+                                            aria-expanded={false}
                                             onClick={() => setInfoOpenIndex(idx)}
-                                        />
+                                            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center" }}
+                                        >
+                                            <ChevronDownIcon
+                                                size={18}
+                                                color={colors.iconTertiary}
+                                            />
+                                        </button>
                                     )}
                                     <span
                                         style={{
@@ -177,21 +189,31 @@ const ItemMenu: React.FC<{
                                             Usage Events
                                         </span>
                                         {showDailyEvents ? (
-                                            <ChevronUpIcon
-                                                size={18}
-                                                color={colors.iconSecondary}
-                                                style={{ cursor: "pointer" }}
+                                            <button
+                                                type="button"
+                                                aria-label="Hide usage events"
+                                                aria-expanded={true}
                                                 onClick={() => setShowDailyEvents(false)}
-                                                title="Collapse events"
-                                            />
+                                                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center" }}
+                                            >
+                                                <ChevronUpIcon
+                                                    size={18}
+                                                    color={colors.iconSecondary}
+                                                />
+                                            </button>
                                         ) : (
-                                            <ChevronDownIcon
-                                                size={18}
-                                                color={colors.iconSecondary}
-                                                style={{ cursor: "pointer" }}
+                                            <button
+                                                type="button"
+                                                aria-label="Show usage events"
+                                                aria-expanded={false}
                                                 onClick={() => setShowDailyEvents(true)}
-                                                title="Expand events"
-                                            />
+                                                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center" }}
+                                            >
+                                                <ChevronDownIcon
+                                                    size={18}
+                                                    color={colors.iconSecondary}
+                                                />
+                                            </button>
                                         )}
                                     </div>
                                 </div>

@@ -1,8 +1,7 @@
 // src/components/menu/PropertyMenu.tsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useProperties } from "../../hooks/useProperty";
-import { Property, PropertyOption } from '../../../types/propertyTypes';
-import { fetchMyProperties } from "../../supabase_services/propertiesService";
+import { PropertyOption } from '../../../types/propertyTypes';
 import Select from 'react-select';
 import type { CSSObjectWithLabel } from "react-select";
 import "../../App.css";
@@ -30,6 +29,10 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
     // Fetch properties and options with custom hook
     const { options, firstPropertyId } = 
         useProperties(sessionStorage.getItem("user_id") ?? "", refreshProperties, setPropertyId);
+
+    // Derive controlled value from sessionStorage or firstPropertyId
+    const currentPropertyId = sessionStorage.getItem("currentProperty") || firstPropertyId;
+    const selectedValue = options.find(o => o.value === currentPropertyId) ?? null;
 
     // Custom styles for react-select — integrate with CSS theme variables
     const customStyles = {
@@ -107,6 +110,7 @@ const PropertyMenu: React.FC<PropertyMenuProps> = ({
         <Select
             options={options}
             onChange={handleChange}
+            value={selectedValue ?? null}
             placeholder="Select or add property..."
             styles={customStyles}
         />

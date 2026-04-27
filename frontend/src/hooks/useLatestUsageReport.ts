@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { IntervalReading } from "../../types/reportTypes";
 import { fetchMostRecentUsageReportForProperty } from "../supabase_services/usageReportService";
+import { DEFAULT_UTILITY } from "../constants/utilities";
 
 export function useLatestUsageReport(propertyId: number, refreshKey = 0) {
   const [readings, setReadings] = useState<IntervalReading[]>([]);
@@ -18,7 +19,7 @@ export function useLatestUsageReport(propertyId: number, refreshKey = 0) {
       setError(null);
 
       try {
-        const result = await fetchMostRecentUsageReportForProperty({ propertyId, utility: "SDGE", meterName: null });
+        const result = await fetchMostRecentUsageReportForProperty({ propertyId, utility: DEFAULT_UTILITY, meterName: null });
         if (cancelled) return;
 
         if (!result) {

@@ -28,7 +28,8 @@ const PropertyInput: React.FC<{
     state_abbreviation: "",
     zip: "",
   });
-  const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   /* Handle form input changes
   ----------------------------------------------------------------------------*/
@@ -44,11 +45,11 @@ const PropertyInput: React.FC<{
   ----------------------------------------------------------------------------*/
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage("");
+    setSuccessMessage("");
+    setErrorMessage("");
     try {
-      // const response = await addProperty(userId, form as PropertyForm);
-      const response = await addProperty(form as PropertyForm);
-      setMessage("Property added successfully!" + response.property_id);
+      await addProperty(form as PropertyForm);
+      setSuccessMessage("Property added.");
       setForm({
           street_address: "",
           city: "",
@@ -58,7 +59,7 @@ const PropertyInput: React.FC<{
       setRefreshProperties(prev => prev + 1);
       setShowPropertyInput(false);   
     } catch (err) {
-        setMessage("Error adding property: " + (err as Error).message);
+        setErrorMessage("Error adding property: " + (err as Error).message);
     }
   };
 
@@ -69,8 +70,8 @@ const PropertyInput: React.FC<{
   Displays success/error message
   ----------------------------------------------------------------------------*/
   return (
-    <HeaderDropdown onClose={() => setShowPropertyInput(false)}>
-      <h2 className="dropdown-heading">Add Property</h2>
+    <HeaderDropdown onClose={() => setShowPropertyInput(false)} id="property-input">
+      <h2 id="property-input-title" className="dropdown-heading">Add Property</h2>
       <form className="form" onSubmit={handleSubmit}>
         <label className="form-label">
             Street:
@@ -110,7 +111,8 @@ const PropertyInput: React.FC<{
         <div className="row">
         <CustomButton type="submit">Add</CustomButton>
         </div>
-        {message && <div style={{ fontSize: "var(--font-sm)" }}>{message}</div>}
+        {successMessage && <div style={{ fontSize: "var(--font-sm)", color: "var(--color-btn-start)" }}>{successMessage}</div>}
+        {errorMessage && <div style={{ fontSize: "var(--font-sm)", color: "var(--color-text-warning)" }}>{errorMessage}</div>}
       </form>
     </HeaderDropdown>
   );

@@ -69,27 +69,33 @@ const Login: React.FC<{ navigate: NavigateFunction }> = ({ navigate }) =>  {
                 className="form auth-form" 
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <input
-                    type="email"
-                    {...register("email", { required: true })}
-                    placeholder="Email address"
-                />
-                {errors.email && (
-                    <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>
-                        Email is required
-                    </span>
-                )}
+                <label className="form-label">
+                    Email
+                    <input
+                        type="email"
+                        {...register("email", { required: true })}
+                        placeholder="Email address"
+                    />
+                    {errors.email && (
+                        <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>
+                            Email is required
+                        </span>
+                    )}
+                </label>
 
-                <input
-                    type="password"
-                    {...register("password", { required: true })}
-                    placeholder="Password"
-                />
-                {errors.password && (
-                    <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>
-                        Password is required
-                    </span>
-                )}
+                <label className="form-label">
+                    Password
+                    <input
+                        type="password"
+                        {...register("password", { required: true })}
+                        placeholder="Password"
+                    />
+                    {errors.password && (
+                        <span style={{ color: colors.warning, fontSize: "var(--font-xs)" }}>
+                            Password is required
+                        </span>
+                    )}
+                </label>
 
                 <CustomButton 
                     type="submit"

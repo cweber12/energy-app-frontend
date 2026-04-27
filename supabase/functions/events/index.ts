@@ -71,16 +71,6 @@ function minutesBetween(startIso: string, endIso: string) {
 
 const LA_TZ = "America/Los_Angeles";
 
-function laDateKeyFromIso(iso: string): string {
-  const d = new Date(iso);
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: LA_TZ,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(d); // YYYY-MM-DD
-}
-
 function laYmdFromIso(iso: string): string {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: LA_TZ,
@@ -391,7 +381,7 @@ Deno.serve(async (req: Request) => {
 
         if (sErr) throw sErr;
 
-        const filteredStarts = (starts ?? []).filter((s: any) => laDateKeyFromIso(s.start_ts) === startDate);
+        const filteredStarts = (starts ?? []).filter((s: any) => laYmdFromIso(s.start_ts) === startDate);
 
         const eventIds = filteredStarts.map((r: any) => r.event_id);
         const { data: ends, error: eErr } = eventIds.length

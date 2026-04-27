@@ -20,37 +20,44 @@ Returns | items: Item[] array of electrical items.
         | usageTypes: { [key: number]: string } mapping of usage type IDs to names.
 ------------------------------------------------------------------------------*/
 export function useAllItems(
-    propertyId: string, 
-    refreshItems: number = 0
+    propertyId: string,
+    refreshItems: number = 0,
 ) {
     const [items, setItems] = useState<Item[]>([]);
     const [categories, setCategories] = useState<CategoryMap>({});
     const [usageTypes, setUsageTypes] = useState<UsageTypeMap>({});
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (!propertyId) return;
+        let cancelled = false;
+        setIsLoading(true);
+        setError(null);
 
-        fetchItemsByProperty(propertyId)
-            .then(setItems)
-            .catch((error) => {
+        Promise.all([
+            fetchItemsByProperty(propertyId),
+            fetchItemCategories(),
+            fetchUsageTypes(),
+        ])
+            .then(([itemsData, categoriesData, usageTypesData]) => {
+                if (cancelled) return;
+                setItems(itemsData);
+                setCategories(categoriesData);
+                setUsageTypes(usageTypesData);
+            })
+            .catch((err) => {
+                if (cancelled) return;
                 setItems([]);
-                console.error("Error fetching items:", error);
-            });
-
-        fetchItemCategories()
-            .then(setCategories)
-            .catch((error) => {
                 setCategories({});
-                console.error("Error fetching category:", error);
-            });
-
-        fetchUsageTypes()
-            .then(setUsageTypes)
-            .catch((error) => {
                 setUsageTypes({});
-                console.error("Error fetching usage types:", error);
-            });
+                setError(err instanceof Error ? err.message : "Failed to fetch items");
+                console.error("Error fetching items:", err);
+            })
+            .finally(() => { if (!cancelled) setIsLoading(false); });
+
+        return () => { cancelled = true; };
     }, [propertyId, refreshItems]);
 
-    return { items, categories, usageTypes };
+    return { items, categories, usageTypes, isLoading, error };
 }

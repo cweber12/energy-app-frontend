@@ -39,14 +39,16 @@ export function useProperties(
             });
     }, [userId, refreshProperties]);
 
-    const firstPropertyId = 
-        properties.length > 0 && properties[0]?.property_id ? 
-        properties[0]!.property_id.toString() : 
+    const firstPropertyId =
+        properties.length > 0 && properties[0]?.property_id ?
+        properties[0]!.property_id.toString() :
         "";
-    
-    if (firstPropertyId && setPropertyId) {
-        setPropertyId(firstPropertyId);
-    }
+
+    useEffect(() => {
+        if (firstPropertyId && setPropertyId) {
+            setPropertyId(firstPropertyId);
+        }
+    }, [firstPropertyId, setPropertyId]);
 
     return { properties, options, firstPropertyId };
 }

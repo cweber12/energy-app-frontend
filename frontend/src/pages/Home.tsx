@@ -15,8 +15,7 @@ Description: Landing page for user authentication (login/register).
 ------------------------------------------------------------------------------*/
 function Home() {
     const navigate: NavigateFunction = useNavigate();
-    const [showLogin, setShowLogin] = React.useState<boolean>(true);
-    const [showRegister, setShowRegister] = React.useState<boolean>(false);
+    const [activeForm, setActiveForm] = React.useState<'login' | 'register'>('login');
     const userId = sessionStorage.getItem("user_id");
     const { colors } = useTheme();
 
@@ -36,10 +35,14 @@ function Home() {
         <>
             <HomeHeader/>
             <HomeWrapper>
-                    {showLogin && <Login navigate={navigate} />}
-                    {showRegister && <Register />}
-                    <span 
-                        style={{ 
+                    {activeForm === 'login' && <Login navigate={navigate} />}
+                    {activeForm === 'register' && <Register />}
+                    <button
+                        type="button"
+                        style={{
+                            background: "none",
+                            border: "none",
+                            padding: 0,
                             cursor: "pointer",
                             color: colors.title,
                             fontSize: "var(--font-sm)",
@@ -47,15 +50,12 @@ function Home() {
                             textDecoration: "underline",
                             textUnderlineOffset: "3px",
                         }}
-                        onClick={() => {
-                            setShowLogin(!showLogin);
-                            setShowRegister(!showRegister);
-                        }}
+                        onClick={() => setActiveForm(activeForm === 'login' ? 'register' : 'login')}
                     >
-                        {showLogin ? 
-                        "Don't have an account? Register here." : 
+                        {activeForm === 'login' ?
+                        "Don't have an account? Register here." :
                         "Already have an account? Login here."}
-                    </span>
+                    </button>
                     <OpenDemo />
             </HomeWrapper>
         </>
