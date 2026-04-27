@@ -7,6 +7,7 @@ interface CustomButtonProps {
   style?: React.CSSProperties;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
+  title?: string | undefined;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -14,7 +15,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   onClick,
   style,
   disabled,
-  type = "button"
+  type = "button",
+  title
 }) => {
   const { colors } = useTheme();
   const [hovered, setHovered] = useState(false);
@@ -47,6 +49,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         ...style,
       }}
       disabled={disabled}
+      title={title}
     >
       {children}
     </button>
