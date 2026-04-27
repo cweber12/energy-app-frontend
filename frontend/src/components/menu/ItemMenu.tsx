@@ -1,5 +1,5 @@
 // src/components/items/ItemMenu.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import "../../App.css";
 import "../../styles/Components.css";
@@ -16,6 +16,7 @@ import {
 } from "../icons";
 import CardHeader from "../common/CardHeader";
 import CustomButton from "../button/CustomButton";
+import { INTERMITTENT_USAGE_TYPE_ID } from "../../constants/utilities";
 
 
 /* ItemMenu Component
@@ -25,7 +26,6 @@ Description: Displays a list of electrical items for a selected property.
     - propertyId: ID of the selected property
     - setShowItemInput: Function to show/hide the ItemInput component
     - setShowDailyEvents: Function to show/hide daily events view
-    - setItemId: Function to set the selected item ID for daily events
 ------------------------------------------------------------------------------*/
 const ItemMenu: React.FC<{
     propertyId: string;
@@ -43,15 +43,21 @@ const ItemMenu: React.FC<{
     showDailyEvents,
 }) => {
     const [showItemInfo, setShowItemInfo] = useState<boolean>(false);
-    const [infoOpenIndex, setInfoOpenIndex] = useState<number | null>(null);
+    // Track the expanded item by its stable item.id, not array index.
+    const [openItemId, setOpenItemId] = useState<number | null>(null);
     const { colors } = useTheme();
-    const { items, categories, usageTypes } = 
+    const { items, categories, usageTypes, isLoading, error } = 
         useAllItems(propertyId, refreshItems);
 
-    // Close events panel when the expanded item changes
-    useEffect(() => {
-        setShowDailyEvents(false);
-    }, [infoOpenIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+    const handleToggleItem = (id: number) => {
+        if (openItemId === id) {
+            setOpenItemId(null);
+            setShowDailyEvents(false);
+        } else {
+            setOpenItemId(id);
+            setShowDailyEvents(false);
+        }
+    };
 
     /* Render ItemMenu component
     ----------------------------------------------------------------------------
@@ -62,11 +68,11 @@ const ItemMenu: React.FC<{
         <div className="item-menu-wrapper">
             <Card>
                 <CardHeader>
-                    {items.length > 0 && (
-                        <div className="row" style={{ gap: "var(--space-2)" }}>
-                            <h3 className="card-section-label" style={{ color: colors.primaryText }}>
-                                Items
-                            </h3>
+                    <div className="row" style={{ gap: "var(--space-2)" }}>
+                        <h3 className="card-section-label" style={{ color: colors.primaryText }}>
+                            Items
+                        </h3>
+                        {items.length > 0 && (
                             <InfoIcon
                                 size={16}
                                 color={colors.iconSecondary}
@@ -74,14 +80,15 @@ const ItemMenu: React.FC<{
                                 onClick={() => setShowItemInfo(prev => !prev)}
                                 title="About items"
                             />
-                        </div>
-                    )}
-                    {!showItemInput && (
-                        <CustomButton onClick={() => setShowItemInput(true)}>
-                            <PlusIcon size={16} />
-                            Add Item
-                        </CustomButton>
-                    )}
+                        )}
+                    </div>
+                    <CustomButton
+                        onClick={() => setShowItemInput(true)}
+                        disabled={showItemInput}
+                    >
+                        <PlusIcon size={16} />
+                        Add Item
+                    </CustomButton>
                 </CardHeader>
 
                 {showItemInfo && (
@@ -101,8 +108,26 @@ const ItemMenu: React.FC<{
                     </div>
                 )}
 
+                {isLoading && (
+                    <p style={{ padding: "var(--space-4)", fontSize: "var(--font-sm)", color: colors.mutedText }}>
+                        Loading itemsâ€¦
+                    </p>
+                )}
+
+                {!isLoading && error && (
+                    <p style={{ padding: "var(--space-4)", fontSize: "var(--font-sm)", color: colors.warning }}>
+                        {error}
+                    </p>
+                )}
+
+                {!isLoading && !error && items.length === 0 && (
+                    <p style={{ padding: "var(--space-4)", fontSize: "var(--font-sm)", color: colors.mutedText }}>
+                        No items yet. Add your first item above.
+                    </p>
+                )}
+
                 <ul className="list" style={{ listStyle: "none" }}>
-                    {items.map((item, idx) => (
+                    {items.map((item) => (
                         <React.Fragment key={item.id}>
                             <li
                                 className="list-item"
@@ -114,36 +139,19 @@ const ItemMenu: React.FC<{
                             >
                                 {/* Left: expand chevron + item name */}
                                 <div className="child-row" style={{ minWidth: 0, flex: 1 }}>
-                                    {infoOpenIndex === idx ? (
-                                        <button
-                                            type="button"
-                                            aria-label="Collapse item details"
-                                            aria-expanded={true}
-                                            onClick={() => {
-                                                setInfoOpenIndex(null);
-                                                setShowDailyEvents(false);
-                                            }}
-                                            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center" }}
-                                        >
-                                            <ChevronUpIcon
-                                                size={18}
-                                                color={colors.iconTertiary}
-                                            />
-                                        </button>
-                                    ) : (
-                                        <button
-                                            type="button"
-                                            aria-label="Expand item details"
-                                            aria-expanded={false}
-                                            onClick={() => setInfoOpenIndex(idx)}
-                                            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center" }}
-                                        >
-                                            <ChevronDownIcon
-                                                size={18}
-                                                color={colors.iconTertiary}
-                                            />
-                                        </button>
-                                    )}
+                                    <button
+                                        type="button"
+                                        aria-label={openItemId === item.id ? "Collapse item details" : "Expand item details"}
+                                        aria-expanded={openItemId === item.id}
+                                        onClick={() => handleToggleItem(item.id)}
+                                        style={{ background: "none", border: "none", padding: 0, cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center" }}
+                                    >
+                                        {openItemId === item.id ? (
+                                            <ChevronUpIcon size={18} color={colors.iconTertiary} />
+                                        ) : (
+                                            <ChevronDownIcon size={18} color={colors.iconTertiary} />
+                                        )}
+                                    </button>
                                     <span
                                         style={{
                                             overflow: "hidden",
@@ -157,15 +165,15 @@ const ItemMenu: React.FC<{
 
                                 {/* Right: action button + secondary metadata */}
                                 <div className="item-action-meta">
-                                    {item.usage_type_id === 2 && (
+                                    {item.usage_type_id === INTERMITTENT_USAGE_TYPE_ID && (
                                         <ToggleUsageEvent itemId={item.id} />
                                     )}
                                     <LastUseReport itemId={item.id} />
                                 </div>
                             </li>
 
-                            {/* Expanded info row — events toggle only */}
-                            {infoOpenIndex === idx && (
+                            {/* Expanded info row â€” category/wattage + events toggle */}
+                            {openItemId === item.id && (
                                 <div
                                     className="item-info-popup"
                                     style={{
@@ -173,6 +181,17 @@ const ItemMenu: React.FC<{
                                         color: colors.secondaryText,
                                     }}
                                 >
+                                    {/* Item metadata: category and rated watts */}
+                                    <div className="item-meta" style={{ textAlign: "left", whiteSpace: "normal" }}>
+                                        {categories[item.category_id] && (
+                                            <span>{categories[item.category_id]}</span>
+                                        )}
+                                        {item.rated_watts > 0 && (
+                                            <span>{item.rated_watts} W Â· {usageTypes[item.usage_type_id]}</span>
+                                        )}
+                                    </div>
+
+                                    {/* Usage events toggle */}
                                     <div
                                         className="child-row"
                                         style={{ width: "100%", justifyContent: "space-between" }}
@@ -188,33 +207,19 @@ const ItemMenu: React.FC<{
                                         >
                                             Usage Events
                                         </span>
-                                        {showDailyEvents ? (
-                                            <button
-                                                type="button"
-                                                aria-label="Hide usage events"
-                                                aria-expanded={true}
-                                                onClick={() => setShowDailyEvents(false)}
-                                                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center" }}
-                                            >
-                                                <ChevronUpIcon
-                                                    size={18}
-                                                    color={colors.iconSecondary}
-                                                />
-                                            </button>
-                                        ) : (
-                                            <button
-                                                type="button"
-                                                aria-label="Show usage events"
-                                                aria-expanded={false}
-                                                onClick={() => setShowDailyEvents(true)}
-                                                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center" }}
-                                            >
-                                                <ChevronDownIcon
-                                                    size={18}
-                                                    color={colors.iconSecondary}
-                                                />
-                                            </button>
-                                        )}
+                                        <button
+                                            type="button"
+                                            aria-label={showDailyEvents ? "Hide usage events" : "Show usage events"}
+                                            aria-expanded={showDailyEvents}
+                                            onClick={() => setShowDailyEvents(prev => !prev)}
+                                            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center" }}
+                                        >
+                                            {showDailyEvents ? (
+                                                <ChevronUpIcon size={18} color={colors.iconSecondary} />
+                                            ) : (
+                                                <ChevronDownIcon size={18} color={colors.iconSecondary} />
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
                             )}
@@ -223,8 +228,8 @@ const ItemMenu: React.FC<{
                 </ul>
             </Card>
 
-            {/* Events panel — absolutely positioned to the right of the card */}
-            {showDailyEvents && infoOpenIndex !== null && items[infoOpenIndex] && (
+            {/* Events panel â€” absolutely positioned to the right of the card */}
+            {showDailyEvents && openItemId !== null && items.find(i => i.id === openItemId) && (
                 <div
                     className="events-panel"
                     style={{
@@ -241,17 +246,21 @@ const ItemMenu: React.FC<{
                         }}
                     >
                         <span className="card-section-label">
-                            {items[infoOpenIndex].nickname} — Events
+                            {items.find(i => i.id === openItemId)!.nickname} â€” Events
                         </span>
-                        <ChevronUpIcon
-                            size={16}
-                            color={colors.iconSecondary}
-                            style={{ cursor: "pointer" }}
+                        <button
+                            type="button"
+                            aria-label="Close events panel"
                             onClick={() => setShowDailyEvents(false)}
-                            title="Close events panel"
-                        />
+                            style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", alignItems: "center" }}
+                        >
+                            <ChevronUpIcon
+                                size={16}
+                                color={colors.iconSecondary}
+                            />
+                        </button>
                     </div>
-                    <ItemEventsReport itemId={items[infoOpenIndex].id} />
+                    <ItemEventsReport itemId={openItemId} />
                 </div>
             )}
         </div>
@@ -259,3 +268,4 @@ const ItemMenu: React.FC<{
 };
 
 export default ItemMenu;
+
