@@ -21,12 +21,12 @@ Returns | items: Item[] array of electrical items.
 ------------------------------------------------------------------------------*/
 export function useAllItems(
     propertyId: string,
-    refreshItems: number = 0,
+    refreshItems = 0,
 ) {
     const [items, setItems] = useState<Item[]>([]);
     const [categories, setCategories] = useState<CategoryMap>({});
     const [usageTypes, setUsageTypes] = useState<UsageTypeMap>({});
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {

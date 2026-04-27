@@ -18,7 +18,7 @@ const PropertyInput: React.FC<{
   setShowPropertyInput: React.Dispatch<React.SetStateAction<boolean>>, 
   setRefreshProperties: React.Dispatch<React.SetStateAction<number>>,
 }> = ({ 
-  userId, 
+  userId: _userId, 
   setShowPropertyInput, 
   setRefreshProperties 
 }) => {

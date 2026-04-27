@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { IntervalReading } from "../../types/reportTypes";
-import type { UsageReportMeta } from "../../types/reportTypes";
+import type { IntervalReading, UsageReportMeta } from "../../types/reportTypes";
 import {
   fetchMetersByProperty,
   fetchReportsByMeter,

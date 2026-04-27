@@ -23,7 +23,7 @@ Props | readings: IntervalReading[] - Array of usage readings
 const UsageGraph: React.FC<{ 
     readings: IntervalReading[], 
     date: string
-}> = ({ readings, date }) => {
+}> = ({ readings, date: _date }) => {
     const { colors } = useTheme();
 
     /* Render bar chart

@@ -72,7 +72,7 @@ const ToggleUsageEvent: React.FC<SetUsageEventProps> = ({ itemId }) => {
       }
       setPending(true);
       endEvent(currentEventId, new Date().toISOString())
-        .then((data: EventEnd) => {
+        .then((_data: EventEnd) => {
           setRunning(false);
           setCurrentEventId(null);
           setPending(false);

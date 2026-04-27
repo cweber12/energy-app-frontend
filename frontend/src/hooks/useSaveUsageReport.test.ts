@@ -166,7 +166,7 @@ describe('useSaveUsageReport', () => {
 
     // Start save without awaiting so we can inspect intermediate state.
     act(() => {
-      result.current.saveReport(baseArgs).catch(() => {});
+      result.current.saveReport(baseArgs).catch(_err => { /* expected */ });
     });
 
     await waitFor(() => {

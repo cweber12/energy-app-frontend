@@ -47,7 +47,7 @@ export async function fetchItemCategories(): Promise<{ [key: number]: string }> 
 
   if (error) throw error;
   const categoryMap: { [key: number]: string } = {};
-  (data ?? []).forEach((cat: any) => {
+  (data ?? []).forEach((cat: { id: number; name: string }) => {
     categoryMap[cat.id] = cat.name;
   });
   return categoryMap;
@@ -65,7 +65,7 @@ export async function fetchUsageTypes(): Promise<{ [key: number]: string }> {
 
   if (error) throw error;
   const usageMap: { [key: number]: string } = {};
-  (data ?? []).forEach((ut: any) => {
+  (data ?? []).forEach((ut: { id: number; name: string }) => {
     usageMap[ut.id] = ut.name;
   });
   return usageMap;
